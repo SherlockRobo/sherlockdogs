@@ -10,7 +10,7 @@ Official form: https://openai.com/form/codex-for-oss/
 
 ## Why does this repository qualify?
 
-Sherlockdogs is an open-source, local-first AI agent pipeline under intensive production dogfooding. It turns forwarded links, text, and media references into local Markdown archives and Codex-ready tasks. I am the primary maintainer and use it to validate reliability, orchestration, documentation, and release quality at high real-world AI workflow volume before broader community adoption.
+Sherlockdogs is an open-source, local-first AI agent pipeline under intensive production dogfooding. It turns forwarded links, text, and media references into private Markdown archives and Codex-ready tasks. I am the primary maintainer and use it across a real workflow processing ~6B tokens/month to validate reliability, orchestration, documentation, and release quality before broader adoption.
 
 ## How will you use API credits?
 
