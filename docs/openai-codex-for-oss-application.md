@@ -5,8 +5,8 @@ Official form: https://openai.com/form/codex-for-oss/
 ## Repository
 
 - GitHub username: `SherlockRobo`
-- Repository URL: `TBD`
-- Public status: `TBD after repo creation`
+- Repository URL: `https://github.com/SherlockRobo/sherlockdogs`
+- Public status: `public`
 
 ## Why does this repository qualify?
 
@@ -26,4 +26,3 @@ The project is early and does not claim external adoption. Its strength is inten
 - ChatGPT email
 - Final repo URL
 - Final confirmation before submission
-
