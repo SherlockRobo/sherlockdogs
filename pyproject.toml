@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sherlockdogs"
+version = "0.1.0"
+description = "Local-first AI clue pipeline for Markdown archives and Codex-ready tasks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "SherlockRobo"}]
+keywords = ["codex", "obsidian", "markdown", "automation", "agent", "clipping"]
+
+[project.scripts]
+sdogs = "sherlockdogs.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sherlockdogs*"]
+
