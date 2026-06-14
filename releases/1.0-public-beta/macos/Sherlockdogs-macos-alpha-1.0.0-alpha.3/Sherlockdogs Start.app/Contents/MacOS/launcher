@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root_dir="$(cd "$(dirname "$0")/../../.." && pwd)"
+tmp="$(mktemp "/tmp/sherlockdogs-start.XXXXXX.command")"
+cat > "$tmp" <<SCRIPT
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT_DIR="$root_dir"
+cd "\$ROOT_DIR/packaging/macos-beta"
+bash ./preflight.sh
+bash ./install.sh
+bash ./doctor.sh --report
+printf "\nSherlockdogs installed. Run Configure Nutstore Inbox if you have not bound your Nutstore folder yet. Press Enter to close. "
+read -r _
+SCRIPT
+chmod +x "$tmp"
+open -a Terminal "$tmp"

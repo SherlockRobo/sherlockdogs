@@ -36,6 +36,20 @@ The production dogfood build currently uses personal local inbox adapters. This 
 
 ## Quickstart
 
+## Public Beta
+
+Small-scope 1.0 public beta folders are available at:
+
+```text
+releases/1.0-public-beta/
+```
+
+Use the whole macOS or Windows folder as-is. No zip/dmg/tar package is published.
+
+Mac WeChat Personal Mode is optional; the stable beta entry is local or synced Inbox.
+
+## Developer Quickstart
+
 ```bash
 git clone https://github.com/SherlockRobo/sherlockdogs.git
 cd sherlockdogs
@@ -84,4 +98,3 @@ Current focus:
 - Windows package design.
 - Media preflight for XHS, Bilibili, YouTube, TikTok, and Douyin.
 - Codex task handoff quality.
-

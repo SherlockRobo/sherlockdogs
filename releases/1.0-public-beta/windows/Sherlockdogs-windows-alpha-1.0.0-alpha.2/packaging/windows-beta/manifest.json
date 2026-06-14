@@ -1,0 +1,42 @@
+{
+  "name": "Sherlockdogs Windows Alpha",
+  "version": "1.0.0-alpha.2",
+  "channel": "windows-beta",
+  "entry": "nutstore-inbox",
+  "default_inbox": "%USERPROFILE%\\Sherlockdogs\\Inbox",
+  "recommended_cloud_inbox": "Nutstore WebDAV / synced folder",
+  "recommended_cloud_inbox_path": "<Nutstore>\\Sherlockdogs\\Inbox",
+  "default_vault_candidates": [
+    "%USERPROFILE%\\ObsidianVault_LOCAL",
+    "%USERPROFILE%\\Sherlockdogs\\Vault"
+  ],
+  "services": [
+    "SherlockdogsLocalInbox",
+    "SherlockdogsCodexRunner"
+  ],
+  "scheduler": "Windows Scheduled Tasks, current user",
+  "supported_inputs": [
+    "wechat article url",
+    "x url",
+    "xhs url",
+    "bilibili url",
+    "youtube url",
+    "douyin url",
+    "tiktok url",
+    "image file",
+    "video file",
+    "pdf file",
+    "plain text"
+  ],
+  "task_levels": {
+    "#1": "archive only",
+    "#2": "archive plus Codex card",
+    "#3": "metadata/light parse in Codex",
+    "#4": "deep read in Codex",
+    "#5": "frames/screenshots/segments in Codex"
+  },
+  "privacy_model": "user-owned cloud inbox; no Sherlockdogs relay by default",
+  "beta_boundary": "personal WeChat database adapter is not enabled by default",
+  "cloud_boundary": "Nutstore is the user's own account; Sherlockdogs only watches the synced local folder",
+  "first_run_entry": "Sherlockdogs Start.cmd"
+}

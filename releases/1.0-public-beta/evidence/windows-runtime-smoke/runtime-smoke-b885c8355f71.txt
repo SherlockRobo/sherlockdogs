@@ -1,0 +1,8 @@
+Sherlockdogs Windows runtime smoke
+temp=C:\Users\runneradmin\AppData\Local\Temp\sdogs-runtime-smoke-62683a004915456bb4d59a1eb43ce7d7
+preflight=ok
+selftest=ok
+install=ok no-tasks
+sample=ok count=1
+doctor=ok reports=1
+runtime_smoke=ok
