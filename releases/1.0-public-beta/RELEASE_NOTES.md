@@ -16,8 +16,14 @@ Start Sherlockdogs -> send content to Sherlockdogs Inbox -> open local Markdown 
 
 | Platform | Folder |
 |---|---|
-| macOS | `releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/` |
-| Windows | `releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/` |
+| macOS | [Sherlockdogs-macos-alpha-1.0.0-alpha.3](https://github.com/SherlockRobo/sherlockdogs/tree/main/releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3) |
+| Windows | [Sherlockdogs-windows-alpha-1.0.0-alpha.2](https://github.com/SherlockRobo/sherlockdogs/tree/main/releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2) |
+
+## Install Guides
+
+| macOS | Windows |
+|---|---|
+| ![Mac install guide](https://raw.githubusercontent.com/SherlockRobo/sherlockdogs/main/releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png) | ![Windows install guide](https://raw.githubusercontent.com/SherlockRobo/sherlockdogs/main/releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/INSTALL_GUIDE_FOR_USERS.png) |
 
 ## Start
 
@@ -40,3 +46,7 @@ Start Sherlockdogs -> send content to Sherlockdogs Inbox -> open local Markdown 
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
 - Mac WeChat Personal Mode is optional. The stable beta entry is local or synced Inbox.
+
+## Repository Landing Page
+
+https://github.com/SherlockRobo/sherlockdogs
