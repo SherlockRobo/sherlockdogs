@@ -1,6 +1,6 @@
 name=Sherlockdogs-windows-alpha-1.0.0-alpha.2
 version=1.0.0-alpha.2
-built_at=2026-06-14T16:43:11+0800
+built_at=2026-06-14T21:23:19+0800
 entry=local-inbox
 no_archive=true
 windows_runtime_verified=false

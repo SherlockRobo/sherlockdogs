@@ -1,27 +1,22 @@
 # Sherlockdogs Mac Alpha 小范围测试包
 
-目标：陌生 Mac 用户不用接触个人微信数据库，也不用把内容交给 Sherlockdogs 云端。测试版使用用户自己的本地或同步 Inbox：手机把内容通过快捷指令、iCloud、坚果云、OneDrive、Google Drive、Syncthing、NAS 或本地文件夹送到 `Sherlockdogs/Inbox`，电脑端自动入库，并按 `#1/#2/#3/#4/#5` 触发 Codex 对话。
+目标：陌生 Mac 用户不用接触个人微信数据库，也不用把内容交给 Sherlockdogs 云端。测试版的用户入口是手机分享链接，或手机微信转发给自己；iCloud、坚果云、OneDrive、Google Drive、Syncthing、NAS、本地 Inbox 只是后台传输层。电脑端收到后在本机入库，并按 `#1/#2/#3/#4/#5` 触发 Codex 对话。
 
 Obsidian 是推荐阅读器，但不是硬依赖。Sherlockdogs 输出的是本地 Markdown 图书馆；不装 Obsidian 也能保存文件并触发 Codex，对 Obsidian 用户则能直接沉淀到 vault。
 
-## 推荐入口：自己的 Inbox
+## 推荐入口：手机分享或微信转发
 
-1. 先双击 `Sherlockdogs Start.app`，本地测试会使用默认 Inbox。
-2. 如果要手机同步，选择自己的同步盘：iCloud、坚果云、OneDrive、Google Drive、Syncthing 或 NAS。
-3. 坚果云用户可双击 `Configure Nutstore Inbox.command` 自动检测同步目录，并创建：
+1. 先双击 `Sherlockdogs Start.app`，让电脑端保持运行。
+2. 用户入口是手机分享链接，或手机微信转发给自己。
+3. 如果用 iOS 快捷指令 / 同步盘承接手机内容，再选择自己的后台传输目录：iCloud、坚果云、OneDrive、Google Drive、Syncthing 或 NAS。
+4. 坚果云用户可双击 `Configure Nutstore Inbox.command` 自动检测同步目录，并创建：
 
 ```text
 <坚果云同步目录>/Sherlockdogs/Inbox
 <坚果云同步目录>/Sherlockdogs/Outbox
 ```
 
-4. 手机端推荐用 iOS 快捷指令写入：
-
-```text
-Sherlockdogs/Inbox/
-```
-
-5. Mac 端看到 Inbox 文件后，Sherlockdogs 自动处理这个文件夹里的内容。
+5. Mac 端收到后台传输文件后，Sherlockdogs 自动入库并生成本地 Markdown。
 
 ## 默认入口
 
@@ -62,7 +57,7 @@ Sherlockdogs/Inbox/
 
 ## 使用
 
-推荐把这些内容通过手机快捷指令写入自己的 `Sherlockdogs/Inbox`。也可以手动放进当前 Sherlockdogs Inbox：
+推荐从手机分享链接，或把内容通过微信转发给自己；快捷指令/同步盘/Inbox 只是后台传输层。桌面手动测试时，也可以把以下内容放进当前 Sherlockdogs Inbox：
 
 - `.txt/.md/.url/.webloc`：里面包含微信、X、小红书、B站、YouTube、抖音、TikTok 链接
 - 图片：`.jpg/.png/.webp/.gif/.heic`
@@ -126,7 +121,7 @@ chmod +x "Configure Nutstore Inbox.command" "Uninstall Sherlockdogs.command"
 
 ## 公测边界
 
-- 默认公测入口是用户自己的本地或同步 Inbox，不读取个人微信数据库。
+- 默认公测入口是手机分享链接或微信转发给自己；Inbox/同步盘只是后台传输层，不读取个人微信数据库。
 - 推荐用 Obsidian 打开本地 Markdown 图书馆，但不强制安装 Obsidian。
 - “转发给自己微信”属于高级本机适配器，需要用户的 Mac 微信处于可读状态，暂不作为公测默认路径。
 - Sherlockdogs 不上传用户剪藏内容到 Sherlockdogs 中转服务；同步盘内容属于用户自己的账号，电脑同步后在本机进入 Codex。

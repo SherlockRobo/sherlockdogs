@@ -13,7 +13,7 @@
   </defs>
   <rect class="bg" width="1600" height="2100"/>
   <text class="ink" x="140" y="180" font-size="96" font-weight="800">Sherlockdogs 安装指南</text>
-  <text class="muted" x="144" y="250" font-size="38">把线索送进自己的 Inbox，本机自动入库，并可继续进入 Codex 对话</text>
+  <text class="muted" x="144" y="250" font-size="38">手机分享或微信转发，本机自动入库，并可继续进入 Codex 对话</text>
   <rect class="yellow" x="140" y="295" width="480" height="18" rx="9"/>
 
   <g transform="translate(140,380)">
