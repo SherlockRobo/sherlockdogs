@@ -23,7 +23,7 @@ Open the whole platform folder, then read `START_HERE.md`.
 
 ```text
 1. Start Sherlockdogs
-2. Send content to your Sherlockdogs Inbox
+2. Share from phone or forward via WeChat
 3. Open the local Markdown output
 ```
 
@@ -34,7 +34,7 @@ Open the whole platform folder, then read `START_HERE.md`.
 
 ## What It Does
 
-- Accepts links, text, images, and media references from a local or synced Inbox.
+- Accepts links, text, images, and media references from phone sharing or optional WeChat forwarding; a local/synced Inbox is used as the background transport layer.
 - Writes auditable Markdown artifacts into your chosen local vault.
 - Creates Codex cards for items marked with `#` or `#2`.
 - Keeps user content local by default.
@@ -56,7 +56,7 @@ Open the whole platform folder, then read `START_HERE.md`.
 - No zip, dmg, tar, or installer package is published for this beta.
 - macOS may require right-click -> Open on the first launch.
 - First launch may spend a few minutes installing Python dependencies.
-- Mac WeChat Personal Mode is optional. The stable beta entry is local or synced Inbox.
+- Mac WeChat Personal Mode is optional. The primary user-facing entry is phone sharing; Inbox/sync is the background transport layer.
 
 ## Privacy
 

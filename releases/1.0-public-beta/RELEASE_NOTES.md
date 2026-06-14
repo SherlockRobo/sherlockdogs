@@ -9,7 +9,7 @@ Sherlockdogs 1.0 public beta is ready for small-scope testing.
 The stable beta path is:
 
 ```text
-Start Sherlockdogs -> send content to Sherlockdogs Inbox -> open local Markdown output
+Start Sherlockdogs -> share from phone or forward via WeChat -> open local Markdown output
 ```
 
 ## Platform Folders
@@ -45,7 +45,7 @@ Start Sherlockdogs -> send content to Sherlockdogs Inbox -> open local Markdown 
 
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
-- Mac WeChat Personal Mode is optional. The stable beta entry is local or synced Inbox.
+- Mac WeChat Personal Mode is optional. The primary user-facing entry is phone sharing; Inbox/sync is the background transport layer.
 
 ## Repository Landing Page
 

@@ -17,7 +17,8 @@ Use the whole platform folder. Open `START_HERE.md` first.
 
 ```text
 Phone or desktop content
-  -> Sherlockdogs Inbox
+  -> phone share / WeChat forward
+  -> Sherlockdogs background Inbox
   -> local Markdown archive
   -> optional Codex card
 ```
@@ -33,7 +34,7 @@ Phone or desktop content
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
 - Mac WeChat Personal Mode is optional and depends on local Mac WeChat state.
-- The stable entry is local or synced Inbox: iCloud Drive, Nutstore, OneDrive, Google Drive, Syncthing, NAS, or a plain local folder.
+- The user-facing entry is phone sharing or optional WeChat forwarding. Local/synced Inbox is only the background transport layer.
 
 ## Evidence
 
