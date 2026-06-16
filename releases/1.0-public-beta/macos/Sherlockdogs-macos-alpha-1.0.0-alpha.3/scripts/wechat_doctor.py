@@ -49,7 +49,7 @@ def load_all_recent(receivers: list[str], lookback_seconds: int, limit: int) -> 
     since_ts = int(time.time()) - lookback_seconds
     for receiver in receivers:
         chat_id = db.resolve_username(receiver) or receiver
-        account_dir = inbox.KNOWN_ACCOUNT_DIRS.get(receiver) or inbox.KNOWN_ACCOUNT_DIRS.get(chat_id)
+        account_dir = inbox.account_dir_for(receiver, chat_id)
         status = {"input": receiver, "chat_id": chat_id, "ok": True, "error": ""}
         try:
             fetched = inbox.fetch_messages(db, chat_id, since_ts=since_ts, limit=limit, account_dir=account_dir)
@@ -139,6 +139,9 @@ def diagnose(args: argparse.Namespace) -> dict[str, Any]:
         result["actions"].append("如这是刚发给自己的测试消息，可用 --bind-latest 绑定为接收器。")
 
     result["ok"] = bool(result["checks"]["db_readable"])
+    if args.require_bind and not result.get("bound_receiver"):
+        result["ok"] = False
+        result["actions"].append("本次未完成微信接收会话绑定，Personal Mode 未启用。")
     return result
 
 
@@ -149,6 +152,7 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=200)
     parser.add_argument("--show", type=int, default=10)
     parser.add_argument("--bind-latest", action="store_true", help="Bind the latest recognizable message chat as the receiver.")
+    parser.add_argument("--require-bind", action="store_true", help="Exit non-zero unless --bind-latest binds a receiver.")
     args = parser.parse_args()
 
     result = diagnose(args)

@@ -25,7 +25,7 @@ echo "2. 手机微信刚刚把一条文章/链接/图片转发给你自己。"
 echo
 echo "正在检查最近微信消息并自动绑定接收会话..."
 
-"$PYTHON_BIN" "$PROJECT_DIR/scripts/wechat_doctor.py" --lookback-seconds 3600 --show 5 --bind-latest
+"$PYTHON_BIN" "$PROJECT_DIR/scripts/wechat_doctor.py" --lookback-seconds 3600 --show 5 --bind-latest --require-bind
 
 WECHAT_PLIST="$HOME/Library/LaunchAgents/com.sherlockdogs.wechat-self.plist"
 cat > "$WECHAT_PLIST" <<EOF

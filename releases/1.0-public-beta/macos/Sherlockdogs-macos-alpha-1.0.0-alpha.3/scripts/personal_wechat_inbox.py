@@ -27,11 +27,9 @@ if str(SCRIPT_DIR) not in sys.path:
 
 from create_job import PENDING_DIR, build_job, classify_url, now_iso as job_now_iso, parse_task, safe_id_part  # noqa: E402
 from ingest_text import extract_explicit_task, extract_task, extract_title_hint  # noqa: E402
+from sdogs_paths import JOBS_DIR, PROJECT_DIR, RUNS_DIR  # noqa: E402
 
 
-PROJECT_DIR = Path("/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler")
-JOBS_DIR = PROJECT_DIR / "jobs"
-RUNS_DIR = PROJECT_DIR / "runs"
 STATE_FILE = JOBS_DIR / "personal_wechat_inbox_state.json"
 RECEIVER_FILE = JOBS_DIR / "personal_receiver_chats.txt"
 EVENT_LOG = RUNS_DIR / "personal-wechat-inbox.events.jsonl"
@@ -277,6 +275,20 @@ def load_db() -> WeChatDB:
     if not keys:
         raise RuntimeError("WeChat keys missing; run key extraction first")
     return WeChatDB(cfg["db_dir"], keys)
+
+
+def default_account_dir() -> Path | None:
+    try:
+        db_dir = Path(load_config()["db_dir"])
+    except Exception:
+        return None
+    if db_dir.name == "db_storage":
+        return db_dir.parent
+    return None
+
+
+def account_dir_for(receiver: str, chat_id: str) -> Path | None:
+    return KNOWN_ACCOUNT_DIRS.get(receiver) or KNOWN_ACCOUNT_DIRS.get(chat_id) or default_account_dir()
 
 
 def fetch_messages(
@@ -582,7 +594,7 @@ def run_once(limit: int, dry_run: bool, settle_seconds: int) -> dict[str, Any]:
         chat_id = db.resolve_username(receiver) or receiver
         resolved.append({"input": receiver, "chat_id": chat_id})
         since_ts = int(state.get("last_ts_by_chat", {}).get(chat_id) or (time.time() - POLL_LOOKBACK_SECONDS))
-        account_dir = KNOWN_ACCOUNT_DIRS.get(receiver) or KNOWN_ACCOUNT_DIRS.get(chat_id)
+        account_dir = account_dir_for(receiver, chat_id)
         all_messages.extend(fetch_messages(db, chat_id, since_ts=since_ts, limit=limit, account_dir=account_dir))
 
     if not all_messages:
