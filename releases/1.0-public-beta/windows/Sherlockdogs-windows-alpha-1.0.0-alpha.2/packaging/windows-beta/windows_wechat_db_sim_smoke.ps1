@@ -20,7 +20,7 @@ import time
 
 db_path = sys.argv[1]
 conn = sqlite3.connect(db_path)
-conn.execute("create table Msg_filehelper(create_time integer, message_content text, local_type integer)")
+conn.execute("create table Msg_wxid_real_self(create_time integer, message_content text, local_type integer)")
 conn.execute(
     "insert into Msg_filehelper values (?, ?, ?)",
     (int(time.time()), "https://example.com/windows-ci-wechat-db-sim\n#2", 1),
@@ -36,7 +36,7 @@ if ($LASTEXITCODE -ne 0) { throw "install.ps1 failed" }
 & (Join-Path $ProjectDir "packaging\windows-beta\connect_wechat.ps1") -DecryptedDbDir $DbRoot -Receivers "filehelper" -NoTask -NoDecryptBootstrap
 if ($LASTEXITCODE -ne 0) { throw "connect_wechat.ps1 failed" }
 
-& $env:PYTHON_BIN (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --db-root $DbRoot --settle-seconds 0
+& $env:PYTHON_BIN (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --db-root $DbRoot --receivers "*" --settle-seconds 0
 if ($LASTEXITCODE -ne 0) { throw "windows_wechat_inbox.py failed" }
 
 $ResolvedEvidenceDir = Join-Path $ProjectDir $EvidenceDir
@@ -50,7 +50,8 @@ $Required = @(
   "connect_wechat=ok",
   "self_chat_received=ok",
   "desktop_received=ok",
-  "codex_card=ok"
+  "codex_card=ok",
+  "receiver_chat=Msg_wxid_real_self"
 )
 $Joined = ($EvidenceOutput | Out-String)
 foreach ($Line in $Required) {

@@ -493,10 +493,10 @@ def write_inbox_event(group: list[dict[str, Any]], task: str, jobs: list[dict[st
     return event
 
 
-def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int) -> dict[str, Any]:
+def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receivers_override: str = "") -> dict[str, Any]:
     state = read_json(STATE_FILE, {})
     seen = set(state.get("seen_message_ids") or [])
-    receivers = read_receivers()
+    receivers = [item.strip() for item in receivers_override.split(",") if item.strip()] if receivers_override else read_receivers()
     last_ts_by_chat = dict(state.get("last_ts_by_chat") or {})
     messages = fetch_messages(root, last_ts_by_chat, limit, receivers)
     if not messages:
@@ -564,6 +564,7 @@ def main() -> int:
     parser.add_argument("--interval", type=float, default=20.0)
     parser.add_argument("--limit", type=int, default=200)
     parser.add_argument("--db-root", default="")
+    parser.add_argument("--receivers", default="", help="Comma-separated receiver chats. Use * to scan all chats for smoke discovery.")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--settle-seconds", type=int, default=SETTLE_SECONDS)
     args = parser.parse_args()
@@ -574,7 +575,7 @@ def main() -> int:
         return 1 if args.once else 0
     while True:
         try:
-            result = run_once(root=root, limit=args.limit, dry_run=args.dry_run, settle_seconds=args.settle_seconds)
+            result = run_once(root=root, limit=args.limit, dry_run=args.dry_run, settle_seconds=args.settle_seconds, receivers_override=args.receivers)
             print(json.dumps(result, ensure_ascii=False), flush=True)
         except Exception as exc:
             print(json.dumps({"ok": False, "error": str(exc), "ts": now_iso(), "db_root": str(root)}, ensure_ascii=False), file=sys.stderr, flush=True)

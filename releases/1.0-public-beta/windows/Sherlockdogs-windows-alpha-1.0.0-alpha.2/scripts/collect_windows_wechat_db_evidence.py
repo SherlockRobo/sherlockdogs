@@ -139,6 +139,9 @@ def main() -> int:
         lines.append(f"latest_job={jobs[0].get('_path')}")
         lines.append(f"latest_job_id={jobs[0].get('job_id', '')}")
         lines.append(f"latest_job_task={jobs[0].get('task', '')}")
+        receiver_chat = jobs[0].get("extra", {}).get("receiver_chat") or jobs[0].get("extra", {}).get("chat_id") or jobs[0].get("chat_id", "")
+        if receiver_chat:
+            lines.append(f"receiver_chat={receiver_chat}")
     if inbox_events:
         lines.append(f"latest_inbox_event={inbox_events[0].get('_path')}")
 
