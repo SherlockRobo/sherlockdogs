@@ -1,0 +1,45 @@
+name: Sherlockdogs Public Windows Release Smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "releases/1.0-public-beta/windows/**"
+      - ".github/workflows/public-windows-release-smoke.yml"
+
+jobs:
+  public-windows-release-smoke:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify packaged Windows smoke defaults
+        shell: pwsh
+        run: |
+          Select-String -Path "packaging/windows-beta/windows_wechat_smoke.ps1" -Pattern '\[string\]\$Receivers = "\*"'
+          Select-String -Path "packaging/windows-beta/windows_wechat_smoke.ps1" -Pattern "Sherlockdogs config missing; running install first"
+          Select-String -Path "packaging/windows-beta/collect_windows_wechat_evidence.ps1" -Pattern "--codex-bin"
+          Select-String -Path "packaging/windows-beta/collect_windows_wechat_evidence.ps1" -Pattern "--cwd"
+
+      - name: Run packaged Windows WeChat DB simulated smoke
+        shell: pwsh
+        run: |
+          packaging/windows-beta/windows_wechat_db_sim_smoke.ps1
+
+      - name: Upload packaged Windows evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sherlockdogs-public-windows-release-smoke
+          path: |
+            releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/evidence/windows-wechat-db-sim-smoke/**
+          if-no-files-found: warn
