@@ -85,3 +85,9 @@ codex_job_created=ok
 codex_card=ok
 thread_completed=True
 ```
+
+Machine check:
+
+```bash
+./check_returned_windows_evidence.sh /path/to/Sherlockdogs-Windows-Evidence-*
+```
