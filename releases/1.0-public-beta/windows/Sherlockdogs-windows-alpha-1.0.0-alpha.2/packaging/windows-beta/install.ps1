@@ -52,21 +52,22 @@ $ConfigLines | Set-Content -Encoding UTF8 $ConfigFile
 
 if (-not $NoTasks) {
   $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
-  $TaskSettings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
+  $WatcherTaskSettings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
+  $CodexTaskSettings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 2)
   $InboxAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind local-inbox"
   $InboxTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 15) -RepetitionDuration (New-TimeSpan -Days 3650)
-  Register-ScheduledTask -TaskName "SherlockdogsLocalInbox" -Action $InboxAction -Trigger $InboxTrigger -Settings $TaskSettings -Description "Sherlockdogs local Inbox watcher" -Force | Out-Null
+  Register-ScheduledTask -TaskName "SherlockdogsLocalInbox" -Action $InboxAction -Trigger $InboxTrigger -Settings $WatcherTaskSettings -Description "Sherlockdogs local Inbox watcher" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsLocalInbox" -ErrorAction SilentlyContinue
 
   $RunnerAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind codex-runner"
   $RunnerTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 30) -RepetitionDuration (New-TimeSpan -Days 3650)
-  Register-ScheduledTask -TaskName "SherlockdogsCodexRunner" -Action $RunnerAction -Trigger $RunnerTrigger -Settings $TaskSettings -Description "Sherlockdogs Codex runner" -Force | Out-Null
+  Register-ScheduledTask -TaskName "SherlockdogsCodexRunner" -Action $RunnerAction -Trigger $RunnerTrigger -Settings $CodexTaskSettings -Description "Sherlockdogs Codex runner" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsCodexRunner" -ErrorAction SilentlyContinue
 
   if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) {
     $WeChatAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind windows-wechat"
     $WeChatTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
-    Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $WeChatAction -Trigger $WeChatTrigger -Settings $TaskSettings -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
+    Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $WeChatAction -Trigger $WeChatTrigger -Settings $WatcherTaskSettings -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
     Start-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -ErrorAction SilentlyContinue
   }
 }
