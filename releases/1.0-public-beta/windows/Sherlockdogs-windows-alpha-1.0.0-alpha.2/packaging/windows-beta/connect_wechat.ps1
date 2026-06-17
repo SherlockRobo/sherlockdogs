@@ -73,7 +73,16 @@ function Invoke-SelfElevated {
   if ($NoDecryptBootstrap) { $argList += "-NoDecryptBootstrap" }
   Write-Host "Windows will ask for Administrator permission to read the running Windows WeChat key."
   Add-ConnectReport "elevation=requested"
-  $proc = Start-Process -FilePath "powershell.exe" -ArgumentList $argList -WorkingDirectory $ProjectDir -Verb RunAs -Wait -PassThru
+  try {
+    $proc = Start-Process -FilePath "powershell.exe" -ArgumentList $argList -WorkingDirectory $ProjectDir -Verb RunAs -Wait -PassThru
+  } catch {
+    Add-ConnectReport "elevation_error=$($_.Exception.Message)"
+    return 1
+  }
+  if ($null -eq $proc.ExitCode) {
+    Add-ConnectReport "elevation_exit=unknown"
+    return $null
+  }
   Add-ConnectReport "elevation_exit=$($proc.ExitCode)"
   return $proc.ExitCode
 }
@@ -220,7 +229,7 @@ if (-not $DecryptedDbDir) {
     if (-not (Test-Admin)) {
       Add-ConnectReport "status=elevating_for_decrypt_bootstrap"
       $ElevatedExit = Invoke-SelfElevated
-      if ($ElevatedExit -ne 0) {
+      if ($null -ne $ElevatedExit -and $ElevatedExit -ne 0) {
         Add-ConnectReport "status=failed"
         Add-ConnectReport "error=elevated_decrypt_bootstrap_failed"
         throw "Windows WeChat decrypt bootstrap failed in the Administrator window. Run Doctor Sherlockdogs.cmd and send the latest diagnostics."
