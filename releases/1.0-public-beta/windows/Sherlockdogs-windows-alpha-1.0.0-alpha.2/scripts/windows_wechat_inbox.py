@@ -189,6 +189,17 @@ def normalized_table_id(table: str) -> str:
     return re.sub(r"^msg[_-]?", "", table or "", flags=re.IGNORECASE)
 
 
+def normalize_timestamp(value: Any) -> int:
+    try:
+        raw = int(value or 0)
+    except Exception:
+        return 0
+    # Some Windows exports store CreateTime in milliseconds.
+    if raw > 10_000_000_000:
+        return raw // 1000
+    return raw
+
+
 def read_messages_from_table(
     conn: sqlite3.Connection,
     db_path: Path,
@@ -210,11 +221,11 @@ def read_messages_from_table(
     select_cols.append(type_col or "NULL")
     select_cols.append(compress_col or "NULL")
     select_cols.append(sender_col or "NULL")
-    where = f"[{time_col}] > ? AND [{time_col}] <= ?"
     now_ceiling = int(time.time()) + 300
+    where = f"(([{time_col}] > ? AND [{time_col}] <= ?) OR ([{time_col}] > ? AND [{time_col}] <= ?))"
     sql = f"SELECT {', '.join(f'[{c}]' if c != 'NULL' else 'NULL' for c in select_cols)} FROM [{table}] WHERE {where} ORDER BY [{time_col}] ASC LIMIT ?"
     try:
-        rows = conn.execute(sql, (since_ts, now_ceiling, limit)).fetchall()
+        rows = conn.execute(sql, (since_ts, now_ceiling, since_ts * 1000, now_ceiling * 1000, limit)).fetchall()
     except sqlite3.DatabaseError:
         return []
 
@@ -228,8 +239,13 @@ def read_messages_from_table(
         raw = decode_content(content, ct)
         if not raw:
             continue
-        local_type_int = int(local_type or 1)
-        ts = int(create_time)
+        try:
+            local_type_int = int(local_type or 1)
+        except Exception:
+            local_type_int = 1
+        ts = normalize_timestamp(create_time)
+        if not ts:
+            continue
         messages.append(
             {
                 "chat_id": chat_id,
@@ -517,6 +533,7 @@ def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receive
     for group in groups:
         for msg in group:
             last_ts_by_chat[msg["chat_id"]] = max(int(last_ts_by_chat.get(msg["chat_id"], 0)), int(msg["timestamp"]))
+            last_ts_by_chat[msg["table"]] = max(int(last_ts_by_chat.get(msg["table"], 0)), int(msg["timestamp"]))
             seen.add(msg["id"])
         task = best_task_for_group(group, tasks, state)
         if should_use_bundle(group):
@@ -549,6 +566,7 @@ def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receive
 
     for msg in messages:
         last_ts_by_chat[msg["chat_id"]] = max(int(last_ts_by_chat.get(msg["chat_id"], 0)), int(msg["timestamp"]))
+        last_ts_by_chat[msg["table"]] = max(int(last_ts_by_chat.get(msg["table"], 0)), int(msg["timestamp"]))
         seen.add(msg["id"])
     state["seen_message_ids"] = sorted(seen)[-1000:]
     state["last_ts_by_chat"] = last_ts_by_chat

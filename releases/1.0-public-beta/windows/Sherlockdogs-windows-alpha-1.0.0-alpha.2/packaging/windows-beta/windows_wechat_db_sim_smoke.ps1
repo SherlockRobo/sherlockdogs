@@ -22,7 +22,7 @@ db_path = sys.argv[1]
 conn = sqlite3.connect(db_path)
 conn.execute("create table Msg_wxid_real_self(create_time integer, message_content text, local_type integer)")
 conn.execute(
-    "insert into Msg_filehelper values (?, ?, ?)",
+    "insert into Msg_wxid_real_self values (?, ?, ?)",
     (int(time.time()), "https://example.com/windows-ci-wechat-db-sim\n#2", 1),
 )
 conn.commit()
