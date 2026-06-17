@@ -44,6 +44,7 @@ TASK_WINDOW_SECONDS = 60
 BUNDLE_WINDOW_SECONDS = 60
 POLL_LOOKBACK_SECONDS = 30 * 60
 SETTLE_SECONDS = 15
+MAX_DB_ERRORS = 20
 SUPPORTED_SOURCES = {"wechat", "x", "xhs", "bilibili", "youtube", "tiktok", "douyin", "web"}
 URL_RE = re.compile(r"https?://[^\s<>'\"）)]+")
 XML_URL_RE = re.compile(r"<url>(.*?)</url>", re.DOTALL | re.IGNORECASE)
@@ -161,6 +162,29 @@ def discover_message_dbs(root: Path) -> list[Path]:
     return sorted(found, key=lambda p: str(p).lower())
 
 
+def db_label(path: Path) -> str:
+    parts = path.parts[-2:]
+    return "/".join(parts) if parts else path.name
+
+
+def error_label(db_path: Path, context: str, exc: Exception) -> str:
+    return f"{db_label(db_path)}:{context}:{exc.__class__.__name__}:{exc}"
+
+
+def add_db_error(errors: list[str], db_path: Path, context: str, exc: Exception) -> None:
+    if len(errors) >= MAX_DB_ERRORS:
+        return
+    errors.append(error_label(db_path, context, exc))
+
+
+def connect_readonly(db_path: Path) -> sqlite3.Connection:
+    uri = db_path.resolve().as_uri() + "?mode=ro"
+    conn = sqlite3.connect(uri, uri=True, timeout=2.0)
+    conn.execute("PRAGMA query_only=ON")
+    conn.execute("PRAGMA busy_timeout=2000")
+    return conn
+
+
 def table_names(conn: sqlite3.Connection) -> list[str]:
     rows = conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
     names = [str(row[0]) for row in rows]
@@ -207,8 +231,13 @@ def read_messages_from_table(
     since_ts: int,
     limit: int,
     receivers: set[str],
+    errors: list[str],
 ) -> list[dict[str, Any]]:
-    columns = table_columns(conn, table)
+    try:
+        columns = table_columns(conn, table)
+    except sqlite3.DatabaseError as exc:
+        add_db_error(errors, db_path, f"{table}.columns", exc)
+        return []
     time_col = first_col(columns, ["create_time", "CreateTime", "createTime", "timestamp", "time"])
     content_col = first_col(columns, ["message_content", "StrContent", "content", "Content", "msgContent"])
     type_col = first_col(columns, ["local_type", "Type", "type", "MsgType"])
@@ -226,7 +255,8 @@ def read_messages_from_table(
     sql = f"SELECT {', '.join(f'[{c}]' if c != 'NULL' else 'NULL' for c in select_cols)} FROM [{table}] WHERE {where} ORDER BY [{time_col}] ASC LIMIT ?"
     try:
         rows = conn.execute(sql, (since_ts, now_ceiling, since_ts * 1000, now_ceiling * 1000, limit)).fetchall()
-    except sqlite3.DatabaseError:
+    except sqlite3.DatabaseError as exc:
+        add_db_error(errors, db_path, f"{table}.rows", exc)
         return []
 
     messages: list[dict[str, Any]] = []
@@ -270,22 +300,29 @@ def extract_image_attrs(raw: str) -> dict[str, str]:
     return {key: html.unescape(value) for key, value in IMAGE_ATTR_RE.findall(raw)}
 
 
-def fetch_messages(root: Path, since_ts_by_chat: dict[str, int], limit: int, receivers: list[str]) -> list[dict[str, Any]]:
+def fetch_messages(root: Path, since_ts_by_chat: dict[str, int], limit: int, receivers: list[str]) -> tuple[list[dict[str, Any]], list[str]]:
     receiver_set = {r.strip() for r in receivers if r.strip()}
     messages: list[dict[str, Any]] = []
+    errors: list[str] = []
     for db_path in discover_message_dbs(root):
         try:
-            conn = sqlite3.connect(db_path)
-        except sqlite3.DatabaseError:
+            conn = connect_readonly(db_path)
+        except sqlite3.DatabaseError as exc:
+            add_db_error(errors, db_path, "open", exc)
             continue
         try:
-            for table in table_names(conn):
+            try:
+                tables = table_names(conn)
+            except sqlite3.DatabaseError as exc:
+                add_db_error(errors, db_path, "tables", exc)
+                continue
+            for table in tables:
                 since_ts = int(since_ts_by_chat.get(table) or (time.time() - POLL_LOOKBACK_SECONDS))
-                messages.extend(read_messages_from_table(conn, db_path, table, since_ts, limit, receiver_set))
+                messages.extend(read_messages_from_table(conn, db_path, table, since_ts, limit, receiver_set, errors))
         finally:
             conn.close()
     messages.sort(key=lambda m: (int(m["timestamp"]), m["id"]))
-    return messages
+    return messages, errors
 
 
 def message_text(msg: dict[str, Any]) -> str:
@@ -514,14 +551,20 @@ def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receive
     seen = set(state.get("seen_message_ids") or [])
     receivers = [item.strip() for item in receivers_override.split(",") if item.strip()] if receivers_override else read_receivers()
     last_ts_by_chat = dict(state.get("last_ts_by_chat") or {})
-    messages = fetch_messages(root, last_ts_by_chat, limit, receivers)
+    messages, db_errors = fetch_messages(root, last_ts_by_chat, limit, receivers)
     if not messages:
-        return {"ok": True, "processed": 0, "db_root": str(root), "receivers": receivers}
+        result = {"ok": True, "processed": 0, "db_root": str(root), "receivers": receivers}
+        if db_errors:
+            result["db_errors"] = db_errors
+        return result
     cutoff_ts = int(time.time()) - settle_seconds
     recent_count = sum(1 for msg in messages if int(msg["timestamp"]) > cutoff_ts)
     messages = [msg for msg in messages if int(msg["timestamp"]) <= cutoff_ts]
     if not messages:
-        return {"ok": True, "processed": 0, "recent_waiting": recent_count, "db_root": str(root), "receivers": receivers}
+        result = {"ok": True, "processed": 0, "recent_waiting": recent_count, "db_root": str(root), "receivers": receivers}
+        if db_errors:
+            result["db_errors"] = db_errors
+        return result
 
     tasks = [m for m in messages if m["task"]]
     for task_msg in tasks:
@@ -573,7 +616,10 @@ def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receive
     state["last_seen_at"] = now_iso()
     if not dry_run:
         write_json(STATE_FILE, state)
-    return {"ok": True, "processed": len(results), "db_root": str(root), "receivers": receivers, "results": results}
+    result = {"ok": True, "processed": len(results), "db_root": str(root), "receivers": receivers, "results": results}
+    if db_errors:
+        result["db_errors"] = db_errors
+    return result
 
 
 def main() -> int:

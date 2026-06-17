@@ -84,7 +84,15 @@ function Adapter-DryRun {
   if (-not $WindowsWeChatDir -or -not (Test-Path $WindowsWeChatDir)) { return "missing-db-root" }
   try {
     $output = & $Python $WindowsInboxScript --once --dry-run --db-root $WindowsWeChatDir --receivers "*" --settle-seconds 0 --limit 20 2>&1
-    if ($LASTEXITCODE -eq 0) { return "ok" }
+    if ($LASTEXITCODE -eq 0) {
+      try {
+        $json = ($output | Select-Object -Last 1) | ConvertFrom-Json
+        $dbErrors = @($json.db_errors)
+        if ($dbErrors.Count -gt 0) { return "warn:$($dbErrors[0])" }
+      } catch {
+      }
+      return "ok"
+    }
     return "failed:$($output | Select-Object -First 1)"
   } catch {
     return "failed:$($_.Exception.Message)"
@@ -176,6 +184,8 @@ if (-not $WindowsWeChatDir) {
   $Advice += "- Windows WeChat self-chat is not connected; run Sherlockdogs Connect WeChat.cmd with Windows WeChat logged in."
 } elseif ($WeChatDbCount -eq 0) {
   $Advice += "- Windows WeChat directory has no decrypted message DBs; check the selected directory."
+} elseif ($AdapterDryRunStatus -like "warn:*") {
+  $Advice += "- Windows WeChat DB is readable but has adapter warnings; run Windows WeChat Smoke and send this Doctor report if no item arrives."
 } elseif ($AdapterDryRunStatus -ne "ok") {
   $Advice += "- Windows WeChat DB exists but adapter dry-run failed; run Sherlockdogs Connect WeChat.cmd again and send this Doctor report."
 } elseif ($WeChatTaskState -eq "not registered") {
