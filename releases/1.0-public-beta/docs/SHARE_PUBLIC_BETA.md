@@ -1,6 +1,6 @@
 # Share Sherlockdogs 1.0 Small Beta
 
-Generated: 2026-06-17T10:16:44+0800
+Generated: 2026-06-17T10:35:36+0800
 
 ## Send these folders
 
@@ -20,7 +20,7 @@ This is a small-scope test build. The product promise is: send anything to your 
 For the shortest test:
 
 - Mac: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.app`, then double-click `Sherlockdogs Connect WeChat.app` and forward one test item to yourself in WeChat.
-- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd`. If the real `#2` smoke passes, run `Collect Windows WeChat Evidence.cmd`.
+- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then `Run Windows WeChat Smoke.cmd` for the guided real `#2` test.
 - If macOS blocks the app after copying/downloading, right-click `Sherlockdogs Start.app`, choose Open, then confirm Open.
 
 If anything fails, run `Doctor Sherlockdogs`, open `Open Sherlockdogs Diagnostics`, and send the newest doctor report.

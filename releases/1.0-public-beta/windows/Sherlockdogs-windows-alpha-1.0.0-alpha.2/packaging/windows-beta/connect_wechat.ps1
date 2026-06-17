@@ -3,7 +3,8 @@ param(
   [string]$Receivers = "filehelper",
   [switch]$NoTask,
   [switch]$NoDecryptBootstrap,
-  [string]$WeChatDecryptRepo = "https://github.com/ylytdeng/wechat-decrypt.git"
+  [string]$WeChatDecryptRepo = "https://github.com/ylytdeng/wechat-decrypt.git",
+  [string]$WeChatDecryptZipUrl = "https://github.com/ylytdeng/wechat-decrypt/archive/refs/heads/main.zip"
 )
 $ErrorActionPreference = "Stop"
 
@@ -51,12 +52,26 @@ function Invoke-WeChatDecryptBootstrap {
   New-Item -ItemType Directory -Force -Path $ToolRoot | Out-Null
   if (-not (Test-Path $WeChatDecryptDir)) {
     $Git = Get-Command git -ErrorAction SilentlyContinue
-    if (-not $Git) {
-      throw "No decrypted DB found, and git is not available to install the local wechat-decrypt helper. Install Git, or manually place decrypted DBs under $ConfigDir\windows-wechat-decrypted."
+    if ($Git) {
+      Write-Host "Installing local helper: wechat-decrypt"
+      & $Git.Source clone --depth 1 $WeChatDecryptRepo $WeChatDecryptDir
+      if ($LASTEXITCODE -ne 0) { throw "Failed to clone wechat-decrypt helper." }
+    } else {
+      $ZipPath = Join-Path $ToolRoot "wechat-decrypt-main.zip"
+      $ExtractDir = Join-Path $ToolRoot "wechat-decrypt-main"
+      Write-Host "Git is not available. Downloading local helper archive: $WeChatDecryptZipUrl"
+      Invoke-WebRequest -Uri $WeChatDecryptZipUrl -OutFile $ZipPath
+      if (Test-Path $ExtractDir) { Remove-Item -Recurse -Force $ExtractDir }
+      Expand-Archive -Path $ZipPath -DestinationPath $ToolRoot -Force
+      if (-not (Test-Path $ExtractDir)) {
+        $ExtractDir = Get-ChildItem -Path $ToolRoot -Directory -Filter "wechat-decrypt-*" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+      }
+      if (-not $ExtractDir -or -not (Test-Path $ExtractDir)) {
+        throw "No decrypted DB found, and the helper archive could not be expanded. Install Git, or manually place decrypted DBs under $ConfigDir\windows-wechat-decrypted."
+      }
+      Move-Item -Path $ExtractDir -Destination $WeChatDecryptDir -Force
+      Remove-Item -Force $ZipPath -ErrorAction SilentlyContinue
     }
-    Write-Host "Installing local helper: wechat-decrypt"
-    & $Git.Source clone --depth 1 $WeChatDecryptRepo $WeChatDecryptDir
-    if ($LASTEXITCODE -ne 0) { throw "Failed to clone wechat-decrypt helper." }
   }
 
   $Requirements = Join-Path $WeChatDecryptDir "requirements.txt"

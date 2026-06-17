@@ -202,7 +202,7 @@ desktop_received=ok
 codex_card=ok
 ```
 
-On Windows, run `Sherlockdogs Connect WeChat.cmd`, forward one real `#2` item to yourself, then run `Collect Windows WeChat Evidence.cmd`. The report must include:
+On Windows, run `Run Windows WeChat Smoke.cmd` for the guided flow. It runs Connect, prompts for a real `#2` self-chat, and then calls the evidence collector. If you already sent the test item, `Collect Windows WeChat Evidence.cmd` can be run directly. The report must include:
 
 ```text
 windows_wechat_db=ok

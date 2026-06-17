@@ -8,7 +8,7 @@
 4. Double-click `Sherlockdogs Connect WeChat.cmd`; it can bind an existing decrypted DB folder or try the local decrypt helper.
 5. Forward one test item to yourself in phone WeChat; Windows WeChat must receive it.
 6. Open results with `Open Sherlockdogs Output.cmd`.
-7. Run `Collect Windows WeChat Evidence.cmd` after a real `#2` smoke.
+7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test, or `Collect Windows WeChat Evidence.cmd` if you already sent the test item.
 8. If anything fails, run `Doctor Sherlockdogs.cmd`.
 
 ## What this beta does
@@ -27,6 +27,7 @@
 |---|---|
 | `Sherlockdogs Start.cmd` | First install |
 | `Sherlockdogs Connect WeChat.cmd` | Bind or prepare Windows WeChat DB and start self-chat watcher |
+| `Run Windows WeChat Smoke.cmd` | Guided full path test: connect, ask for a real `#2` self-chat, then collect evidence |
 | `Collect Windows WeChat Evidence.cmd` | Generate the Windows DB smoke report after a real `#2` test |
 | `Configure Nutstore Inbox.cmd` | Optional fallback: switch Inbox to your own synced folder |
 | `Open Sherlockdogs Output.cmd` | View saved Markdown/results |
