@@ -86,7 +86,13 @@ codex_card=ok
 thread_completed=True
 ```
 
-Machine check:
+Machine check on Windows:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\check_returned_windows_evidence.ps1 C:\path\to\Sherlockdogs-Windows-Evidence-*
+```
+
+Machine check on Mac/Linux:
 
 ```bash
 ./check_returned_windows_evidence.sh /path/to/Sherlockdogs-Windows-Evidence-*
