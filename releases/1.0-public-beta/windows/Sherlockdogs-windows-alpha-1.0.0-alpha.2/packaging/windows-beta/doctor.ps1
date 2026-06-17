@@ -13,12 +13,59 @@ $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -Error
 $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else { Join-Path $env:USERPROFILE ".sherlockdogs\venv" }
 $Manifest = Join-Path $ProjectDir "packaging\windows-beta\manifest.json"
 $WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
+$ReceiverFile = Join-Path $ProjectDir "jobs\windows_receiver_chats.txt"
+$WindowsInboxEventsDir = Join-Path $ProjectDir "jobs\inbox-events"
+$WindowsRunEvents = Join-Path $ProjectDir "runs\windows-wechat-inbox.events.jsonl"
+$WindowsEvidenceDir = Join-Path $ProjectDir "evidence\windows-wechat-db-smoke"
+$WeChatDecryptDir = Join-Path $env:USERPROFILE ".sherlockdogs\tools\wechat-decrypt"
+$WindowsInboxScript = Join-Path $ProjectDir "scripts\windows_wechat_inbox.py"
 
 function Status-Path($p) { if ($p -and (Test-Path $p)) { "ok" } else { "missing" } }
 function Status-Module($m) { if (-not $Python) { "missing-python" } else { try { & $Python -c "import $m" *> $null; "ok" } catch { "missing" } } }
 function Count-Json($p) { if (Test-Path $p) { @(Get-ChildItem -Path $p -Filter *.json -File -ErrorAction SilentlyContinue).Count } else { 0 } }
+function Count-Files($p, $filter) { if (Test-Path $p) { @(Get-ChildItem -Path $p -Filter $filter -File -ErrorAction SilentlyContinue).Count } else { 0 } }
+function Latest-File($p, $filter) {
+  if (-not (Test-Path $p)) { return "missing" }
+  $latest = Get-ChildItem -Path $p -Filter $filter -File -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  if ($latest) { return $latest.FullName }
+  return "missing"
+}
 function Task-State($name) { $t = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue; if ($t) { $t.State } else { "not registered" } }
 function Bin-Status($name) { if (Get-Command $name -ErrorAction SilentlyContinue) { "ok" } elseif (Test-Path (Join-Path $VenvDir "Scripts\$name.exe")) { "ok-venv" } else { "missing" } }
+function Receiver-Chats($path) {
+  if (-not (Test-Path $path)) { return "missing" }
+  $items = @(Get-Content $path -ErrorAction SilentlyContinue | ForEach-Object { $_.Trim() } | Where-Object { $_ } | Select-Object -First 5)
+  if ($items.Count -eq 0) { return "empty" }
+  return ($items -join ",")
+}
+function Admin-Status {
+  try {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+    if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { return "yes" }
+    return "no"
+  } catch {
+    return "unknown"
+  }
+}
+function Process-Status($names) {
+  foreach ($name in $names) {
+    if (Get-Process -Name $name -ErrorAction SilentlyContinue) { return "ok:$name" }
+  }
+  return "missing"
+}
+function Adapter-DryRun {
+  if (-not $Python -or -not (Test-Path $Python)) { return "missing-python" }
+  if (-not (Test-Path $WindowsInboxScript)) { return "missing-script" }
+  if (-not $WindowsWeChatDir -or -not (Test-Path $WindowsWeChatDir)) { return "missing-db-root" }
+  try {
+    $output = & $Python $WindowsInboxScript --once --dry-run --db-root $WindowsWeChatDir --receivers "*" --settle-seconds 0 --limit 20 2>&1
+    if ($LASTEXITCODE -eq 0) { return "ok" }
+    return "failed:$($output | Select-Object -First 1)"
+  } catch {
+    return "failed:$($_.Exception.Message)"
+  }
+}
 
 $manifestObj = if (Test-Path $Manifest) { Get-Content $Manifest -Raw | ConvertFrom-Json } else { $null }
 $PythonStatus = Status-Path $Python
@@ -34,11 +81,17 @@ $RunnerTaskState = Task-State SherlockdogsCodexRunner
 $WeChatTaskState = Task-State SherlockdogsWindowsWeChatInbox
 $FailedCount = Count-Json (Join-Path $ProjectDir 'jobs\failed')
 $WeChatDbCount = if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) { @(Get-ChildItem -Path $WindowsWeChatDir -Recurse -File -Include "message_*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue).Count } else { 0 }
+$ReceiverChats = Receiver-Chats $ReceiverFile
+$WindowsInboxEventCount = Count-Json $WindowsInboxEventsDir
+$WindowsEvidenceCount = Count-Files $WindowsEvidenceDir "*.txt"
+$AdapterDryRunStatus = Adapter-DryRun
 
 $lines = @(
   "Sherlockdogs doctor",
   "version=$($manifestObj.version)",
   "channel=$($manifestObj.channel)",
+  "admin=$(Admin-Status)",
+  "process.wechat=$(Process-Status @('WeChat','Weixin'))",
   "project=$ProjectDir status=$(Status-Path $ProjectDir)",
   "manifest=$Manifest status=$(Status-Path $Manifest)",
   "config=$ConfigFile status=$(Status-Path $ConfigFile)",
@@ -57,8 +110,17 @@ $lines = @(
   "task.local-inbox=$LocalTaskState",
   "task.codex-runner=$RunnerTaskState",
   "task.windows-wechat=$WeChatTaskState",
+  "wechat_decrypt_helper=$WeChatDecryptDir status=$(Status-Path $WeChatDecryptDir)",
   "windows_wechat_decrypted_dir=$WindowsWeChatDir status=$(Status-Path $WindowsWeChatDir)",
   "windows_wechat_message_dbs=$WeChatDbCount",
+  "windows_receiver_file=$ReceiverFile status=$(Status-Path $ReceiverFile)",
+  "windows_receiver_chats=$ReceiverChats",
+  "windows_adapter_dry_run=$AdapterDryRunStatus",
+  "windows_inbox_events=$WindowsInboxEventCount",
+  "windows_latest_inbox_event=$(Latest-File $WindowsInboxEventsDir '*.json')",
+  "windows_run_events=$WindowsRunEvents status=$(Status-Path $WindowsRunEvents)",
+  "windows_evidence_reports=$WindowsEvidenceCount",
+  "windows_latest_evidence=$(Latest-File $WindowsEvidenceDir '*.txt')",
   "pending=$(Count-Json (Join-Path $ProjectDir 'jobs\pending'))",
   "running=$(Count-Json (Join-Path $ProjectDir 'jobs\running'))",
   "done=$(Count-Json (Join-Path $ProjectDir 'jobs\done'))",
@@ -78,8 +140,16 @@ if (-not $WindowsWeChatDir) {
   $Advice += "- Windows WeChat self-chat is not connected; run Sherlockdogs Connect WeChat.cmd with Windows WeChat logged in."
 } elseif ($WeChatDbCount -eq 0) {
   $Advice += "- Windows WeChat directory has no decrypted message DBs; check the selected directory."
+} elseif ($AdapterDryRunStatus -ne "ok") {
+  $Advice += "- Windows WeChat DB exists but adapter dry-run failed; run Sherlockdogs Connect WeChat.cmd again and send this Doctor report."
 } elseif ($WeChatTaskState -eq "not registered") {
   $Advice += "- Windows WeChat DB directory is configured but watcher task is missing; run Sherlockdogs Connect WeChat.cmd again."
+}
+if ($ReceiverChats -eq "missing" -or $ReceiverChats -eq "empty") {
+  $Advice += "- No Windows receiver chat is saved yet; run Run Windows WeChat Smoke.cmd after forwarding a #2 item to yourself."
+}
+if ($WindowsEvidenceCount -eq 0) {
+  $Advice += "- No Windows WeChat DB smoke evidence report yet; run Collect Windows WeChat Evidence.cmd after Windows WeChat receives the #2 message."
 }
 if ($FailedCount -ne 0) { $Advice += "- Failed jobs exist; open Diagnostics and send the latest doctor report." }
 $lines += "next_steps:"
