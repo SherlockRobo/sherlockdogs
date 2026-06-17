@@ -15,7 +15,6 @@ for root in "$@"; do
       find "$root" -type f \( \
         -name '*windows-wechat-db-smoke*.txt' \
         -o -path '*/windows-wechat-db-smoke/*.txt' \
-        -o -name '*.txt' \
       \) -print0 | xargs -0 ls -t 2>/dev/null | head -n 1 || true
     )"
   else
