@@ -112,6 +112,12 @@ function Invoke-WeChatDecryptBootstrap {
   New-Item -ItemType Directory -Force -Path $ToolRoot | Out-Null
   $DecryptLog = New-DecryptLog
   Write-DecryptLog $DecryptLog "decrypt_log=$DecryptLog"
+  $MainPy = Join-Path $WeChatDecryptDir "main.py"
+  if ((Test-Path $WeChatDecryptDir) -and -not (Test-Path $MainPy)) {
+    $BrokenDir = "$WeChatDecryptDir.broken-$(Get-Date -Format yyyyMMdd-HHmmss)"
+    Write-DecryptLog $DecryptLog "Existing helper is incomplete; moving it to $BrokenDir"
+    Move-Item -Path $WeChatDecryptDir -Destination $BrokenDir -Force
+  }
   if (-not (Test-Path $WeChatDecryptDir)) {
     $Git = Get-Command git -ErrorAction SilentlyContinue
     if ($Git) {
@@ -140,6 +146,15 @@ function Invoke-WeChatDecryptBootstrap {
       Add-Content -Encoding UTF8 -Path $DecryptLog -Value "helper_dir=$WeChatDecryptDir"
     }
   }
+  $GitForVersion = Get-Command git -ErrorAction SilentlyContinue
+  if ($GitForVersion -and (Test-Path (Join-Path $WeChatDecryptDir ".git"))) {
+    try {
+      $HelperCommit = (& $GitForVersion.Source -C $WeChatDecryptDir rev-parse --short HEAD 2>$null | Select-Object -First 1)
+      if ($HelperCommit) { Write-DecryptLog $DecryptLog "helper_commit=$HelperCommit" }
+    } catch {
+      Write-DecryptLog $DecryptLog "helper_commit=unknown"
+    }
+  }
 
   $Requirements = Join-Path $WeChatDecryptDir "requirements.txt"
   if (Test-Path $Requirements) {
@@ -153,6 +168,14 @@ function Invoke-WeChatDecryptBootstrap {
   $MainPy = Join-Path $WeChatDecryptDir "main.py"
   if (-not (Test-Path $MainPy)) {
     throw "wechat-decrypt helper is missing main.py: $WeChatDecryptDir. Log: $DecryptLog"
+  }
+
+  Write-DecryptLog $DecryptLog "Checking wechat-decrypt status before decrypt..."
+  try {
+    & $Python $MainPy status 2>&1 | Tee-Object -FilePath $DecryptLog -Append
+    Add-Content -Encoding UTF8 -Path $DecryptLog -Value "status_exit=$LASTEXITCODE"
+  } catch {
+    Add-Content -Encoding UTF8 -Path $DecryptLog -Value "status_failed=$($_.Exception.Message)"
   }
 
   Write-DecryptLog $DecryptLog "Running local WeChat decrypt helper. Keep Windows WeChat logged in. Administrator PowerShell may be required for key extraction."
