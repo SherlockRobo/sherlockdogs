@@ -151,6 +151,7 @@ $lines = @(
   "task.windows-wechat.last_run=$(Task-LastRun SherlockdogsWindowsWeChatInbox)",
   "wechat_decrypt_helper=$WeChatDecryptDir status=$(Status-Path $WeChatDecryptDir)",
   "wechat_decrypt_latest_log=$(Latest-File $DiagnosticsDir 'wechat-decrypt-*.log')",
+  "windows_wechat_latest_connect_report=$(Latest-File $DiagnosticsDir 'windows-wechat-connect-*.txt')",
   "windows_wechat_decrypted_dir=$WindowsWeChatDir status=$(Status-Path $WindowsWeChatDir)",
   "windows_wechat_message_dbs=$WeChatDbCount",
   "windows_receiver_file=$ReceiverFile status=$(Status-Path $ReceiverFile)",

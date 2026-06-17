@@ -36,10 +36,12 @@ if (-not $SkipDoctor -and (Test-Path $DoctorScript)) {
 
 $LatestEvidence = Latest-File $EvidenceDir "*.txt"
 $LatestDoctor = Latest-File $DiagnosticsDir "doctor-*.txt"
+$LatestConnectReport = Latest-File $DiagnosticsDir "windows-wechat-connect-*.txt"
 $LatestDecryptLog = Latest-File $DiagnosticsDir "wechat-decrypt-*.log"
 
 $CopiedEvidence = Copy-IfExists $LatestEvidence.FullName (Join-Path $ExportRoot "windows-wechat-db-smoke")
 $CopiedDoctor = Copy-IfExists $LatestDoctor.FullName (Join-Path $ExportRoot "diagnostics")
+$CopiedConnectReport = Copy-IfExists $LatestConnectReport.FullName (Join-Path $ExportRoot "diagnostics")
 $CopiedDecryptLog = Copy-IfExists $LatestDecryptLog.FullName (Join-Path $ExportRoot "diagnostics")
 
 $summary = @(
@@ -51,6 +53,8 @@ $summary = @(
   "copied_evidence=$CopiedEvidence",
   "latest_doctor=$($LatestDoctor.FullName)",
   "copied_doctor=$CopiedDoctor",
+  "latest_connect_report=$($LatestConnectReport.FullName)",
+  "copied_connect_report=$CopiedConnectReport",
   "latest_decrypt_log=$($LatestDecryptLog.FullName)",
   "copied_decrypt_log=$CopiedDecryptLog",
   "",

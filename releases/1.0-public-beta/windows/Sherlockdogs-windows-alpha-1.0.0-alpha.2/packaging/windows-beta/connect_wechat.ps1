@@ -23,9 +23,34 @@ $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else {
 $ToolRoot = Join-Path $ConfigDir "tools"
 $WeChatDecryptDir = Join-Path $ToolRoot "wechat-decrypt"
 $DiagnosticsDir = Join-Path $ConfigDir "diagnostics"
+New-Item -ItemType Directory -Force -Path $DiagnosticsDir | Out-Null
+$ConnectReport = Join-Path $DiagnosticsDir ("windows-wechat-connect-{0}.txt" -f (Get-Date -Format yyyyMMdd-HHmmss))
+@(
+  "Sherlockdogs Windows WeChat connect",
+  "started_at=$(Get-Date -Format o)",
+  "project=$ProjectDir",
+  "config=$ConfigFile",
+  "receivers=$Receivers",
+  "no_task=$NoTask",
+  "no_decrypt_bootstrap=$NoDecryptBootstrap"
+) | Set-Content -Encoding UTF8 $ConnectReport
 
-if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first, or install Python 3." }
-if (-not (Test-Path $Python)) { throw "Configured Python does not exist: $Python" }
+function Add-ConnectReport([string]$Line) {
+  Add-Content -Encoding UTF8 -Path $ConnectReport -Value $Line
+}
+
+if (-not $Python) {
+  Add-ConnectReport "status=failed"
+  Add-ConnectReport "error=python_not_found"
+  throw "Python not found. Run Sherlockdogs Start.cmd first, or install Python 3."
+}
+if (-not (Test-Path $Python)) {
+  Add-ConnectReport "status=failed"
+  Add-ConnectReport "error=configured_python_missing"
+  Add-ConnectReport "python=$Python"
+  throw "Configured Python does not exist: $Python"
+}
+Add-ConnectReport "python=$Python"
 
 function Quote-PsString([string]$Value) {
   return "'" + (($Value -as [string]) -replace "'", "''") + "'"
@@ -154,10 +179,15 @@ if (-not $DecryptedDbDir) {
   $Existing = Find-DecryptedDbRoot @($DefaultDir, $WeChatDecryptDir, $ConfigDir)
   if ($Existing) {
     $DecryptedDbDir = $Existing
+    Add-ConnectReport "db_source=existing"
+    Add-ConnectReport "existing_db_root=$Existing"
   } elseif (-not $NoDecryptBootstrap) {
     if (-not (Test-Admin)) {
+      Add-ConnectReport "status=failed"
+      Add-ConnectReport "error=admin_required_for_decrypt_bootstrap"
       throw "Windows WeChat decrypt bootstrap needs Administrator PowerShell to read the WeChat process key. Right-click Sherlockdogs Connect WeChat.cmd and choose Run as administrator, or pass -DecryptedDbDir to an existing decrypted DB folder."
     }
+    Add-ConnectReport "db_source=decrypt_bootstrap"
     $DecryptedDbDir = Invoke-WeChatDecryptBootstrap
   } else {
     Write-Host "Choose the decrypted Windows WeChat DB directory containing message\message_*.db."
@@ -168,11 +198,25 @@ if (-not $DecryptedDbDir) {
 }
 
 $ResolvedDbDir = Resolve-Path $DecryptedDbDir -ErrorAction SilentlyContinue
-if (-not $ResolvedDbDir) { throw "Decrypted WeChat DB directory not found: $DecryptedDbDir" }
+if (-not $ResolvedDbDir) {
+  Add-ConnectReport "status=failed"
+  Add-ConnectReport "error=db_root_missing"
+  Add-ConnectReport "decrypted_db_dir=$DecryptedDbDir"
+  throw "Decrypted WeChat DB directory not found: $DecryptedDbDir"
+}
 $DecryptedDbDir = $ResolvedDbDir.Path
+Add-ConnectReport "decrypted_db_dir=$DecryptedDbDir"
 
 $MessageDbs = Get-MessageDbs $DecryptedDbDir
-if ($MessageDbs.Count -eq 0) { throw "No decrypted WeChat message DB found under: $DecryptedDbDir" }
+Add-ConnectReport "message_db_count=$($MessageDbs.Count)"
+foreach ($Db in ($MessageDbs | Select-Object -First 10)) {
+  Add-ConnectReport "message_db=$($Db.FullName)"
+}
+if ($MessageDbs.Count -eq 0) {
+  Add-ConnectReport "status=failed"
+  Add-ConnectReport "error=no_message_db"
+  throw "No decrypted WeChat message DB found under: $DecryptedDbDir"
+}
 
 New-Item -ItemType Directory -Force -Path $ConfigDir, $InboxDir, $ClippingDir, (Join-Path $ProjectDir "jobs\pending"), (Join-Path $ProjectDir "jobs\running"), (Join-Path $ProjectDir "jobs\done"), (Join-Path $ProjectDir "jobs\failed"), (Join-Path $ProjectDir "runs") | Out-Null
 
@@ -180,6 +224,8 @@ $ReceiverFile = Join-Path $ProjectDir "jobs\windows_receiver_chats.txt"
 $ReceiverLines = $Receivers.Split(",") | ForEach-Object { $_.Trim() } | Where-Object { $_ }
 if ($ReceiverLines.Count -eq 0) { $ReceiverLines = @("filehelper") }
 $ReceiverLines | Set-Content -Encoding UTF8 $ReceiverFile
+Add-ConnectReport "receiver_file=$ReceiverFile"
+Add-ConnectReport "receiver_lines=$($ReceiverLines -join ',')"
 
 $ConfigLines = @(
   "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
@@ -196,8 +242,18 @@ $ConfigLines = @(
 if ($NutstoreDir) { $ConfigLines += "`$env:SHERLOCKDOGS_NUTSTORE_DIR = $(Quote-PsString $NutstoreDir)" }
 $ConfigLines | Set-Content -Encoding UTF8 $ConfigFile
 
-& $Python (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --dry-run --settle-seconds 0 --db-root $DecryptedDbDir
-if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter dry-run failed." }
+$DryRunOutput = & $Python (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --dry-run --settle-seconds 0 --db-root $DecryptedDbDir 2>&1
+$DryRunExit = $LASTEXITCODE
+Add-ConnectReport "adapter_dry_run_exit=$DryRunExit"
+Add-ConnectReport "adapter_dry_run_output_begin"
+$DryRunOutput | ForEach-Object { Add-ConnectReport $_ }
+Add-ConnectReport "adapter_dry_run_output_end"
+Write-Host ($DryRunOutput | Out-String)
+if ($DryRunExit -ne 0) {
+  Add-ConnectReport "status=failed"
+  Add-ConnectReport "error=adapter_dry_run_failed"
+  throw "Windows WeChat adapter dry-run failed."
+}
 
 if (-not $NoTask) {
   $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
@@ -205,9 +261,16 @@ if (-not $NoTask) {
   $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
   Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $Action -Trigger $Trigger -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -ErrorAction SilentlyContinue
+  Add-ConnectReport "task=SherlockdogsWindowsWeChatInbox"
+  Add-ConnectReport "task_registered=ok"
+} else {
+  Add-ConnectReport "task=skipped"
 }
 
+Add-ConnectReport "status=ok"
+Add-ConnectReport "finished_at=$(Get-Date -Format o)"
 Write-Host "Sherlockdogs Windows WeChat adapter connected."
 Write-Host "Decrypted WeChat DB: $DecryptedDbDir"
 Write-Host "Receivers: $($ReceiverLines -join ', ')"
 Write-Host "Task: $(if ($NoTask) { 'skipped' } else { 'SherlockdogsWindowsWeChatInbox' })"
+Write-Host "Connect report: $ConnectReport"
