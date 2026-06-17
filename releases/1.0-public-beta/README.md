@@ -16,11 +16,11 @@ Use the whole platform folder. Open `START_HERE.md` first.
 ## What You Are Testing
 
 ```text
-Phone or desktop content
-  -> phone share / WeChat forward
-  -> Sherlockdogs background Inbox
-  -> local Markdown archive
-  -> optional Codex card
+macOS:
+  Phone WeChat -> forward to yourself -> local Mac WeChat DB -> Markdown/Codex
+
+Windows:
+  iOS Shortcut / phone share -> synced Inbox -> Markdown/Codex
 ```
 
 ## Install Guides
@@ -33,8 +33,8 @@ Phone or desktop content
 
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
-- Mac WeChat Personal Mode is optional and depends on local Mac WeChat state.
-- The user-facing entry is phone sharing or optional WeChat forwarding. Local/synced Inbox is only the background transport layer.
+- Mac WeChat Personal Mode is opt-in and depends on local Mac WeChat state.
+- Windows Alpha uses iOS Shortcut / phone share action plus a synced Inbox. It does not read Windows WeChat DB.
 
 ## Evidence
 

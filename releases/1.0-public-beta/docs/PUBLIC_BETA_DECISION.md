@@ -1,6 +1,6 @@
 # Sherlockdogs Public Beta Decision
 
-Generated: 2026-06-14T16:43:16+0800
+Generated: 2026-06-16T19:49:57+0800
 
 ## Decision
 
@@ -19,9 +19,9 @@ decision_status=READY_FOR_PUBLIC_BETA
 mac_public_beta_ready=true
 windows_package_ready=true
 windows_runtime_verified=true
-windows_runtime_evidence=/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt
+windows_runtime_evidence=<local-sherlockdogs-workdir>/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt
 mobile_entry_verified=true
-mobile_entry_evidence=/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler/dist/evidence/mobile-entry-smoke/20260604-105632-wechat-inbox-bc01a246c6.txt
+mobile_entry_evidence=<local-sherlockdogs-workdir>/dist/evidence/mobile-entry-smoke/20260604-105632-wechat-inbox-bc01a246c6.txt
 full_public_beta_ready=true
 ```
 
@@ -30,8 +30,8 @@ full_public_beta_ready=true
 Current package is ready for small public beta. Windows runtime and mobile entry evidence are already present:
 
 ```text
-windows_runtime_evidence=/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt
-mobile_entry_evidence=/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler/dist/evidence/mobile-entry-smoke/20260604-105632-wechat-inbox-bc01a246c6.txt
+windows_runtime_evidence=<local-sherlockdogs-workdir>/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt
+mobile_entry_evidence=<local-sherlockdogs-workdir>/dist/evidence/mobile-entry-smoke/20260604-105632-wechat-inbox-bc01a246c6.txt
 ```
 
 Keep rerunning `packaging/public_beta_require_ready.sh` before sharing a refreshed package.

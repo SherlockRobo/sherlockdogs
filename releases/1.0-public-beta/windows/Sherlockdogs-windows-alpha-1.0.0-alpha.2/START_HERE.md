@@ -3,22 +3,22 @@
 ## 30-second path
 
 1. Open `INSTALL_GUIDE_FOR_USERS.png`.
-2. Optional: install/sign in to a sync drive such as Nutstore, OneDrive, Google Drive, Syncthing, or NAS.
+2. Install/sign in to a sync drive that both iPhone and Windows can see, such as OneDrive, iCloud Drive for Windows, Google Drive, Syncthing, NAS, or Nutstore.
 3. Double-click `Sherlockdogs Start.cmd`.
 4. Create the phone share action from `IOS_SHORTCUTS_GUIDE.md`.
    Or import `shortcuts/Send-to-Sherlockdogs-Inbox.shortcut` as the beta shortcut seed.
-5. Local-only users can stop here; Nutstore users can double-click `Configure Nutstore Inbox.cmd`.
-6. Send links/files from your phone to your selected Inbox.
+5. Nutstore users can double-click `Configure Nutstore Inbox.cmd`; other sync providers should point Sherlockdogs at their local synced Inbox.
+6. Send links/files from your phone through the iOS Shortcut to your selected Inbox.
 7. Open results with `Open Sherlockdogs Output.cmd`.
 8. If anything fails, run `Doctor Sherlockdogs.cmd`.
 
 ## What this beta does
 
-- Uses your own local or synced Inbox.
+- Uses iOS Shortcut/phone share plus your own local or synced Inbox.
 - Saves and processes clippings locally after Nutstore sync.
 - Recommends Obsidian as the local Markdown library reader, but does not require it.
 - Can trigger Codex tasks through `#1/#2/#3/#4/#5`.
-- Does not read your personal WeChat database by default.
+- Does not read your Windows personal WeChat database.
 - Does not upload clipping content to a Sherlockdogs relay service by default.
 
 ## Command guide

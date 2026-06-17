@@ -1,13 +1,13 @@
 # Share Sherlockdogs 1.0 Small Beta
 
-Generated: 2026-06-14T16:43:15+0800
+Generated: 2026-06-16T19:49:57+0800
 
 ## Send these folders
 
 | Tester platform | Folder |
 |---|---|
-| Mac | `/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
-| Windows | `/Users/bytedance/ObsidianVault_LOCAL/writing/ops/x-xhs-wechat-ob-crawler/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
+| Mac | `<local-sherlockdogs-workdir>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
+| Windows | `<local-sherlockdogs-workdir>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
 
 Send the whole folder as-is. Do not send only the top-level command files.
 
@@ -20,9 +20,9 @@ This is a small-scope test build. The product promise is: send anything to your 
 For the shortest test:
 
 - Mac: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.app`, then double-click `Sherlockdogs Connect WeChat.app` and forward one test item to yourself in WeChat.
-- Phone capture fallback: create the share action from `IOS_SHORTCUTS_GUIDE.md`, choose a sync channel and Inbox folder, or use your own sync drive to write files to the selected Inbox. Nutstore is optional; iCloud Drive, OneDrive, Google Drive, Syncthing, NAS, or local folders are also valid.
+- Windows phone capture: create the share action from `IOS_SHORTCUTS_GUIDE.md`, choose a sync channel and Inbox folder, or use your own sync drive to write files to the selected Inbox. OneDrive/iCloud Drive for Windows are the simplest Windows paths; Nutstore is optional.
 - If macOS blocks the app after copying/downloading, right-click `Sherlockdogs Start.app`, choose Open, then confirm Open.
-- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`; optional Nutstore users can run `Configure Nutstore Inbox.cmd`.
+- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then create the phone share action from `IOS_SHORTCUTS_GUIDE.md`. Windows Alpha does not read Windows WeChat DB.
 
 If anything fails, run `Doctor Sherlockdogs`, open `Open Sherlockdogs Diagnostics`, and send the newest doctor report.
 

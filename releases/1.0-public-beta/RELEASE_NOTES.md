@@ -6,10 +6,14 @@ Tag: `v1.0.0-alpha.3-public-beta`
 
 Sherlockdogs 1.0 public beta is ready for small-scope testing.
 
-The stable beta path is:
+The beta paths are:
 
 ```text
-Start Sherlockdogs -> share from phone or forward via WeChat -> open local Markdown output
+macOS:
+Start Sherlockdogs -> Connect WeChat -> forward to yourself in WeChat -> open local Markdown output
+
+Windows:
+Start Sherlockdogs -> iOS Shortcut / phone share -> synced Inbox -> open local Markdown output
 ```
 
 ## Platform Folders
@@ -29,8 +33,8 @@ Start Sherlockdogs -> share from phone or forward via WeChat -> open local Markd
 
 | Platform | First step |
 |---|---|
-| macOS | Open `START_HERE.md`, then double-click `Sherlockdogs Start.app` |
-| Windows | Open `START_HERE.md`, then double-click `Sherlockdogs Start.cmd` |
+| macOS | Open `START_HERE.md`, double-click `Sherlockdogs Start.app`, then optional best path `Sherlockdogs Connect WeChat.app` |
+| Windows | Open `START_HERE.md`, double-click `Sherlockdogs Start.cmd`, then create the phone share action from `IOS_SHORTCUTS_GUIDE.md` |
 
 ## Verified
 
@@ -45,7 +49,8 @@ Start Sherlockdogs -> share from phone or forward via WeChat -> open local Markd
 
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
-- Mac WeChat Personal Mode is optional. The primary user-facing entry is phone sharing; Inbox/sync is the background transport layer.
+- Mac WeChat Personal Mode is opt-in and local-only.
+- Windows Alpha uses iOS Shortcut / phone share action plus a synced Inbox. It does not read Windows WeChat DB.
 
 ## Repository Landing Page
 

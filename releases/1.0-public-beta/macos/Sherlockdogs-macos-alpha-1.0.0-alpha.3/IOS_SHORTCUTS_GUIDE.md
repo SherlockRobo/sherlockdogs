@@ -12,7 +12,7 @@
 -> 电脑端 Sherlockdogs 自动处理
 ```
 
-Sherlockdogs 不需要读微信数据库，也不需要用户把内容发给第三方账号。
+在 Windows Alpha 里，这是手机到电脑的主入口。Sherlockdogs 不需要读 Windows 微信数据库，也不需要用户把内容发给第三方账号。
 
 ## 发布包里已经给了什么
 
@@ -38,7 +38,7 @@ https://www.icloud.com/shortcuts/<id>
 
 | 选择项 | 推荐默认 | 可以改成 |
 |---|---|---|
-| 同步通道 | 坚果云 WebDAV | iCloud Drive、OneDrive、Google Drive、Syncthing、NAS、本地文件夹 |
+| 同步通道 | OneDrive 或 iCloud Drive for Windows | Google Drive、Syncthing、NAS、坚果云 WebDAV、本地文件夹 |
 | Inbox 目录 | `Sherlockdogs/Inbox` | 用户自己的任意同步目录，比如 `AIInbox`、`Clippings/Sherlockdogs` |
 
 之后日常使用不再选择目录，只在分享时选处理级别 `#1/#2/#3/#4/#5`。
@@ -50,7 +50,7 @@ https://www.icloud.com/shortcuts/<id>
 ```text
 iPhone 分享内容
 -> 发送到 Sherlockdogs 快捷指令
--> 用户选择的同步通道，当前建议坚果云 WebDAV
+-> 用户选择的同步通道，Windows 推荐 OneDrive 或 iCloud Drive for Windows
 -> 电脑同步到用户选择的本地 Inbox
 -> Sherlockdogs 自动入库/进 Codex
 ```
@@ -69,8 +69,9 @@ iPhone 分享内容
 
 | 版本 | 适合谁 | 同步方式 | 配置难度 |
 |---|---|---|---|
-| 坚果云版 | 中国区、Windows/Mac 混用、电脑不能用 iCloud 的用户 | Nutstore WebDAV | 中等 |
-| iCloud 版 | Mac/iPhone 同账号用户 | iCloud Drive | 最低 |
+| OneDrive 版 | Windows 用户 | OneDrive 文件夹 | 低 |
+| iCloud 版 | Mac/iPhone 同账号用户，或装了 iCloud for Windows 的用户 | iCloud Drive | 低 |
+| 坚果云版 | 中国区、Windows/Mac 混用、电脑不能用 iCloud/OneDrive 的用户 | Nutstore WebDAV | 中等 |
 | 文件夹版 | 桌面手动测试 | 本地 Inbox | 最低 |
 
 ## 当前 MVP 支持

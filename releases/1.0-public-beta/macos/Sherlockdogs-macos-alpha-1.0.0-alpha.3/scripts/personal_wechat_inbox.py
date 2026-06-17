@@ -35,7 +35,7 @@ RECEIVER_FILE = JOBS_DIR / "personal_receiver_chats.txt"
 EVENT_LOG = RUNS_DIR / "personal-wechat-inbox.events.jsonl"
 INBOX_EVENTS_DIR = JOBS_DIR / "inbox-events"
 
-DEFAULT_RECEIVERS = ["mvettel", "filehelper"]
+DEFAULT_RECEIVERS = ["filehelper"]
 TASK_WINDOW_SECONDS = 60
 BUNDLE_WINDOW_SECONDS = 60
 POLL_LOOKBACK_SECONDS = 30 * 60
@@ -60,19 +60,8 @@ def raise_poll_timeout(signum: int, frame: Any) -> None:
     raise PollTimeout("personal WeChat poll timed out")
 
 
-KNOWN_MESSAGE_DBS = {
-    "mvettel": (
-        "message/message_3.db",
-        "Msg_36aa6b614fcf5aa9d1b548f6b436658d",
-    ),
-    "filehelper": (
-        "message/message_3.db",
-        "Msg_9e20f478899dc29eb19741386f9343c8",
-    ),
-}
-KNOWN_ACCOUNT_DIRS = {
-    "mvettel": Path("/Users/bytedance/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/mvettel_6c03"),
-}
+KNOWN_MESSAGE_DBS: dict[str, tuple[str, str]] = {}
+KNOWN_ACCOUNT_DIRS: dict[str, Path] = {}
 
 
 def now_iso() -> str:

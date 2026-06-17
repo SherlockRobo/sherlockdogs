@@ -1,12 +1,12 @@
 # Phone to Cloud Inbox
 
-This public beta uses a user-owned sync folder as the bridge.
+Windows Alpha uses a user-owned sync folder as the bridge for phone capture.
 Sherlockdogs does not receive, proxy, or store the user's clipping content.
 
-Nutstore is the default recommended provider for China because it is common on
-both iOS and Windows/macOS. It is not a hard dependency. iCloud Drive, Google
-Drive, OneDrive, Syncthing, NAS, or a plain local folder can also be used as
-long as the desktop sees the same `Sherlockdogs/Inbox` folder.
+OneDrive or iCloud Drive for Windows is the simplest Windows phone path when
+available. Nutstore is optional, not a hard dependency. Google Drive, Syncthing,
+NAS, or a plain local folder can also be used as long as the desktop sees the
+same `Sherlockdogs/Inbox` folder.
 
 ## Target Folder
 
@@ -85,10 +85,17 @@ For iCloud Drive:
 Save File -> iCloud Drive/Sherlockdogs/Inbox/sdogs-{date}.txt
 ```
 
+For OneDrive:
+
+```text
+Save File -> OneDrive/Sherlockdogs/Inbox/sdogs-{date}.txt
+```
+
 ## Privacy Boundary
 
 - The sync provider is the user's own account.
 - Sherlockdogs only watches the local synced folder on the desktop.
 - Obsidian is recommended, not required; the durable output is local Markdown.
-- The public beta does not read personal WeChat databases by default.
+- Windows Alpha does not read Windows personal WeChat databases.
+- Mac Personal Mode is separate: it can read the local Mac WeChat database only after the user runs `Sherlockdogs Connect WeChat.app`.
 - The public beta does not upload clipping content to a Sherlockdogs relay service by default.

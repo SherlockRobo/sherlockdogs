@@ -19,13 +19,12 @@ Open the whole platform folder, then read `START_HERE.md`.
 |---|---|
 | ![Mac install guide](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png) | ![Windows install guide](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/INSTALL_GUIDE_FOR_USERS.png) |
 
-## Three-Step Flow
+## Platform Entry
 
-```text
-1. Start Sherlockdogs
-2. Share from phone or forward via WeChat
-3. Open the local Markdown output
-```
+| Platform | Phone Entry | Desktop Adapter |
+|---|---|---|
+| macOS | Forward to yourself in WeChat, or use phone sharing | `Sherlockdogs Connect WeChat.app` reads local Mac WeChat DB after opt-in |
+| Windows | iOS Shortcut / phone share action | Synced Inbox watched by `Sherlockdogs Start.cmd` |
 
 | Platform | Start | Open Output | Diagnose |
 |---|---|---|---|
@@ -34,7 +33,9 @@ Open the whole platform folder, then read `START_HERE.md`.
 
 ## What It Does
 
-- Accepts links, text, images, and media references from phone sharing or optional WeChat forwarding; a local/synced Inbox is used as the background transport layer.
+- Accepts links, text, images, and media references from phone sharing.
+- On macOS, optional WeChat Personal Mode can capture items forwarded to your own WeChat after explicit local setup.
+- On Windows Alpha, phone capture uses iOS Shortcut / phone share action plus your own synced Inbox; it does not read Windows WeChat DB.
 - Writes auditable Markdown artifacts into your chosen local vault.
 - Creates Codex cards for items marked with `#` or `#2`.
 - Keeps user content local by default.
@@ -56,7 +57,8 @@ Open the whole platform folder, then read `START_HERE.md`.
 - No zip, dmg, tar, or installer package is published for this beta.
 - macOS may require right-click -> Open on the first launch.
 - First launch may spend a few minutes installing Python dependencies.
-- Mac WeChat Personal Mode is optional. The primary user-facing entry is phone sharing; Inbox/sync is the background transport layer.
+- macOS WeChat Personal Mode is opt-in and local-only.
+- Windows Alpha uses iOS Shortcut / phone share action plus a synced Inbox. It does not capture WeChat self-chat directly.
 
 ## Privacy
 
