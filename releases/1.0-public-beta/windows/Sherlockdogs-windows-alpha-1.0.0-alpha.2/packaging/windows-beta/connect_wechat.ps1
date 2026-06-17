@@ -68,7 +68,7 @@ function Test-Admin {
 
 function Get-MessageDbs([string]$Root) {
   if (-not $Root -or -not (Test-Path $Root)) { return @() }
-  return @(Get-ChildItem -Path $Root -Recurse -File -Include "message_*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue)
+  return @(Get-ChildItem -Path $Root -Recurse -File -Include "message.db","message*.db","Message*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue)
 }
 
 function Resolve-MessageDbRoot($FileInfo) {

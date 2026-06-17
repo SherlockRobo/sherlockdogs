@@ -148,8 +148,16 @@ def discover_message_dbs(root: Path) -> list[Path]:
     if root.is_file():
         return [root]
     patterns = [
+        "message.db",
+        "message*.db",
+        "Message*.db",
         "message/message_*.db",
+        "message/message*.db",
+        "message/Message*.db",
         "message/*.db",
+        "**/message.db",
+        "**/message*.db",
+        "**/Message*.db",
         "**/message_*.db",
         "**/MSG*.db",
         "**/Msg*.db",
