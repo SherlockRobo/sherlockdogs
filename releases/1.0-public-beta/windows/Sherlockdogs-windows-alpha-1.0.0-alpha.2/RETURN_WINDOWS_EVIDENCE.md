@@ -32,7 +32,9 @@ windows_wechat_db=ok
 connect_wechat=ok
 self_chat_received=ok
 desktop_received=ok
+codex_job_created=ok
 codex_card=ok
+thread_completed=True
 receiver_chat=...
 ```
 
@@ -54,7 +56,8 @@ Common failure meanings:
 | `token_match=missing` | Windows DB did not surface this exact phone-sent token yet |
 | `connect_wechat=missing` | Connect did not bind a usable decrypted Windows WeChat DB |
 | `desktop_received=missing` | No matching Windows self-chat event was created |
-| `codex_card=missing` | The message was seen, but did not produce a `#2` Codex job |
+| `codex_job_created=missing` | The message was seen, but did not produce a `#2` Codex job |
+| `codex_card=missing` | A `#2` job exists, but Codex did not finish the card and move the job to done |
 | `receiver_chat=...` missing | Receiver discovery did not learn the self-chat id |
 
 ## Build machine check
@@ -64,5 +67,7 @@ Back on the build machine, the Windows package is only Mac-like complete after r
 ```text
 token_match=ok
 windows_wechat_db=ok
+codex_job_created=ok
 codex_card=ok
+thread_completed=True
 ```

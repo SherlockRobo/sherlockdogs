@@ -1,6 +1,6 @@
 name=Sherlockdogs-windows-alpha-1.0.0-alpha.2
 version=1.0.0-alpha.2
-built_at=2026-06-17T16:20:22+0800
+built_at=2026-06-17T16:47:17+0800
 entry=windows-wechat-db
 no_archive=true
 windows_runtime_verified=true

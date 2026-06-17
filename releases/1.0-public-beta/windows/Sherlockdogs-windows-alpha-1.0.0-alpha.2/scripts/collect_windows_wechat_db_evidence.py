@@ -50,6 +50,50 @@ def recent(path: Path, since_epoch: float) -> bool:
         return False
 
 
+def job_level(job: dict[str, Any]) -> int:
+    try:
+        return int(job.get("task_level") or 0)
+    except (TypeError, ValueError):
+        pass
+    task = str(job.get("task") or "").strip()
+    if task == "#":
+        return 2
+    for level in range(1, 10):
+        if task.startswith(f"#{level}"):
+            return level
+    return 1
+
+
+def existing_path(value: Any) -> str:
+    if not value:
+        return ""
+    path = Path(str(value))
+    return str(path) if path.exists() else ""
+
+
+def completed_codex_card(job: dict[str, Any]) -> bool:
+    if job.get("_bucket") != "done" and job.get("status") != "done":
+        return False
+    if job_level(job) < 2:
+        return False
+    result = job.get("result") if isinstance(job.get("result"), dict) else {}
+    capture = result.get("capture") if isinstance(result.get("capture"), dict) else {}
+    thread = result.get("thread") if isinstance(result.get("thread"), dict) else {}
+    if not result.get("ok") or not capture.get("ok") or not thread.get("ok"):
+        return False
+    if not thread.get("completed"):
+        return False
+    if not existing_path(capture.get("article_dir")):
+        return False
+    if not existing_path(capture.get("raw_path")):
+        return False
+    if not existing_path(capture.get("readme_path")):
+        return False
+    if not existing_path(thread.get("prompt_path")):
+        return False
+    return True
+
+
 def find_windows_jobs(project_dir: Path, since_epoch: float) -> list[dict[str, Any]]:
     jobs: list[dict[str, Any]] = []
     for bucket in ["pending", "running", "done", "failed"]:
@@ -125,14 +169,16 @@ def main() -> int:
     codex_jobs = [
         job
         for job in jobs
-        if str(job.get("task", "")).strip() in {"#", "#2"} or int(job.get("task_level") or 0) >= 2
+        if job_level(job) >= 2
     ]
+    completed_jobs = [job for job in codex_jobs if completed_codex_card(job)]
     db_has_messages = bool(db_root and Path(db_root).exists())
     connect_ok = db_has_messages and (project_dir / "jobs" / "windows_receiver_chats.txt").exists()
     token_match = bool(not token or jobs or inbox_events or run_events)
     desktop_received = token_match and bool(inbox_events or run_events or jobs)
     self_chat_received = any(job.get("chat_id") or job.get("extra", {}).get("chat_id") for job in jobs) or desktop_received
-    codex_card = bool(codex_jobs)
+    codex_job_created = bool(codex_jobs)
+    codex_card = bool(completed_jobs)
     windows_wechat_db = connect_ok and desktop_received and codex_card
 
     lines = [
@@ -147,9 +193,11 @@ def main() -> int:
         f"connect_wechat={truth(connect_ok)}",
         f"self_chat_received={truth(self_chat_received)}",
         f"desktop_received={truth(desktop_received)}",
+        f"codex_job_created={truth(codex_job_created)}",
         f"codex_card={truth(codex_card)}",
         f"windows_jobs={len(jobs)}",
         f"windows_codex_jobs={len(codex_jobs)}",
+        f"windows_completed_codex_jobs={len(completed_jobs)}",
         f"windows_inbox_events={len(inbox_events)}",
         f"windows_run_events={len(run_events)}",
         f"windows_jobs_total={len(all_jobs)}",
@@ -163,6 +211,20 @@ def main() -> int:
         receiver_chat = jobs[0].get("extra", {}).get("receiver_chat") or jobs[0].get("extra", {}).get("chat_id") or jobs[0].get("chat_id", "")
         if receiver_chat:
             lines.append(f"receiver_chat={receiver_chat}")
+    if completed_jobs:
+        completed_job = completed_jobs[0]
+        result = completed_job.get("result") if isinstance(completed_job.get("result"), dict) else {}
+        capture = result.get("capture") if isinstance(result.get("capture"), dict) else {}
+        thread = result.get("thread") if isinstance(result.get("thread"), dict) else {}
+        lines.append(f"latest_completed_job={completed_job.get('_path')}")
+        lines.append(f"article_dir={capture.get('article_dir', '')}")
+        lines.append(f"raw_path={capture.get('raw_path', '')}")
+        lines.append(f"readme_path={capture.get('readme_path', '')}")
+        lines.append(f"thread_id={thread.get('thread_id', '')}")
+        lines.append(f"thread_name={thread.get('thread_name', '')}")
+        lines.append(f"thread_path={thread.get('thread_path', '')}")
+        lines.append(f"prompt_path={thread.get('prompt_path', '')}")
+        lines.append(f"thread_completed={thread.get('completed', '')}")
     if inbox_events:
         lines.append(f"latest_inbox_event={inbox_events[0].get('_path')}")
 

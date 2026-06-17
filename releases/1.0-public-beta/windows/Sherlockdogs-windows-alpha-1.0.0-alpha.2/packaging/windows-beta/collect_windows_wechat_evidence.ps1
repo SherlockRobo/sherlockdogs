@@ -9,6 +9,7 @@ $ProjectDir = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $ConfigFile = Join-Path $env:USERPROFILE ".sherlockdogs\config.ps1"
 $InboxScript = Join-Path $ProjectDir "scripts\windows_wechat_inbox.py"
 $EvidenceScript = Join-Path $ProjectDir "scripts\collect_windows_wechat_db_evidence.py"
+$CodexRunnerScript = Join-Path $ProjectDir "scripts\codex_runner.py"
 
 if (-not (Test-Path $ConfigFile)) { throw "Sherlockdogs config missing. Run Sherlockdogs Start.cmd, then Sherlockdogs Connect WeChat.cmd." }
 . $ConfigFile
@@ -17,6 +18,7 @@ $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -E
 if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first." }
 if (-not (Test-Path $InboxScript)) { throw "Windows WeChat inbox script missing: $InboxScript" }
 if (-not (Test-Path $EvidenceScript)) { throw "Evidence script missing: $EvidenceScript" }
+if (-not (Test-Path $CodexRunnerScript)) { throw "Codex runner script missing: $CodexRunnerScript" }
 
 $DbRoot = $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR
 if (-not $DbRoot -or -not (Test-Path $DbRoot)) {
@@ -31,6 +33,11 @@ $AdapterOutput = & $Python @AdapterArgs 2>&1
 $AdapterText = ($AdapterOutput | Out-String)
 Write-Host $AdapterText
 if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter failed before evidence collection." }
+
+$CodexOutput = & $Python $CodexRunnerScript --limit 5 2>&1
+$CodexText = ($CodexOutput | Out-String)
+Write-Host $CodexText
+if ($LASTEXITCODE -ne 0) { throw "Codex runner failed before evidence collection." }
 
 $EvidenceArgs = @($EvidenceScript, "--project-dir", $ProjectDir, "--write")
 if ($RequireToken) { $EvidenceArgs += @("--require-token", $RequireToken) }

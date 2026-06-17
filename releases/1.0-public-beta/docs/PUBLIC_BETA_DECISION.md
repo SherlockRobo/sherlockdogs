@@ -1,6 +1,6 @@
 # Sherlockdogs Public Beta Decision
 
-Generated: 2026-06-17T16:20:27+0800
+Generated: 2026-06-17T16:47:36+0800
 
 ## Decision
 
@@ -30,7 +30,7 @@ full_public_beta_ready=false
 
 ## Next Required Evidence
 
-To move from `NEEDS_WINDOWS_WECHAT_DB_SMOKE` to `READY_FOR_PUBLIC_BETA`, run a real Windows WeChat DB parity smoke. The report must be placed in `dist/evidence/windows-wechat-db-smoke/` or `evidence/windows-wechat-db-smoke/` and include `windows_wechat_db=ok`, `connect_wechat=ok`, `self_chat_received=ok`, `desktop_received=ok`, and `codex_card=ok`.
+To move from `NEEDS_WINDOWS_WECHAT_DB_SMOKE` to `READY_FOR_PUBLIC_BETA`, run a real Windows WeChat DB parity smoke. The report must be placed in `dist/evidence/windows-wechat-db-smoke/` or `evidence/windows-wechat-db-smoke/` and include `windows_wechat_db=ok`, `connect_wechat=ok`, `self_chat_received=ok`, `desktop_received=ok`, `codex_job_created=ok`, `codex_card=ok`, and `thread_completed=True`.
 
 ## Authoritative Files
 

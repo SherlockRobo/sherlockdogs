@@ -1,6 +1,6 @@
 # Sherlockdogs Public Beta Readiness
 
-Generated: 2026-06-17T16:20:26+0800
+Generated: 2026-06-17T16:47:33+0800
 
 ## Status
 
@@ -45,4 +45,4 @@ On a clean Windows user account:
 4. Forward one real `#2` phone WeChat item to yourself and confirm Windows WeChat receives it.
 5. Confirm Sherlockdogs creates local Markdown and a Codex card.
 6. Run `Run Windows WeChat Smoke.cmd` for the guided flow, or `Collect Windows WeChat Evidence.cmd` if the test item was already sent. Copy the generated PASS report into `dist/evidence/windows-wechat-db-smoke/`.
-7. The report must contain `windows_wechat_db=ok`, `connect_wechat=ok`, `self_chat_received=ok`, `desktop_received=ok`, and `codex_card=ok`.
+7. The report must contain `windows_wechat_db=ok`, `connect_wechat=ok`, `self_chat_received=ok`, `desktop_received=ok`, `codex_job_created=ok`, `codex_card=ok`, and `thread_completed=True`.
