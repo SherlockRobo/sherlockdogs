@@ -33,7 +33,7 @@ $CreateDb | & $Python - $DbPath
 & (Join-Path $ProjectDir "packaging\windows-beta\install.ps1") -NoTasks -SkipDeps
 if ($LASTEXITCODE -ne 0) { throw "install.ps1 failed" }
 
-& (Join-Path $ProjectDir "packaging\windows-beta\connect_wechat.ps1") -DecryptedDbDir $DbRoot -Receivers "filehelper" -NoTask -NoDecryptBootstrap
+& (Join-Path $ProjectDir "packaging\windows-beta\connect_wechat.ps1") -DecryptedDbDir $DbRoot -Receivers "*" -NoTask -NoDecryptBootstrap
 if ($LASTEXITCODE -ne 0) { throw "connect_wechat.ps1 failed" }
 
 & $env:PYTHON_BIN (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --db-root $DbRoot --receivers "*" --settle-seconds 0

@@ -15,7 +15,10 @@ if (-not (Test-Path $ConfigFile)) { throw "Sherlockdogs config missing. Run Sher
 . $ConfigFile
 
 $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -ErrorAction SilentlyContinue).Source }
+$Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -ErrorAction SilentlyContinue).Source }
+$ClippingDir = if ($env:SHERLOCKDOGS_CLIPPING_DIR) { $env:SHERLOCKDOGS_CLIPPING_DIR } else { Join-Path $env:USERPROFILE "Sherlockdogs\Vault\clipping" }
 if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first." }
+if (-not $Codex) { throw "Codex not found. Install/open Codex, or set CODEX_BIN in $ConfigFile." }
 if (-not (Test-Path $InboxScript)) { throw "Windows WeChat inbox script missing: $InboxScript" }
 if (-not (Test-Path $EvidenceScript)) { throw "Evidence script missing: $EvidenceScript" }
 if (-not (Test-Path $CodexRunnerScript)) { throw "Codex runner script missing: $CodexRunnerScript" }
@@ -34,7 +37,7 @@ $AdapterText = ($AdapterOutput | Out-String)
 Write-Host $AdapterText
 if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter failed before evidence collection." }
 
-$CodexOutput = & $Python $CodexRunnerScript --limit 5 2>&1
+$CodexOutput = & $Python $CodexRunnerScript --limit 5 --codex-bin $Codex --cwd $ClippingDir 2>&1
 $CodexText = ($CodexOutput | Out-String)
 Write-Host $CodexText
 if ($LASTEXITCODE -ne 0) { throw "Codex runner failed before evidence collection." }

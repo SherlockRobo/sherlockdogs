@@ -1,6 +1,6 @@
 param(
   [int]$TimeoutMinutes = 8,
-  [string]$Receivers = "filehelper"
+  [string]$Receivers = "*"
 )
 $ErrorActionPreference = "Stop"
 
