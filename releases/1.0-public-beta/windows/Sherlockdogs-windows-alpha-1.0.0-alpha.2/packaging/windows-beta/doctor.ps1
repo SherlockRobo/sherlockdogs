@@ -200,7 +200,8 @@ if ($WindowsEvidenceCount -eq 0) {
 if ($FailedCount -ne 0) { $Advice += "- Failed jobs exist; open Diagnostics and send the latest doctor report." }
 $lines += "next_steps:"
 if ($Advice.Count -eq 0) {
-  $lines += "- OK: drop files or links into $InboxDir."
+  $lines += "- OK: forward links/files/text from phone WeChat to yourself; Windows WeChat must receive them."
+  $lines += "- Optional fallback: drop files or links into $InboxDir."
   $lines += "- Results will appear under $ClippingDir."
 } else {
   $lines += $Advice

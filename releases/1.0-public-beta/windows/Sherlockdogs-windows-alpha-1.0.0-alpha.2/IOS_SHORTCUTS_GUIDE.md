@@ -12,7 +12,7 @@
 -> 电脑端 Sherlockdogs 自动处理
 ```
 
-在 Windows Alpha 里，这是手机到电脑的主入口。Sherlockdogs 不需要读 Windows 微信数据库，也不需要用户把内容发给第三方账号。
+在当前 Windows Alpha 里，这不是主入口，而是备用入口。主入口是手机微信发给自己，Windows 微信收到后，本机 Sherlockdogs 读取本地 Windows 微信 DB。快捷指令适合不想或暂时不能连接微信 DB 的用户；它同样不需要用户把内容发给第三方账号。
 
 ## 发布包里已经给了什么
 
@@ -45,7 +45,7 @@ https://www.icloud.com/shortcuts/<id>
 
 ## 你现在怎么测
 
-如果电脑不能用 iCloud，就不要走 iCloud 版。测试路径改成：
+如果电脑不能用 iCloud，就不要走 iCloud 版。备用测试路径改成：
 
 ```text
 iPhone 分享内容
@@ -55,7 +55,7 @@ iPhone 分享内容
 -> Sherlockdogs 自动入库/进 Codex
 ```
 
-这条路径不要求电脑登录 iCloud，也不要求 Sherlockdogs 读微信数据库。
+这条备用路径不要求电脑登录 iCloud，也不要求 Sherlockdogs 读微信数据库；但它不是 Windows 1.0 的同款主链路验收标准。
 
 你只需要确认三件事：
 

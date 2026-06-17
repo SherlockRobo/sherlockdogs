@@ -13,17 +13,17 @@
   </defs>
   <rect class="bg" width="1600" height="2100"/>
   <text class="ink" x="140" y="180" font-size="96" font-weight="800">Sherlockdogs 安装指南</text>
-  <text class="muted" x="144" y="250" font-size="38">手机分享或微信转发，本机自动入库，并可继续进入 Codex 对话</text>
+  <text class="muted" x="144" y="250" font-size="38">手机微信发给自己，本机自动入库，并可继续进入 Codex 对话</text>
   <rect class="yellow" x="140" y="295" width="480" height="18" rx="9"/>
 
   <g transform="translate(140,380)">
     <rect class="card" width="1320" height="270" rx="30"/>
     <circle class="yellow" cx="92" cy="92" r="46"/>
     <text class="ink" x="77" y="109" font-size="48" font-weight="800">1</text>
-    <text class="ink" x="170" y="92" font-size="48" font-weight="800">选择你的 Inbox</text>
-    <text class="muted" x="170" y="146" font-size="34">本地文件夹即可；手机同步可选 iCloud、坚果云、OneDrive 等。</text>
-    <text class="muted" x="170" y="196" font-size="34">Sherlockdogs 不保存你的资料，只监听你电脑上的本地目录。</text>
-    <text class="code" x="170" y="246" font-size="32">推荐目录：/Sherlockdogs/Inbox</text>
+    <text class="ink" x="170" y="92" font-size="48" font-weight="800">连接微信自聊</text>
+    <text class="muted" x="170" y="146" font-size="34">Mac 打开 Connect WeChat.app；Windows 打开 Connect WeChat.cmd。</text>
+    <text class="muted" x="170" y="196" font-size="34">只在你主动连接后读取本机微信数据，不走 Sherlockdogs 中转。</text>
+    <text class="code" x="170" y="246" font-size="32">主链路：手机微信 -> 电脑微信 -> 本地 Markdown / Codex</text>
   </g>
 
   <path class="line" d="M800 670 L800 755"/>
@@ -35,7 +35,7 @@
     <text class="ink" x="170" y="92" font-size="48" font-weight="800">打开 Sherlockdogs</text>
     <text class="muted" x="170" y="154" font-size="34">Mac：双击 Sherlockdogs Start.app</text>
     <text class="muted" x="170" y="208" font-size="34">Windows：双击 Sherlockdogs Start.cmd</text>
-    <text class="muted" x="170" y="262" font-size="34">它会安装本机后台服务，只在你的电脑上处理 Inbox。</text>
+    <text class="muted" x="170" y="262" font-size="34">它会安装本机后台服务，只在你的电脑上处理线索。</text>
   </g>
 
   <path class="line" d="M800 1090 L800 1175"/>
@@ -44,10 +44,10 @@
     <rect class="card" width="1320" height="300" rx="30"/>
     <circle class="yellow" cx="92" cy="92" r="46"/>
     <text class="ink" x="77" y="109" font-size="48" font-weight="800">3</text>
-    <text class="ink" x="170" y="92" font-size="48" font-weight="800">可选：绑定同步盘</text>
-    <text class="muted" x="170" y="154" font-size="34">本地测试可跳过；坚果云用户双击 Configure Nutstore Inbox。</text>
-    <text class="muted" x="170" y="208" font-size="34">iCloud / OneDrive / Google Drive 用户使用自己的同步目录。</text>
-    <text class="muted" x="170" y="262" font-size="34">完成后目录内会有 Sherlockdogs/Inbox 和 Sherlockdogs/Outbox。</text>
+    <text class="ink" x="170" y="92" font-size="48" font-weight="800">做一次 #2 测试</text>
+    <text class="muted" x="170" y="154" font-size="34">从手机微信把一条测试内容发给自己的微信。</text>
+    <text class="muted" x="170" y="208" font-size="34">Windows 可运行 Run Windows WeChat Smoke.cmd 生成 token 证据。</text>
+    <text class="muted" x="170" y="262" font-size="34">看到入库结果或 codex_card=ok，才算主链路通过。</text>
   </g>
 
   <path class="line" d="M800 1510 L800 1595"/>
@@ -56,10 +56,10 @@
     <rect class="card" width="1320" height="250" rx="30"/>
     <circle class="yellow" cx="92" cy="92" r="46"/>
     <text class="ink" x="77" y="109" font-size="48" font-weight="800">4</text>
-    <text class="ink" x="170" y="92" font-size="48" font-weight="800">手机发送线索</text>
-    <text class="muted" x="170" y="146" font-size="34">推荐用 iOS 快捷指令；也可保存到自己的同步盘。</text>
-    <text class="code" x="170" y="196" font-size="32">保存路径：Sherlockdogs/Inbox</text>
-    <text class="muted" x="170" y="240" font-size="34">不写指令或写 #1 只入库；写 #2 生成 Codex 小卡片。</text>
+    <text class="ink" x="170" y="92" font-size="48" font-weight="800">日常发给自己</text>
+    <text class="muted" x="170" y="146" font-size="34">从微信、网页、X、小红书等把线索转发给自己的微信。</text>
+    <text class="code" x="170" y="196" font-size="32">不写或 #1 只入库；#2 生成 Codex 小卡片。</text>
+    <text class="muted" x="170" y="240" font-size="34">iOS 快捷指令 / 同步盘保留为备用入口。</text>
   </g>
 
   <g transform="translate(140,1890)">

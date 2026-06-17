@@ -36,8 +36,8 @@
 | `Uninstall Sherlockdogs.cmd` | Remove background tasks |
 | `INSTALL_GUIDE_FOR_USERS.png` | User-facing picture guide |
 | `INSTALL_GUIDE_FOR_USERS.svg` | Editable picture source |
-| `IOS_SHORTCUTS_GUIDE.md` | Phone share action guide |
-| `shortcuts/Send-to-Sherlockdogs-Inbox.shortcut` | Importable iOS Shortcut seed |
+| `IOS_SHORTCUTS_GUIDE.md` | Optional fallback phone share action guide |
+| `shortcuts/Send-to-Sherlockdogs-Inbox.shortcut` | Optional fallback iOS Shortcut seed |
 | `INSTALL_GUIDE_FOR_AI.md` | AI/support install guide |
 | `WINDOWS_PACKAGE_BRIEF.md` | Windows package size, entrypoints, and system changes |
 | `PRODUCT_INTRO_AND_RISK_DISCLOSURE.md` | Product intro, open-source components, and risk disclosure |

@@ -1,7 +1,9 @@
-# Phone to Cloud Inbox
+# Phone to Cloud Inbox Fallback
 
-Windows Alpha uses a user-owned sync folder as the bridge for phone capture.
-Sherlockdogs does not receive, proxy, or store the user's clipping content.
+This is the fallback phone capture path. The main 1.0 beta path is WeChat
+self-chat: phone WeChat -> desktop WeChat -> local Sherlockdogs WeChat DB
+adapter -> Markdown/Codex. Sherlockdogs does not receive, proxy, or store the
+user's clipping content.
 
 OneDrive or iCloud Drive for Windows is the simplest Windows phone path when
 available. Nutstore is optional, not a hard dependency. Google Drive, Syncthing,
@@ -25,7 +27,7 @@ select or pass that folder path as the Sherlockdogs Inbox.
 - Windows local-only: `Sherlockdogs Start.cmd` is enough.
 - Windows Nutstore: `Configure Nutstore Inbox.cmd`
 
-## Simple Phone Path
+## Fallback Phone Path
 
 1. Pick a sync provider: Nutstore, iCloud Drive, Google Drive, OneDrive, Syncthing, or local folder.
 2. Create `Sherlockdogs/Inbox`.
