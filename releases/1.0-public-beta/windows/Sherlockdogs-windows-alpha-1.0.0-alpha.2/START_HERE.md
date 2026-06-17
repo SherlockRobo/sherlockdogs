@@ -29,6 +29,7 @@
 | `Sherlockdogs Connect WeChat.cmd` | Bind or prepare Windows WeChat DB and start self-chat watcher |
 | `Run Windows WeChat Smoke.cmd` | Guided full path test: connect, ask for a tokenized real `#2` self-chat, then collect matching evidence |
 | `Collect Windows WeChat Evidence.cmd` | Generate the Windows DB smoke report after a real `#2` test |
+| `RETURN_WINDOWS_EVIDENCE.md` | What to send back after a pass or failure |
 | `Configure Nutstore Inbox.cmd` | Optional fallback: switch Inbox to your own synced folder |
 | `Open Sherlockdogs Output.cmd` | View saved Markdown/results |
 | `Doctor Sherlockdogs.cmd` | Generate diagnostics |
@@ -43,4 +44,4 @@
 
 ## Report back
 
-If there is a failure, include the latest Doctor output.
+If there is a failure, follow `RETURN_WINDOWS_EVIDENCE.md`: send the latest `evidence\windows-wechat-db-smoke\*.txt` and latest Doctor report.

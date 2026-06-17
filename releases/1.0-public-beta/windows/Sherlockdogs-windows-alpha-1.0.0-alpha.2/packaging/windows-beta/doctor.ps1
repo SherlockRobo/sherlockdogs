@@ -31,6 +31,12 @@ function Latest-File($p, $filter) {
   if ($latest) { return $latest.FullName }
   return "missing"
 }
+function Evidence-Field($path, $field) {
+  if (-not $path -or $path -eq "missing" -or -not (Test-Path $path)) { return "missing" }
+  $line = Get-Content $path -ErrorAction SilentlyContinue | Where-Object { $_ -like "$field=*" } | Select-Object -First 1
+  if ($line) { return ($line -replace "^$field=", "").Trim() }
+  return "missing"
+}
 function Task-State($name) { $t = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue; if ($t) { $t.State } else { "not registered" } }
 function Task-LastResult($name) {
   try {
@@ -102,6 +108,7 @@ $WeChatDbCount = if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) { @(G
 $ReceiverChats = Receiver-Chats $ReceiverFile
 $WindowsInboxEventCount = Count-Json $WindowsInboxEventsDir
 $WindowsEvidenceCount = Count-Files $WindowsEvidenceDir "*.txt"
+$WindowsLatestEvidence = Latest-File $WindowsEvidenceDir "*.txt"
 $AdapterDryRunStatus = Adapter-DryRun
 
 $lines = @(
@@ -145,7 +152,11 @@ $lines = @(
   "windows_latest_inbox_event=$(Latest-File $WindowsInboxEventsDir '*.json')",
   "windows_run_events=$WindowsRunEvents status=$(Status-Path $WindowsRunEvents)",
   "windows_evidence_reports=$WindowsEvidenceCount",
-  "windows_latest_evidence=$(Latest-File $WindowsEvidenceDir '*.txt')",
+  "windows_latest_evidence=$WindowsLatestEvidence",
+  "windows_latest_evidence.token_match=$(Evidence-Field $WindowsLatestEvidence 'token_match')",
+  "windows_latest_evidence.windows_wechat_db=$(Evidence-Field $WindowsLatestEvidence 'windows_wechat_db')",
+  "windows_latest_evidence.codex_card=$(Evidence-Field $WindowsLatestEvidence 'codex_card')",
+  "windows_latest_evidence.receiver_chat=$(Evidence-Field $WindowsLatestEvidence 'receiver_chat')",
   "pending=$(Count-Json (Join-Path $ProjectDir 'jobs\pending'))",
   "running=$(Count-Json (Join-Path $ProjectDir 'jobs\running'))",
   "done=$(Count-Json (Join-Path $ProjectDir 'jobs\done'))",

@@ -12,5 +12,5 @@ windows_wechat_db_sim_ci_template=<release-root>/dist/ci/windows-wechat-db-sim-s
 windows_runtime_evidence_dir=<release-root>/dist/evidence/windows-runtime-smoke
 windows_wechat_db_evidence_dir=<release-root>/dist/evidence/windows-wechat-db-smoke
 mobile_entry_evidence_dir=<release-root>/dist/evidence/mobile-entry-smoke
-built_at=2026-06-17T13:06:47+0800
+built_at=2026-06-17T13:17:35+0800
 no_archive=true

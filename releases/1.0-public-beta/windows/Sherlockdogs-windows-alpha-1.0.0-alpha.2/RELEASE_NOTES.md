@@ -9,7 +9,8 @@ Start here:
 5. Forward a test item to yourself in phone WeChat and let Windows WeChat receive it.
 6. Open results with `Open Sherlockdogs Output.cmd`.
 7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, and only passes evidence that contains the token.
-8. Run `Doctor Sherlockdogs.cmd` if anything looks wrong.
-9. Read `WINDOWS_PACKAGE_BRIEF.md` and `PRODUCT_INTRO_AND_RISK_DISCLOSURE.md` before sharing with another tester.
+8. If anything fails, return `RETURN_WINDOWS_EVIDENCE.md` artifacts: latest `evidence\windows-wechat-db-smoke\*.txt` and latest Doctor report.
+9. Run `Doctor Sherlockdogs.cmd` if anything looks wrong.
+10. Read `WINDOWS_PACKAGE_BRIEF.md` and `PRODUCT_INTRO_AND_RISK_DISCLOSURE.md` before sharing with another tester.
 
 Boundary: this Windows alpha includes a Windows WeChat DB adapter and a local decrypt bootstrap. The decrypt helper runs locally and may require Windows WeChat to be logged in and Administrator PowerShell for key extraction. It does not use a Sherlockdogs relay. Obsidian is recommended as the Markdown library reader, but is not required for Codex cards.
