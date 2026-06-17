@@ -66,6 +66,18 @@ function Test-Admin {
   }
 }
 
+function Invoke-SelfElevated {
+  $argList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $PSCommandPath)
+  if ($Receivers) { $argList += @("-Receivers", $Receivers) }
+  if ($NoTask) { $argList += "-NoTask" }
+  if ($NoDecryptBootstrap) { $argList += "-NoDecryptBootstrap" }
+  Write-Host "Windows will ask for Administrator permission to read the running Windows WeChat key."
+  Add-ConnectReport "elevation=requested"
+  $proc = Start-Process -FilePath "powershell.exe" -ArgumentList $argList -WorkingDirectory $ProjectDir -Verb RunAs -Wait -PassThru
+  Add-ConnectReport "elevation_exit=$($proc.ExitCode)"
+  return $proc.ExitCode
+}
+
 function Get-MessageDbs([string]$Root) {
   if (-not $Root -or -not (Test-Path $Root)) { return @() }
   return @(Get-ChildItem -Path $Root -Recurse -File -Include "message.db","message*.db","Message*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue)
@@ -206,12 +218,27 @@ if (-not $DecryptedDbDir) {
     Add-ConnectReport "existing_db_root=$Existing"
   } elseif (-not $NoDecryptBootstrap) {
     if (-not (Test-Admin)) {
-      Add-ConnectReport "status=failed"
-      Add-ConnectReport "error=admin_required_for_decrypt_bootstrap"
-      throw "Windows WeChat decrypt bootstrap needs Administrator PowerShell to read the WeChat process key. Right-click Sherlockdogs Connect WeChat.cmd and choose Run as administrator, or pass -DecryptedDbDir to an existing decrypted DB folder."
+      Add-ConnectReport "status=elevating_for_decrypt_bootstrap"
+      $ElevatedExit = Invoke-SelfElevated
+      if ($ElevatedExit -ne 0) {
+        Add-ConnectReport "status=failed"
+        Add-ConnectReport "error=elevated_decrypt_bootstrap_failed"
+        throw "Windows WeChat decrypt bootstrap failed in the Administrator window. Run Doctor Sherlockdogs.cmd and send the latest diagnostics."
+      }
+      if (Test-Path $ConfigFile) { . $ConfigFile }
+      $ExistingAfterElevate = Find-DecryptedDbRoot @($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR, $DefaultDir, $WeChatDecryptDir, $ConfigDir)
+      if (-not $ExistingAfterElevate) {
+        Add-ConnectReport "status=failed"
+        Add-ConnectReport "error=elevated_decrypt_bootstrap_no_db"
+        throw "Administrator decrypt finished, but no local Windows WeChat message DB was found. Run Doctor Sherlockdogs.cmd and send the latest diagnostics."
+      }
+      $DecryptedDbDir = $ExistingAfterElevate
+      Add-ConnectReport "db_source=elevated_decrypt_bootstrap"
+      Add-ConnectReport "existing_db_root=$ExistingAfterElevate"
+    } else {
+      Add-ConnectReport "db_source=decrypt_bootstrap"
+      $DecryptedDbDir = Invoke-WeChatDecryptBootstrap
     }
-    Add-ConnectReport "db_source=decrypt_bootstrap"
-    $DecryptedDbDir = Invoke-WeChatDecryptBootstrap
   } else {
     Write-Host "Choose the decrypted Windows WeChat DB directory containing message\message_*.db."
     Write-Host "Default: $DefaultDir"
