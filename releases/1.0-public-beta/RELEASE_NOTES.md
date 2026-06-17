@@ -2,58 +2,51 @@
 
 Tag: `v1.0.0-alpha.3-public-beta`
 
-## Summary
+Sherlockdogs turns phone WeChat self-chat items into local Markdown files and optional Codex tasks.
 
-Sherlockdogs 1.0 macOS public beta is ready for small-scope testing. Windows now has the Mac-like WeChat DB adapter and local decrypt bootstrap in the alpha folder, but it still needs real Windows self-chat smoke before it should be promoted as equal to macOS.
+## What Is New
 
-The beta paths are:
+- macOS beta folder is ready for public beta testing.
+- macOS self-chat -> local WeChat DB -> Markdown/Codex path has passed real smoke.
+- Windows alpha folder now includes the Mac-like WeChat DB adapter path, local decrypt bootstrap, smoke runner, and evidence export tools.
+- iOS Shortcut / Inbox capture remains available as a fallback path.
+- User-facing docs now include `START_HERE.md`, install guide images, troubleshooting notes, and evidence return instructions.
 
-```text
-macOS:
-Start Sherlockdogs -> Connect WeChat -> forward to yourself in WeChat -> open local Markdown output
-
-Windows target:
-Start Sherlockdogs -> Connect local Windows WeChat -> forward to yourself in WeChat -> open local Markdown output
-
-Windows current:
-Packaged with Sherlockdogs Connect WeChat.cmd, a Windows WeChat DB adapter, local decrypt bootstrap, and Collect Windows WeChat Evidence.cmd.
-Requires a real Windows smoke before full parity.
-```
-
-## Platform Folders
+## Downloads
 
 | Platform | Folder |
 |---|---|
-| macOS | [Sherlockdogs-macos-alpha-1.0.0-alpha.3](https://github.com/SherlockRobo/sherlockdogs/tree/main/releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3) |
-| Windows | [Sherlockdogs-windows-alpha-1.0.0-alpha.2](https://github.com/SherlockRobo/sherlockdogs/tree/main/releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2) |
+| macOS | [`Sherlockdogs-macos-alpha-1.0.0-alpha.3`](https://github.com/SherlockRobo/sherlockdogs/tree/main/releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3) |
+| Windows | [`Sherlockdogs-windows-alpha-1.0.0-alpha.2`](https://github.com/SherlockRobo/sherlockdogs/tree/main/releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2) |
 
-## Install Guides
+No zip, dmg, tar, or installer archive is published for this beta. Open the platform folder and read `START_HERE.md`.
 
-![Mac install guide](https://raw.githubusercontent.com/SherlockRobo/sherlockdogs/main/releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png)
+## Main Path
 
-## Start
-
-| Platform | First step |
-|---|---|
-| macOS | Open `START_HERE.md`, double-click `Sherlockdogs Start.app`, then optional best path `Sherlockdogs Connect WeChat.app` |
-| Windows | Open `START_HERE.md`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd` |
+```text
+phone WeChat -> forward to yourself
+desktop WeChat -> receives the message
+Sherlockdogs -> reads local desktop WeChat DB after opt-in setup
+Markdown -> raw + metadata + README
+Codex -> optional task when # or #2 is present
+```
 
 ## Verified
 
 - macOS beta gate passed.
-- Windows static package gate passed.
-- Windows WeChat DB adapter, decrypt bootstrap, and evidence collector are packaged; real Windows self-chat/Codex-card smoke is still pending.
+- macOS self-chat DB path passed.
 - Mobile entry smoke evidence passed.
+- Windows runtime/static package gate passed.
 - Final release check passed.
-- No zip, dmg, tar, or installer archive is published.
 
-## Known Beta Notes
+## Pending
+
+- Windows still needs a real Windows self-chat -> local WeChat DB -> Markdown/Codex smoke before it should be called fully Mac-equivalent.
+
+## Known Notes
 
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
 - Mac WeChat Personal Mode is opt-in and local-only.
-- Windows is not full public-beta ready until it passes the same path: WeChat self-chat -> local desktop WeChat DB -> Markdown/Codex.
-
-## Repository Landing Page
-
-https://github.com/SherlockRobo/sherlockdogs
+- If Windows fails, run `Export Windows Evidence.cmd` and send back the generated evidence folder.
+- iOS Shortcut / Inbox is fallback, not the default public-beta path.
