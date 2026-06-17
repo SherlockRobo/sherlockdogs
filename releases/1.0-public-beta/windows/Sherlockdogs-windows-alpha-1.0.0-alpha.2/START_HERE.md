@@ -8,7 +8,7 @@
 4. Double-click `Sherlockdogs Connect WeChat.cmd`; it can bind an existing decrypted DB folder or try the local decrypt helper. Right-click and choose "Run as administrator" when key extraction is needed. First connection uses discovery receiver `*` so phone-to-self WeChat is not missed.
 5. Forward one test item to yourself in phone WeChat; Windows WeChat must receive it.
 6. Open results with `Open Sherlockdogs Output.cmd`.
-7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, and only passes evidence that contains the token.
+7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, only passes evidence that contains the token, and exports a Desktop evidence folder at the end.
 8. If anything fails, run `Doctor Sherlockdogs.cmd`.
 9. Double-click `Export Windows Evidence.cmd` to copy the latest evidence and Doctor report into a Desktop folder you can send back as-is. Do not zip it unless the operator explicitly asks for an archive.
 
@@ -28,7 +28,7 @@
 |---|---|
 | `Sherlockdogs Start.cmd` | First install |
 | `Sherlockdogs Connect WeChat.cmd` | Bind or prepare Windows WeChat DB and start self-chat watcher |
-| `Run Windows WeChat Smoke.cmd` | Guided full path test: connect, ask for a tokenized real `#2` self-chat, then collect matching evidence |
+| `Run Windows WeChat Smoke.cmd` | Guided full path test: connect, ask for a tokenized real `#2` self-chat, collect matching evidence, then export a Desktop evidence folder |
 | `Collect Windows WeChat Evidence.cmd` | Generate the Windows DB smoke report after a real `#2` test |
 | `Export Windows Evidence.cmd` | Copy the latest smoke report and Doctor report into a Desktop folder for return |
 | `RETURN_WINDOWS_EVIDENCE.md` | What to send back after a pass or failure |

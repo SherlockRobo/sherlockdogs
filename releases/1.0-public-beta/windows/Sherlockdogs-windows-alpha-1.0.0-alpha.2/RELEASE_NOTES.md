@@ -8,7 +8,7 @@ Start here:
 4. Confirm it found a local Windows WeChat DB folder containing `message\message_*.db` or equivalent message DB files.
 5. Forward a test item to yourself in phone WeChat and let Windows WeChat receive it.
 6. Open results with `Open Sherlockdogs Output.cmd`.
-7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, and only passes evidence that contains the token.
+7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, only passes evidence that contains the token, and exports a Desktop evidence folder at the end.
 8. If anything fails, return `RETURN_WINDOWS_EVIDENCE.md` artifacts: latest `evidence\windows-wechat-db-smoke\*.txt` and latest Doctor report.
 9. Double-click `Export Windows Evidence.cmd` to copy the latest evidence and Doctor report into a Desktop folder that can be sent back as-is. Do not zip it unless the operator explicitly asks for an archive.
 10. Run `Doctor Sherlockdogs.cmd` if anything looks wrong.

@@ -10,6 +10,16 @@ $InstallScript = Join-Path $PSScriptRoot "install.ps1"
 $ConnectScript = Join-Path $PSScriptRoot "connect_wechat.ps1"
 $CollectScript = Join-Path $PSScriptRoot "collect_windows_wechat_evidence.ps1"
 $DoctorScript = Join-Path $PSScriptRoot "doctor.ps1"
+$ExportScript = Join-Path $PSScriptRoot "export_windows_evidence.ps1"
+
+function Export-Evidence {
+  if (-not (Test-Path $ExportScript)) { return }
+  try {
+    & $ExportScript -SkipDoctor
+  } catch {
+    Write-Host "Evidence export failed: $($_.Exception.Message)"
+  }
+}
 
 Write-Host "Sherlockdogs Windows WeChat smoke"
 Write-Host "1. Keep Windows WeChat logged in."
@@ -59,6 +69,7 @@ while ((Get-Date) -lt $Deadline) {
   Write-Host $LastOutput
   if ($CollectExit -eq 0) {
     Write-Host "Windows WeChat DB smoke PASS."
+    Export-Evidence
     exit 0
   }
   Write-Host "Evidence not ready yet; waiting 10 seconds..."
@@ -74,4 +85,5 @@ if (Test-Path $DoctorScript) {
     Write-Host "Doctor report failed: $($_.Exception.Message)"
   }
 }
+Export-Evidence
 throw "Windows WeChat DB smoke did not pass within $TimeoutMinutes minutes. Run Doctor Sherlockdogs.cmd and send the latest diagnostics."
