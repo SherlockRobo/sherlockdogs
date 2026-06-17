@@ -1,5 +1,6 @@
 param(
   [switch]$NoDiscoverReceiver,
+  [string]$RequireToken = "",
   [string]$OutDir = ""
 )
 $ErrorActionPreference = "Stop"
@@ -32,6 +33,7 @@ Write-Host $AdapterText
 if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter failed before evidence collection." }
 
 $EvidenceArgs = @($EvidenceScript, "--project-dir", $ProjectDir, "--write")
+if ($RequireToken) { $EvidenceArgs += @("--require-token", $RequireToken) }
 if ($OutDir) { $EvidenceArgs += @("--out-dir", $OutDir) }
 $EvidenceOutput = & $Python @EvidenceArgs 2>&1
 $EvidenceText = ($EvidenceOutput | Out-String)

@@ -80,10 +80,21 @@ def truth(value: bool) -> str:
     return "ok" if value else "missing"
 
 
+def has_token(data: Any, token: str) -> bool:
+    if not token:
+        return True
+    try:
+        haystack = json.dumps(data, ensure_ascii=False)
+    except Exception:
+        haystack = str(data)
+    return token in haystack
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate Windows WeChat DB smoke evidence report.")
     parser.add_argument("--project-dir", default=os.environ.get("SHERLOCKDOGS_PROJECT_DIR", "."))
     parser.add_argument("--lookback-minutes", type=int, default=120)
+    parser.add_argument("--require-token", default="", help="Only pass when recent Windows evidence contains this smoke token.")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--out-dir", default="")
     args = parser.parse_args()
@@ -99,13 +110,17 @@ def main() -> int:
                 db_root = line.split("=", 1)[1].strip().strip("'\"")
                 break
 
-    jobs = find_windows_jobs(project_dir, since_epoch)
-    inbox_events = find_windows_inbox_events(project_dir, since_epoch)
-    run_events = [
+    all_jobs = find_windows_jobs(project_dir, since_epoch)
+    all_inbox_events = find_windows_inbox_events(project_dir, since_epoch)
+    all_run_events = [
         event
         for event in iter_event_lines(project_dir / "runs" / "windows-wechat-inbox.events.jsonl")
         if event.get("jobs") or event.get("inbox_event")
     ]
+    token = args.require_token.strip()
+    jobs = [job for job in all_jobs if has_token(job, token)]
+    inbox_events = [event for event in all_inbox_events if has_token(event, token)]
+    run_events = [event for event in all_run_events if has_token(event, token)]
 
     codex_jobs = [
         job
@@ -114,7 +129,8 @@ def main() -> int:
     ]
     db_has_messages = bool(db_root and Path(db_root).exists())
     connect_ok = db_has_messages and (project_dir / "jobs" / "windows_receiver_chats.txt").exists()
-    desktop_received = bool(inbox_events or run_events or jobs)
+    token_match = bool(not token or jobs or inbox_events or run_events)
+    desktop_received = token_match and bool(inbox_events or run_events or jobs)
     self_chat_received = any(job.get("chat_id") or job.get("extra", {}).get("chat_id") for job in jobs) or desktop_received
     codex_card = bool(codex_jobs)
     windows_wechat_db = connect_ok and desktop_received and codex_card
@@ -125,6 +141,8 @@ def main() -> int:
         f"project_dir={project_dir}",
         f"lookback_minutes={args.lookback_minutes}",
         f"db_root={db_root or 'missing'}",
+        f"require_token={token or 'none'}",
+        f"token_match={truth(token_match)}",
         f"windows_wechat_db={truth(windows_wechat_db)}",
         f"connect_wechat={truth(connect_ok)}",
         f"self_chat_received={truth(self_chat_received)}",
@@ -134,6 +152,9 @@ def main() -> int:
         f"windows_codex_jobs={len(codex_jobs)}",
         f"windows_inbox_events={len(inbox_events)}",
         f"windows_run_events={len(run_events)}",
+        f"windows_jobs_total={len(all_jobs)}",
+        f"windows_inbox_events_total={len(all_inbox_events)}",
+        f"windows_run_events_total={len(all_run_events)}",
     ]
     if jobs:
         lines.append(f"latest_job={jobs[0].get('_path')}")
