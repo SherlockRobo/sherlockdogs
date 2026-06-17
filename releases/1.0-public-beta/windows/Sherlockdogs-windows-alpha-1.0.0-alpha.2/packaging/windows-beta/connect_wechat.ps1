@@ -26,6 +26,10 @@ $DiagnosticsDir = Join-Path $ConfigDir "diagnostics"
 if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first, or install Python 3." }
 if (-not (Test-Path $Python)) { throw "Configured Python does not exist: $Python" }
 
+function Quote-PsString([string]$Value) {
+  return "'" + (($Value -as [string]) -replace "'", "''") + "'"
+}
+
 function Test-Admin {
   try {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -176,18 +180,18 @@ $ReceiverLines = $Receivers.Split(",") | ForEach-Object { $_.Trim() } | Where-Ob
 if ($ReceiverLines.Count -eq 0) { $ReceiverLines = @("filehelper") }
 $ReceiverLines | Set-Content -Encoding UTF8 $ReceiverFile
 
-@"
-`$env:SHERLOCKDOGS_PROJECT_DIR = '$ProjectDir'
-`$env:SHERLOCKDOGS_INBOX_DIR = '$InboxDir'
-`$env:SHERLOCKDOGS_VAULT_DIR = '$VaultDir'
-`$env:SHERLOCKDOGS_CLIPPING_DIR = '$ClippingDir'
-`$env:SHERLOCKDOGS_VENV_DIR = '$VenvDir'
-`$env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR = '$DecryptedDbDir'
-`$env:PYTHON_BIN = '$Python'
-`$env:CODEX_BIN = '$Codex'
-`$env:PYTHONDONTWRITEBYTECODE = '1'
-`$env:PATH = (Join-Path '$VenvDir' 'Scripts') + ';' + `$env:PATH
-"@ | Set-Content -Encoding UTF8 $ConfigFile
+@(
+  "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
+  "`$env:SHERLOCKDOGS_INBOX_DIR = $(Quote-PsString $InboxDir)",
+  "`$env:SHERLOCKDOGS_VAULT_DIR = $(Quote-PsString $VaultDir)",
+  "`$env:SHERLOCKDOGS_CLIPPING_DIR = $(Quote-PsString $ClippingDir)",
+  "`$env:SHERLOCKDOGS_VENV_DIR = $(Quote-PsString $VenvDir)",
+  "`$env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR = $(Quote-PsString $DecryptedDbDir)",
+  "`$env:PYTHON_BIN = $(Quote-PsString $Python)",
+  "`$env:CODEX_BIN = $(Quote-PsString $Codex)",
+  "`$env:PYTHONDONTWRITEBYTECODE = '1'",
+  "`$env:PATH = (Join-Path $(Quote-PsString $VenvDir) 'Scripts') + ';' + `$env:PATH"
+) | Set-Content -Encoding UTF8 $ConfigFile
 
 & $Python (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --dry-run --settle-seconds 0 --db-root $DecryptedDbDir
 if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter dry-run failed." }

@@ -17,6 +17,10 @@ $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -Error
 if (-not $Python) { throw "Python not found. Install Python 3 and retry." }
 if (-not $Codex) { $Codex = "codex" }
 
+function Quote-PsString([string]$Value) {
+  return "'" + (($Value -as [string]) -replace "'", "''") + "'"
+}
+
 New-Item -ItemType Directory -Force -Path $ConfigDir, $InboxDir, $ClippingDir, (Join-Path $ProjectDir "jobs\pending"), (Join-Path $ProjectDir "jobs\running"), (Join-Path $ProjectDir "jobs\done"), (Join-Path $ProjectDir "jobs\failed"), (Join-Path $ProjectDir "runs") | Out-Null
 
 if (-not $SkipDeps) {
@@ -28,17 +32,17 @@ if (-not $SkipDeps) {
   $PythonBin = $Python
 }
 
-@"
-`$env:SHERLOCKDOGS_PROJECT_DIR = '$ProjectDir'
-`$env:SHERLOCKDOGS_INBOX_DIR = '$InboxDir'
-`$env:SHERLOCKDOGS_VAULT_DIR = '$VaultDir'
-`$env:SHERLOCKDOGS_CLIPPING_DIR = '$ClippingDir'
-`$env:SHERLOCKDOGS_VENV_DIR = '$VenvDir'
-`$env:PYTHON_BIN = '$PythonBin'
-`$env:CODEX_BIN = '$Codex'
-`$env:PYTHONDONTWRITEBYTECODE = '1'
-`$env:PATH = (Join-Path '$VenvDir' 'Scripts') + ';' + `$env:PATH
-"@ | Set-Content -Encoding UTF8 $ConfigFile
+@(
+  "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
+  "`$env:SHERLOCKDOGS_INBOX_DIR = $(Quote-PsString $InboxDir)",
+  "`$env:SHERLOCKDOGS_VAULT_DIR = $(Quote-PsString $VaultDir)",
+  "`$env:SHERLOCKDOGS_CLIPPING_DIR = $(Quote-PsString $ClippingDir)",
+  "`$env:SHERLOCKDOGS_VENV_DIR = $(Quote-PsString $VenvDir)",
+  "`$env:PYTHON_BIN = $(Quote-PsString $PythonBin)",
+  "`$env:CODEX_BIN = $(Quote-PsString $Codex)",
+  "`$env:PYTHONDONTWRITEBYTECODE = '1'",
+  "`$env:PATH = (Join-Path $(Quote-PsString $VenvDir) 'Scripts') + ';' + `$env:PATH"
+) | Set-Content -Encoding UTF8 $ConfigFile
 
 if (-not $NoTasks) {
   $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"

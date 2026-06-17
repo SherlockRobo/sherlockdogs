@@ -45,18 +45,22 @@ $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -Error
 if (-not $Python) { throw "Python not found. Install Python 3 and retry." }
 if (-not $Codex) { $Codex = "codex" }
 
-@"
-`$env:SHERLOCKDOGS_PROJECT_DIR = '$ProjectDir'
-`$env:SHERLOCKDOGS_INBOX_DIR = '$InboxDir'
-`$env:SHERLOCKDOGS_NUTSTORE_DIR = '$NutstoreRoot'
-`$env:SHERLOCKDOGS_VAULT_DIR = '$VaultDir'
-`$env:SHERLOCKDOGS_CLIPPING_DIR = '$ClippingDir'
-`$env:SHERLOCKDOGS_VENV_DIR = '$VenvDir'
-`$env:PYTHON_BIN = '$Python'
-`$env:CODEX_BIN = '$Codex'
-`$env:PYTHONDONTWRITEBYTECODE = '1'
-`$env:PATH = (Join-Path '$VenvDir' 'Scripts') + ';' + `$env:PATH
-"@ | Set-Content -Encoding UTF8 $ConfigFile
+function Quote-PsString([string]$Value) {
+  return "'" + (($Value -as [string]) -replace "'", "''") + "'"
+}
+
+@(
+  "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
+  "`$env:SHERLOCKDOGS_INBOX_DIR = $(Quote-PsString $InboxDir)",
+  "`$env:SHERLOCKDOGS_NUTSTORE_DIR = $(Quote-PsString $NutstoreRoot)",
+  "`$env:SHERLOCKDOGS_VAULT_DIR = $(Quote-PsString $VaultDir)",
+  "`$env:SHERLOCKDOGS_CLIPPING_DIR = $(Quote-PsString $ClippingDir)",
+  "`$env:SHERLOCKDOGS_VENV_DIR = $(Quote-PsString $VenvDir)",
+  "`$env:PYTHON_BIN = $(Quote-PsString $Python)",
+  "`$env:CODEX_BIN = $(Quote-PsString $Codex)",
+  "`$env:PYTHONDONTWRITEBYTECODE = '1'",
+  "`$env:PATH = (Join-Path $(Quote-PsString $VenvDir) 'Scripts') + ';' + `$env:PATH"
+) | Set-Content -Encoding UTF8 $ConfigFile
 
 $install = Join-Path $ProjectDir "packaging\windows-beta\install.ps1"
 if (Test-Path $install) {
