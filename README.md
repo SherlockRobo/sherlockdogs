@@ -6,36 +6,34 @@ Sherlockdogs turns links, text, images, and local files from your phone or deskt
 
 ## Public Beta
 
-Status: `READY_FOR_PUBLIC_BETA`
+Status: `MAC_READY_WINDOWS_DB_NOT_READY`
 
 | Platform | Start Here |
 |---|---|
 | macOS | [Download the macOS beta folder](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) |
-| Windows | [Download the Windows beta folder](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) |
+| Windows | Not ready for the same product promise; DB adapter is pending |
 
-Open the whole platform folder, then read `START_HERE.md`.
+Open the whole macOS folder, then read `START_HERE.md`.
 
-| macOS | Windows |
-|---|---|
-| ![Mac install guide](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png) | ![Windows install guide](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/INSTALL_GUIDE_FOR_USERS.png) |
+![Mac install guide](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png)
 
 ## Platform Entry
 
 | Platform | Phone Entry | Desktop Adapter |
 |---|---|---|
 | macOS | Forward to yourself in WeChat, or use phone sharing | `Sherlockdogs Connect WeChat.app` reads local Mac WeChat DB after opt-in |
-| Windows | iOS Shortcut / phone share action | Synced Inbox watched by `Sherlockdogs Start.cmd` |
+| Windows | Pending | Windows WeChat DB adapter is not implemented yet |
 
 | Platform | Start | Open Output | Diagnose |
 |---|---|---|---|
 | macOS | `Sherlockdogs Start.app` | `Sherlockdogs Open Output.app` | `Sherlockdogs Doctor.app` |
-| Windows | `Sherlockdogs Start.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` |
+| Windows | Not public-beta ready | Not public-beta ready | Not public-beta ready |
 
 ## What It Does
 
 - Accepts links, text, images, and media references from phone sharing.
 - On macOS, optional WeChat Personal Mode can capture items forwarded to your own WeChat after explicit local setup.
-- On Windows Alpha, phone capture uses iOS Shortcut / phone share action plus your own synced Inbox; it does not read Windows WeChat DB.
+- Windows parity is not done: the current Windows folder does not capture WeChat self-chat and should not be marketed as the beta product.
 - Writes auditable Markdown artifacts into your chosen local vault.
 - Creates Codex cards for items marked with `#` or `#2`.
 - Keeps user content local by default.
@@ -53,12 +51,12 @@ Open the whole platform folder, then read `START_HERE.md`.
 
 ## Beta Notes
 
-- Use the whole macOS or Windows folder as-is. Do not copy only the top-level launcher.
+- Use the whole macOS folder as-is. Do not copy only the top-level launcher.
 - No zip, dmg, tar, or installer package is published for this beta.
 - macOS may require right-click -> Open on the first launch.
 - First launch may spend a few minutes installing Python dependencies.
 - macOS WeChat Personal Mode is opt-in and local-only.
-- Windows Alpha uses iOS Shortcut / phone share action plus a synced Inbox. It does not capture WeChat self-chat directly.
+- Windows remains pending until it can match the Mac path: phone WeChat -> self-chat -> local desktop WeChat DB -> Markdown/Codex.
 
 ## Privacy
 
