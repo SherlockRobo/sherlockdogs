@@ -6,12 +6,12 @@ Sherlockdogs turns links, text, images, and local files from your phone or deskt
 
 ## Public Beta
 
-Status: `MAC_READY_WINDOWS_DB_ADAPTER_READY_NEEDS_SMOKE`
+Status: `MAC_READY_WINDOWS_DB_BOOTSTRAP_READY_NEEDS_SMOKE`
 
 | Platform | Start Here |
 |---|---|
 | macOS | [Download the macOS beta folder](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) |
-| Windows | [Windows alpha folder](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) includes the WeChat DB adapter, but still needs real Windows decrypt/self-chat smoke |
+| Windows | [Windows alpha folder](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) includes the WeChat DB adapter and local decrypt bootstrap, but still needs real Windows self-chat smoke |
 
 Open the whole platform folder, then read `START_HERE.md`.
 
@@ -22,7 +22,7 @@ Open the whole platform folder, then read `START_HERE.md`.
 | Platform | Phone Entry | Desktop Adapter |
 |---|---|---|
 | macOS | Forward to yourself in WeChat, or use phone sharing | `Sherlockdogs Connect WeChat.app` reads local Mac WeChat DB after opt-in |
-| Windows | Target is the same: forward to yourself in WeChat | `Sherlockdogs Connect WeChat.cmd` reads a decrypted local Windows WeChat DB directory; decrypt/key extraction still needs Windows-machine smoke |
+| Windows | Target is the same: forward to yourself in WeChat | `Sherlockdogs Connect WeChat.cmd` can bind an existing decrypted DB folder or try the local decrypt bootstrap |
 
 | Platform | Start | Open Output | Diagnose |
 |---|---|---|---|
@@ -33,7 +33,7 @@ Open the whole platform folder, then read `START_HERE.md`.
 
 - Accepts links, text, images, and media references from phone sharing.
 - On macOS, optional WeChat Personal Mode can capture items forwarded to your own WeChat after explicit local setup.
-- On Windows, the alpha includes the Mac-like DB adapter path, but full parity is not done until a real Windows machine proves key/decrypt, self-chat receive, and Codex card creation.
+- On Windows, the alpha includes the Mac-like DB adapter path and local decrypt bootstrap, but full parity is not done until a real Windows machine proves key/decrypt, self-chat receive, and Codex card creation.
 - Writes auditable Markdown artifacts into your chosen local vault.
 - Creates Codex cards for items marked with `#` or `#2`.
 - Keeps user content local by default.

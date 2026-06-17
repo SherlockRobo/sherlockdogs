@@ -75,7 +75,7 @@ if (($LocalTaskState -eq "not registered") -or ($RunnerTaskState -eq "not regist
   $Advice += "- Background tasks are not registered; run Install Sherlockdogs.cmd again."
 }
 if (-not $WindowsWeChatDir) {
-  $Advice += "- Windows WeChat self-chat is not connected; run Sherlockdogs Connect WeChat.cmd after preparing decrypted local WeChat DBs."
+  $Advice += "- Windows WeChat self-chat is not connected; run Sherlockdogs Connect WeChat.cmd with Windows WeChat logged in."
 } elseif ($WeChatDbCount -eq 0) {
   $Advice += "- Windows WeChat directory has no decrypted message DBs; check the selected directory."
 } elseif ($WeChatTaskState -eq "not registered") {

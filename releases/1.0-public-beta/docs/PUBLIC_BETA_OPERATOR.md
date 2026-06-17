@@ -94,8 +94,7 @@ It exits non-zero unless `dist/PUBLIC_BETA_DECISION.json` says `READY_FOR_PUBLIC
 
 | Decision | Meaning |
 |---|---|
-| `READY_FOR_PUBLIC_BETA` | Mac, Windows WeChat DB parity, and phone entry are verified |
-| `NEEDS_WINDOWS_WECHAT_DB_SMOKE` | Mac and packaged Windows adapter exist, but Windows still needs real DB self-chat evidence |
+| `READY_FOR_PUBLIC_BETA` | Mac, Windows runtime, and phone entry are verified |
 | `NEEDS_WINDOWS_RUNTIME_SMOKE` | Mac is ready and Windows package is assembled, but Windows runtime evidence is missing |
 | `NEEDS_MOBILE_ENTRY_SMOKE` | Desktop packages are ready, but phone-to-desktop entry evidence is missing |
 
@@ -186,9 +185,9 @@ Share the whole folder as-is. Do not create zip, dmg, tar, or other archive file
 
 ## Current Boundary
 
-The default public beta uses the tester's own local or synced Inbox. Sherlockdogs only watches that local folder. The sync provider can be iCloud Drive, Nutstore, OneDrive, Google Drive, Syncthing, NAS, or a plain local folder. It does not read personal WeChat databases and does not upload clipping content to a Sherlockdogs relay service by default.
+The recommended public beta path is WeChat self-chat: phone WeChat -> desktop WeChat -> local Sherlockdogs adapter -> Markdown/Codex. Mac reads local Mac WeChat data only after `Sherlockdogs Connect WeChat.app`. Windows prepares or binds a local Windows WeChat DB path only after `Sherlockdogs Connect WeChat.cmd`. Inbox/Shortcut/sync folders are fallback paths. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
 
-Sherlockdogs 1.0 is not public-beta ready unless a real phone entry is verified. Desktop drag/drop and local sample files are useful smoke tests, but they do not satisfy the 1.0 product promise. After sending one real `#2` item from phone WeChat to the user's own WeChat, generate evidence with:
+Sherlockdogs 1.0 is not public-beta ready unless the Windows WeChat DB path and a real phone entry are verified. Desktop drag/drop and local sample files are useful smoke tests, but they do not satisfy the 1.0 product promise. After sending one real `#2` item from phone WeChat to the user's own WeChat on Mac, generate evidence with:
 
 ```bash
 python3 scripts/collect_mobile_entry_evidence.py --write
@@ -199,6 +198,16 @@ The evidence report is written into `dist/evidence/mobile-entry-smoke/` and must
 
 ```text
 mobile_entry=ok
+desktop_received=ok
+codex_card=ok
+```
+
+On Windows, run `Sherlockdogs Connect WeChat.cmd`, forward one real `#2` item to yourself, then run `Collect Windows WeChat Evidence.cmd`. The report must include:
+
+```text
+windows_wechat_db=ok
+connect_wechat=ok
+self_chat_received=ok
 desktop_received=ok
 codex_card=ok
 ```

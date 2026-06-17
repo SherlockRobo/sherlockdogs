@@ -4,7 +4,7 @@ Tag: `v1.0.0-alpha.3-public-beta`
 
 ## Summary
 
-Sherlockdogs 1.0 macOS public beta is ready for small-scope testing. Windows now has the Mac-like WeChat DB adapter in the alpha folder, but it still needs real Windows decrypt/self-chat smoke before it should be promoted as equal to macOS.
+Sherlockdogs 1.0 macOS public beta is ready for small-scope testing. Windows now has the Mac-like WeChat DB adapter and local decrypt bootstrap in the alpha folder, but it still needs real Windows self-chat smoke before it should be promoted as equal to macOS.
 
 The beta paths are:
 
@@ -16,8 +16,8 @@ Windows target:
 Start Sherlockdogs -> Connect local Windows WeChat -> forward to yourself in WeChat -> open local Markdown output
 
 Windows current:
-Packaged with Sherlockdogs Connect WeChat.cmd and a Windows WeChat DB adapter.
-Requires decrypted Windows WeChat DBs and a real Windows smoke before full parity.
+Packaged with Sherlockdogs Connect WeChat.cmd, a Windows WeChat DB adapter, local decrypt bootstrap, and Collect Windows WeChat Evidence.cmd.
+Requires a real Windows smoke before full parity.
 ```
 
 ## Platform Folders
@@ -36,13 +36,13 @@ Requires decrypted Windows WeChat DBs and a real Windows smoke before full parit
 | Platform | First step |
 |---|---|
 | macOS | Open `START_HERE.md`, double-click `Sherlockdogs Start.app`, then optional best path `Sherlockdogs Connect WeChat.app` |
-| Windows | Open `START_HERE.md`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd` with a decrypted Windows WeChat DB folder |
+| Windows | Open `START_HERE.md`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd` |
 
 ## Verified
 
 - macOS beta gate passed.
 - Windows static package gate passed.
-- Windows WeChat DB adapter is packaged; real Windows decrypt/self-chat/Codex-card smoke is still pending.
+- Windows WeChat DB adapter, decrypt bootstrap, and evidence collector are packaged; real Windows self-chat/Codex-card smoke is still pending.
 - Mobile entry smoke evidence passed.
 - Final release check passed.
 - No zip, dmg, tar, or installer archive is published.

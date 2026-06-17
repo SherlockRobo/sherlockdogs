@@ -15,9 +15,9 @@ Job JSON:
 0. 写入 vault 前先读取并遵守：
 
 ```text
-~/ObsidianVault_LOCAL/00-dashboard/principles/vault-migration-2026-06-01-read-first.md
-~/ObsidianVault_LOCAL/schema/vault-principles-2026-05-30.md
-~/ObsidianVault_LOCAL/schema/path-routing.md
+<local-vault>/00-dashboard/principles/vault-migration-2026-06-01-read-first.md
+<local-vault>/schema/vault-principles-2026-05-30.md
+<local-vault>/schema/path-routing.md
 ```
 
 1. 使用本地脚本抓取文章：
@@ -73,7 +73,7 @@ tags:
 
 5. 若 Job JSON 的 `task` 有特殊要求，优先按任务执行。例如投资分析、写作选题、小红书改写、摘要、翻译等。
 6. 图片和原始 HTML 由 `wechat_capture.py` 负责；不要把图片写成外链，保留 `raw.md` 中的本地图片引用。
-7. 不要写到 `~/Documents/Codex/...` 作为最终产物；微信剪藏最终产物只能写到 `~/ObsidianVault_LOCAL/clipping/wechat/`。
+7. 不要写到 `<workspace>/...` 作为最终产物；微信剪藏最终产物只能写到 `<local-vault>/clipping/wechat/`。
 8. 完成后必须创建一份交付清单 `README.md`，放在本次 `wechat_capture.py` 输出的 `article_dir` 下。清单至少包含：
 
 ```markdown

@@ -94,8 +94,7 @@ Save File -> OneDrive/Sherlockdogs/Inbox/sdogs-{date}.txt
 ## Privacy Boundary
 
 - The sync provider is the user's own account.
-- Sherlockdogs only watches the local synced folder on the desktop.
+- Sherlockdogs only watches the local synced folder on the desktop when the optional fallback Inbox path is used.
 - Obsidian is recommended, not required; the durable output is local Markdown.
-- Windows Alpha does not read Windows personal WeChat databases.
-- Mac Personal Mode is separate: it can read the local Mac WeChat database only after the user runs `Sherlockdogs Connect WeChat.app`.
+- Main beta path is WeChat self-chat: Mac reads the local Mac WeChat database only after the user runs `Sherlockdogs Connect WeChat.app`; Windows prepares or binds a local Windows WeChat DB path only after the user runs `Sherlockdogs Connect WeChat.cmd`.
 - The public beta does not upload clipping content to a Sherlockdogs relay service by default.

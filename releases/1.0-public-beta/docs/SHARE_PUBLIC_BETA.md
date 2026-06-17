@@ -1,6 +1,6 @@
 # Share Sherlockdogs 1.0 Small Beta
 
-Generated: 2026-06-17T09:38:12+0800
+Generated: 2026-06-17T10:16:44+0800
 
 ## Send these folders
 
@@ -20,13 +20,13 @@ This is a small-scope test build. The product promise is: send anything to your 
 For the shortest test:
 
 - Mac: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.app`, then double-click `Sherlockdogs Connect WeChat.app` and forward one test item to yourself in WeChat.
-- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd` after preparing decrypted Windows WeChat DBs. Full Windows parity still needs a real Windows self-chat smoke before public promotion.
+- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd`. If the real `#2` smoke passes, run `Collect Windows WeChat Evidence.cmd`.
 - If macOS blocks the app after copying/downloading, right-click `Sherlockdogs Start.app`, choose Open, then confirm Open.
 
 If anything fails, run `Doctor Sherlockdogs`, open `Open Sherlockdogs Diagnostics`, and send the newest doctor report.
 
 ## Privacy
 
-This beta uses your own local storage by default. On Mac, WeChat Personal Mode is opt-in and reads the local Mac WeChat database only after you run `Sherlockdogs Connect WeChat.app`. On Windows, `Sherlockdogs Connect WeChat.cmd` reads a decrypted local Windows WeChat DB directory after explicit setup. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
+This beta uses your own local storage by default. On Mac, WeChat Personal Mode is opt-in and reads the local Mac WeChat database only after you run `Sherlockdogs Connect WeChat.app`. On Windows, `Sherlockdogs Connect WeChat.cmd` prepares or binds a local Windows WeChat DB path after explicit setup. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
 
 Obsidian is recommended for browsing the Markdown library, but is not required for Codex cards.

@@ -1,7 +1,9 @@
 param(
   [string]$DecryptedDbDir = "",
   [string]$Receivers = "filehelper",
-  [switch]$NoTask
+  [switch]$NoTask,
+  [switch]$NoDecryptBootstrap,
+  [string]$WeChatDecryptRepo = "https://github.com/ylytdeng/wechat-decrypt.git"
 )
 $ErrorActionPreference = "Stop"
 
@@ -16,23 +18,95 @@ $InboxDir = if ($env:SHERLOCKDOGS_INBOX_DIR) { $env:SHERLOCKDOGS_INBOX_DIR } els
 $VaultDir = if ($env:SHERLOCKDOGS_VAULT_DIR) { $env:SHERLOCKDOGS_VAULT_DIR } elseif (Test-Path (Join-Path $env:USERPROFILE "ObsidianVault_LOCAL")) { Join-Path $env:USERPROFILE "ObsidianVault_LOCAL" } else { Join-Path $env:USERPROFILE "Sherlockdogs\Vault" }
 $ClippingDir = if ($env:SHERLOCKDOGS_CLIPPING_DIR) { $env:SHERLOCKDOGS_CLIPPING_DIR } else { Join-Path $VaultDir "clipping" }
 $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else { Join-Path $ConfigDir "venv" }
+$ToolRoot = Join-Path $ConfigDir "tools"
+$WeChatDecryptDir = Join-Path $ToolRoot "wechat-decrypt"
 
 if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first, or install Python 3." }
 if (-not (Test-Path $Python)) { throw "Configured Python does not exist: $Python" }
 
+function Get-MessageDbs([string]$Root) {
+  if (-not $Root -or -not (Test-Path $Root)) { return @() }
+  return @(Get-ChildItem -Path $Root -Recurse -File -Include "message_*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue)
+}
+
+function Resolve-MessageDbRoot($FileInfo) {
+  $dir = $FileInfo.Directory
+  if ($dir -and ($dir.Name -ieq "message") -and $dir.Parent) {
+    return $dir.Parent.FullName
+  }
+  return $dir.FullName
+}
+
+function Find-DecryptedDbRoot([string[]]$Roots) {
+  foreach ($Root in $Roots) {
+    $dbs = Get-MessageDbs $Root
+    if ($dbs.Count -gt 0) {
+      return Resolve-MessageDbRoot $dbs[0]
+    }
+  }
+  return ""
+}
+
+function Invoke-WeChatDecryptBootstrap {
+  New-Item -ItemType Directory -Force -Path $ToolRoot | Out-Null
+  if (-not (Test-Path $WeChatDecryptDir)) {
+    $Git = Get-Command git -ErrorAction SilentlyContinue
+    if (-not $Git) {
+      throw "No decrypted DB found, and git is not available to install the local wechat-decrypt helper. Install Git, or manually place decrypted DBs under $ConfigDir\windows-wechat-decrypted."
+    }
+    Write-Host "Installing local helper: wechat-decrypt"
+    & $Git.Source clone --depth 1 $WeChatDecryptRepo $WeChatDecryptDir
+    if ($LASTEXITCODE -ne 0) { throw "Failed to clone wechat-decrypt helper." }
+  }
+
+  $Requirements = Join-Path $WeChatDecryptDir "requirements.txt"
+  if (Test-Path $Requirements) {
+    Write-Host "Installing wechat-decrypt Python dependencies..."
+    & $Python -m pip install -r $Requirements
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install wechat-decrypt dependencies." }
+  }
+
+  $MainPy = Join-Path $WeChatDecryptDir "main.py"
+  if (-not (Test-Path $MainPy)) {
+    throw "wechat-decrypt helper is missing main.py: $WeChatDecryptDir"
+  }
+
+  Write-Host "Running local WeChat decrypt helper. Keep Windows WeChat logged in. Administrator PowerShell may be required for key extraction."
+  Push-Location $WeChatDecryptDir
+  try {
+    & $Python $MainPy decrypt
+    if ($LASTEXITCODE -ne 0) { throw "wechat-decrypt returned exit code $LASTEXITCODE." }
+  } finally {
+    Pop-Location
+  }
+
+  $Found = Find-DecryptedDbRoot @($WeChatDecryptDir, (Join-Path $ConfigDir "windows-wechat-decrypted"), $ConfigDir)
+  if (-not $Found) {
+    throw "Decrypt helper finished, but no message_*.db / MSG*.db was found. Run Doctor Sherlockdogs.cmd and check the helper output under $WeChatDecryptDir."
+  }
+  return $Found
+}
+
 if (-not $DecryptedDbDir) {
   $DefaultDir = Join-Path $ConfigDir "windows-wechat-decrypted"
-  Write-Host "Choose the decrypted Windows WeChat DB directory containing message\message_*.db."
-  Write-Host "Default: $DefaultDir"
-  $InputDir = Read-Host "Decrypted WeChat DB directory"
-  if ($InputDir) { $DecryptedDbDir = $InputDir } else { $DecryptedDbDir = $DefaultDir }
+  $Existing = Find-DecryptedDbRoot @($DefaultDir, $WeChatDecryptDir, $ConfigDir)
+  if ($Existing) {
+    $DecryptedDbDir = $Existing
+  } elseif (-not $NoDecryptBootstrap) {
+    $DecryptedDbDir = Invoke-WeChatDecryptBootstrap
+  } else {
+    Write-Host "Choose the decrypted Windows WeChat DB directory containing message\message_*.db."
+    Write-Host "Default: $DefaultDir"
+    $InputDir = Read-Host "Decrypted WeChat DB directory"
+    if ($InputDir) { $DecryptedDbDir = $InputDir } else { $DecryptedDbDir = $DefaultDir }
+  }
 }
 
 $ResolvedDbDir = Resolve-Path $DecryptedDbDir -ErrorAction SilentlyContinue
 if (-not $ResolvedDbDir) { throw "Decrypted WeChat DB directory not found: $DecryptedDbDir" }
 $DecryptedDbDir = $ResolvedDbDir.Path
 
-$MessageDbs = @(Get-ChildItem -Path $DecryptedDbDir -Recurse -File -Include "message_*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue)
+$MessageDbs = Get-MessageDbs $DecryptedDbDir
 if ($MessageDbs.Count -eq 0) { throw "No decrypted WeChat message DB found under: $DecryptedDbDir" }
 
 New-Item -ItemType Directory -Force -Path $ConfigDir, $InboxDir, $ClippingDir, (Join-Path $ProjectDir "jobs\pending"), (Join-Path $ProjectDir "jobs\running"), (Join-Path $ProjectDir "jobs\done"), (Join-Path $ProjectDir "jobs\failed"), (Join-Path $ProjectDir "runs") | Out-Null

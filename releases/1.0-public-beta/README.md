@@ -1,8 +1,8 @@
 # Sherlockdogs 1.0 Public Beta
 
-Status: `MAC_READY_WINDOWS_DB_ADAPTER_READY_NEEDS_SMOKE`
+Status: `MAC_READY_WINDOWS_DB_BOOTSTRAP_READY_NEEDS_SMOKE`
 
-This is the small-scope Sherlockdogs 1.0 beta package. macOS is ready for public beta testing. Windows now includes the Mac-like WeChat DB adapter, but it still needs a real Windows decrypt/self-chat smoke before it can carry the same promise.
+This is the small-scope Sherlockdogs 1.0 beta package. macOS is ready for public beta testing. Windows now includes the Mac-like WeChat DB adapter and local decrypt bootstrap, but it still needs a real Windows self-chat smoke before it can carry the same promise.
 
 ## Choose Your Platform
 
@@ -23,8 +23,8 @@ Windows target:
   Phone WeChat -> forward to yourself -> local Windows WeChat DB -> Markdown/Codex
 
 Windows current:
-  DB adapter and Connect entry are packaged.
-  Full parity still needs real Windows key/decrypt + self-chat + Codex-card smoke evidence.
+  DB adapter, Connect entry, decrypt bootstrap, and evidence collector are packaged.
+  Full parity still needs real Windows self-chat + Codex-card smoke evidence.
 ```
 
 ## Install Guides
@@ -36,7 +36,7 @@ Windows current:
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
 - Mac WeChat Personal Mode is opt-in and depends on local Mac WeChat state.
-- Windows is not full public-beta ready until the packaged DB adapter is proven on a real Windows WeChat profile with decrypted DBs.
+- Windows is not full public-beta ready until the packaged DB adapter/bootstrap is proven on a real Windows WeChat profile.
 
 ## Evidence
 

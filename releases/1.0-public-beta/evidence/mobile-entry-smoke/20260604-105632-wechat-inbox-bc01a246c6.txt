@@ -13,13 +13,13 @@ task=#2 收藏记录下用于ai模型测算
 task_level=2
 title=微信图片剪藏
 
-article_dir=~/ObsidianVault_LOCAL/clipping/wechat-inbox/20260604-微信图片剪藏-97ae8ecd82
-raw_path=~/ObsidianVault_LOCAL/clipping/wechat-inbox/20260604-微信图片剪藏-97ae8ecd82/raw.md
-readme_path=~/ObsidianVault_LOCAL/clipping/wechat-inbox/20260604-微信图片剪藏-97ae8ecd82/README.md
+article_dir=<local-vault>/clipping/wechat-inbox/20260604-微信图片剪藏-97ae8ecd82
+raw_path=<local-vault>/clipping/wechat-inbox/20260604-微信图片剪藏-97ae8ecd82/raw.md
+readme_path=<local-vault>/clipping/wechat-inbox/20260604-微信图片剪藏-97ae8ecd82/README.md
 asset_count=0
 
 thread_id=019e908f-be8e-7da2-8a82-97cb22de1b09
 thread_name=剪藏｜微信图片剪藏
-thread_path=~/.codex/sessions/2026/06/04/rollout-2026-06-04T10-56-40-019e908f-be8e-7da2-8a82-97cb22de1b09.jsonl
+thread_path=<user-home>/.codex/sessions/2026/06/04/rollout-2026-06-04T10-56-40-019e908f-be8e-7da2-8a82-97cb22de1b09.jsonl
 prompt_path=<local-sherlockdogs-workdir>/runs/20260604-105639-20260604-105632-wechat-inbox-bc01a246c6/prompt.md
 thread_completed=True
