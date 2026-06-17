@@ -19,6 +19,7 @@ $WindowsRunEvents = Join-Path $ProjectDir "runs\windows-wechat-inbox.events.json
 $WindowsEvidenceDir = Join-Path $ProjectDir "evidence\windows-wechat-db-smoke"
 $WeChatDecryptDir = Join-Path $env:USERPROFILE ".sherlockdogs\tools\wechat-decrypt"
 $WindowsInboxScript = Join-Path $ProjectDir "scripts\windows_wechat_inbox.py"
+$DiagnosticsDir = Join-Path $env:USERPROFILE ".sherlockdogs\diagnostics"
 
 function Status-Path($p) { if ($p -and (Test-Path $p)) { "ok" } else { "missing" } }
 function Status-Module($m) { if (-not $Python) { "missing-python" } else { try { & $Python -c "import $m" *> $null; "ok" } catch { "missing" } } }
@@ -111,6 +112,7 @@ $lines = @(
   "task.codex-runner=$RunnerTaskState",
   "task.windows-wechat=$WeChatTaskState",
   "wechat_decrypt_helper=$WeChatDecryptDir status=$(Status-Path $WeChatDecryptDir)",
+  "wechat_decrypt_latest_log=$(Latest-File $DiagnosticsDir 'wechat-decrypt-*.log')",
   "windows_wechat_decrypted_dir=$WindowsWeChatDir status=$(Status-Path $WindowsWeChatDir)",
   "windows_wechat_message_dbs=$WeChatDbCount",
   "windows_receiver_file=$ReceiverFile status=$(Status-Path $ReceiverFile)",
