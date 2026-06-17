@@ -41,19 +41,20 @@ if (-not $SkipDeps) {
 "@ | Set-Content -Encoding UTF8 $ConfigFile
 
 if (-not $NoTasks) {
-  $InboxAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$PythonBin' '$ProjectDir\scripts\local_inbox.py' --inbox-dir '$InboxDir'"
+  $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
+  $InboxAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind local-inbox"
   $InboxTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 15) -RepetitionDuration (New-TimeSpan -Days 3650)
   Register-ScheduledTask -TaskName "SherlockdogsLocalInbox" -Action $InboxAction -Trigger $InboxTrigger -Description "Sherlockdogs local Inbox watcher" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsLocalInbox" -ErrorAction SilentlyContinue
 
-  $RunnerAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$PythonBin' '$ProjectDir\scripts\codex_runner.py' --limit 1 --codex-bin '$Codex' --cwd '$ClippingDir'"
+  $RunnerAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind codex-runner"
   $RunnerTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 30) -RepetitionDuration (New-TimeSpan -Days 3650)
   Register-ScheduledTask -TaskName "SherlockdogsCodexRunner" -Action $RunnerAction -Trigger $RunnerTrigger -Description "Sherlockdogs Codex runner" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsCodexRunner" -ErrorAction SilentlyContinue
 
   $WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
   if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) {
-    $WeChatAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$PythonBin' '$ProjectDir\scripts\windows_wechat_inbox.py' --db-root '$WindowsWeChatDir'"
+    $WeChatAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind windows-wechat"
     $WeChatTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
     Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $WeChatAction -Trigger $WeChatTrigger -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
     Start-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -ErrorAction SilentlyContinue

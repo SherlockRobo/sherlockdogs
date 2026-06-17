@@ -193,7 +193,8 @@ $ReceiverLines | Set-Content -Encoding UTF8 $ReceiverFile
 if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter dry-run failed." }
 
 if (-not $NoTask) {
-  $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$Python' '$ProjectDir\scripts\windows_wechat_inbox.py' --db-root '$DecryptedDbDir'"
+  $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
+  $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind windows-wechat"
   $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
   Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $Action -Trigger $Trigger -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -ErrorAction SilentlyContinue
