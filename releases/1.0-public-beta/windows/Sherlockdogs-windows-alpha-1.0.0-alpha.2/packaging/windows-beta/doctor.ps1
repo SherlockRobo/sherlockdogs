@@ -32,6 +32,23 @@ function Latest-File($p, $filter) {
   return "missing"
 }
 function Task-State($name) { $t = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue; if ($t) { $t.State } else { "not registered" } }
+function Task-LastResult($name) {
+  try {
+    $info = Get-ScheduledTaskInfo -TaskName $name -ErrorAction Stop
+    return $info.LastTaskResult
+  } catch {
+    return "missing"
+  }
+}
+function Task-LastRun($name) {
+  try {
+    $info = Get-ScheduledTaskInfo -TaskName $name -ErrorAction Stop
+    if ($info.LastRunTime) { return $info.LastRunTime.ToString("o") }
+    return "never"
+  } catch {
+    return "missing"
+  }
+}
 function Bin-Status($name) { if (Get-Command $name -ErrorAction SilentlyContinue) { "ok" } elseif (Test-Path (Join-Path $VenvDir "Scripts\$name.exe")) { "ok-venv" } else { "missing" } }
 function Receiver-Chats($path) {
   if (-not (Test-Path $path)) { return "missing" }
@@ -109,8 +126,14 @@ $lines = @(
   "binary.yt-dlp=$YtdlpStatus",
   "binary.ffprobe=$FfprobeStatus",
   "task.local-inbox=$LocalTaskState",
+  "task.local-inbox.last_result=$(Task-LastResult SherlockdogsLocalInbox)",
+  "task.local-inbox.last_run=$(Task-LastRun SherlockdogsLocalInbox)",
   "task.codex-runner=$RunnerTaskState",
+  "task.codex-runner.last_result=$(Task-LastResult SherlockdogsCodexRunner)",
+  "task.codex-runner.last_run=$(Task-LastRun SherlockdogsCodexRunner)",
   "task.windows-wechat=$WeChatTaskState",
+  "task.windows-wechat.last_result=$(Task-LastResult SherlockdogsWindowsWeChatInbox)",
+  "task.windows-wechat.last_run=$(Task-LastRun SherlockdogsWindowsWeChatInbox)",
   "wechat_decrypt_helper=$WeChatDecryptDir status=$(Status-Path $WeChatDecryptDir)",
   "wechat_decrypt_latest_log=$(Latest-File $DiagnosticsDir 'wechat-decrypt-*.log')",
   "windows_wechat_decrypted_dir=$WindowsWeChatDir status=$(Status-Path $WindowsWeChatDir)",

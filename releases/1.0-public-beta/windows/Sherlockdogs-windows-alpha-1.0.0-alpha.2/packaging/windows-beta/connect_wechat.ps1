@@ -183,6 +183,7 @@ if (-not $NoTask) {
   $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$Python' '$ProjectDir\scripts\windows_wechat_inbox.py' --db-root '$DecryptedDbDir'"
   $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
   Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $Action -Trigger $Trigger -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
+  Start-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -ErrorAction SilentlyContinue
 }
 
 Write-Host "Sherlockdogs Windows WeChat adapter connected."
