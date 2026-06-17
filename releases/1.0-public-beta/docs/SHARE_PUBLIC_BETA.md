@@ -1,13 +1,13 @@
 # Share Sherlockdogs 1.0 Small Beta
 
-Generated: 2026-06-17T10:57:41+0800
+Generated: 2026-06-17T12:06:15+0800
 
 ## Send these folders
 
 | Tester platform | Folder |
 |---|---|
-| Mac | `<local-sherlockdogs-workdir>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
-| Windows | `<local-sherlockdogs-workdir>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
+| Mac | `<release-root>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
+| Windows | `<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
 
 Send the whole folder as-is. Do not send only the top-level command files.
 

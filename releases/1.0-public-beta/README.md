@@ -1,53 +1,52 @@
-# Sherlockdogs 1.0 Public Beta
+# Sherlockdogs 1.0 Small Beta Builds
 
-Status: `MAC_READY_WINDOWS_DB_BOOTSTRAP_READY_NEEDS_SMOKE`
+Generated: 2026-06-17T12:06:15+0800
 
-This is the small-scope Sherlockdogs 1.0 beta package. macOS is ready for public beta testing. Windows now includes the Mac-like WeChat DB adapter and local decrypt bootstrap, but it still needs a real Windows self-chat smoke before it can carry the same promise.
+## Builds
 
-## Choose Your Platform
+| Platform | Version | Path | Runtime status |
+|---|---:|---|---|
+| macOS | 1.0.0-alpha.3 | `<release-root>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` | release gate passed on macOS |
+| Windows | 1.0.0-alpha.2 | `<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` | static gate passed; Windows WeChat DB smoke PENDING |
+| Phone entry | 1.0 gate | `dist/evidence/mobile-entry-smoke` | mobile entry smoke PASS |
 
-| Platform | Folder | First Command |
-|---|---|---|
-| macOS | [`macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/`](macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) | `Sherlockdogs Start.app` |
-| Windows | [`windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/`](windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) | `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd` |
+## Test entry
 
-Use the whole platform folder. Open `START_HERE.md` first.
+- macOS: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.app`, then optional best path: `Sherlockdogs Connect WeChat.app`
+- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd`. It can bind an existing decrypted DB folder or try the local decrypt bootstrap. Windows is not Mac-equivalent until Windows WeChat DB smoke is PASS.
+- Read first: `START_HERE.md`
 
-## What You Are Testing
+## Support entries
 
-```text
-macOS:
-  Phone WeChat -> forward to yourself -> local Mac WeChat DB -> Markdown/Codex
+- Optional Inbox/sync fallback helper: `Configure Nutstore Inbox.command` / `Configure Nutstore Inbox.cmd`
+- Mac Personal Mode: `Sherlockdogs Connect WeChat.app`
+- Mac preferred launchers: `Sherlockdogs Start.app`, `Sherlockdogs Doctor.app`, `Sherlockdogs Open Output.app`
+- Windows CI smoke template: `dist/ci/windows-runtime-smoke.yml`
+- Windows WeChat DB simulated CI template: `dist/ci/windows-wechat-db-sim-smoke.yml`
+- GitHub Actions workflow: `.github/workflows/windows-runtime-smoke.yml`
+- GitHub Actions WeChat DB simulated workflow: `.github/workflows/windows-wechat-db-sim-smoke.yml`
+- Open output folder: `Sherlockdogs Open Output.app` / `Open Sherlockdogs Output.cmd`
+- Generate diagnostics: `Sherlockdogs Doctor.app` / `Doctor Sherlockdogs.cmd`
+- User picture guide: `INSTALL_GUIDE_FOR_USERS.png`
+- iOS Shortcut guide: `IOS_SHORTCUTS_GUIDE.md`
+- AI/support guide: `INSTALL_GUIDE_FOR_AI.md`
+- Troubleshooting: `TROUBLESHOOTING.md`
+- Phone setup: `PHONE_NUTSTORE_SETUP.md`
+- One-command auto release: `packaging/public_beta_auto.sh`
+- Core local release audit: `packaging/public_beta_go.sh`
+- Quick status: `packaging/public_beta_status.sh`
+- GitHub runner preflight: `packaging/public_beta_github_preflight.sh`
+- GitHub smoke repo bootstrap: `packaging/public_beta_github_bootstrap.sh`
+- Hard publish gate: `packaging/public_beta_require_ready.sh`
+- Optional GitHub evidence import: `packaging/import_github_windows_runtime_evidence.sh`
+- Operator guide: `dist/PUBLIC_BETA_OPERATOR.md`
 
-Windows target:
-  Phone WeChat -> forward to yourself -> local Windows WeChat DB -> Markdown/Codex
+## Privacy boundary
 
-Windows current:
-  DB adapter, Connect entry, decrypt bootstrap, and evidence collector are packaged.
-  Full parity still needs real Windows self-chat + Codex-card smoke evidence.
-```
+Mac and Windows are both centered on the phone WeChat self-chat path. Mac uses opt-in WeChat Personal Mode after the user runs `Sherlockdogs Connect WeChat.app`; Windows uses `Sherlockdogs Connect WeChat.cmd` to bind or prepare local Windows WeChat DBs. Inbox/sync folders remain optional fallback paths only. Sherlockdogs does not run a Sherlockdogs relay service.
 
-## Install Guides
+Obsidian is recommended as the Markdown library reader, but is not required for saving clippings or creating Codex cards.
 
-![Mac install guide](macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png)
+## No archive policy
 
-## Known Beta Notes
-
-- First launch may spend a few minutes installing Python dependencies.
-- macOS may require right-click -> Open.
-- Mac WeChat Personal Mode is opt-in and depends on local Mac WeChat state.
-- Windows is not full public-beta ready until the packaged DB adapter/bootstrap is proven on a real Windows WeChat profile.
-
-## Evidence
-
-| Evidence | Path |
-|---|---|
-| Public beta decision | [`docs/PUBLIC_BETA_DECISION.json`](docs/PUBLIC_BETA_DECISION.json) |
-| Share note | [`docs/SHARE_PUBLIC_BETA.md`](docs/SHARE_PUBLIC_BETA.md) |
-| Windows runtime smoke | [`evidence/windows-runtime-smoke/`](evidence/windows-runtime-smoke/) proves Windows runtime packaging, not WeChat DB parity |
-| Windows WeChat DB smoke | Pending; required before Windows can be called Mac-parity ready |
-| Mobile entry smoke | [`evidence/mobile-entry-smoke/`](evidence/mobile-entry-smoke/) |
-
-## No Archives
-
-This beta intentionally does not publish zip, dmg, tar, or other archive files.
+No zip/dmg/tar is generated by this build. Share the generated folder directly.

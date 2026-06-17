@@ -1,0 +1,16 @@
+mac_dir=<release-root>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3
+windows_dir=<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2
+readiness=<release-root>/dist/PUBLIC_BETA_READINESS.md
+share=<release-root>/dist/SHARE_PUBLIC_BETA.md
+operator_guide=<release-root>/dist/PUBLIC_BETA_OPERATOR.md
+decision_json=<release-root>/dist/PUBLIC_BETA_DECISION.json
+auto_release=<release-root>/packaging/public_beta_auto.sh
+github_preflight=<release-root>/packaging/public_beta_github_preflight.sh
+github_bootstrap=<release-root>/packaging/public_beta_github_bootstrap.sh
+windows_ci_template=<release-root>/dist/ci/windows-runtime-smoke.yml
+windows_wechat_db_sim_ci_template=<release-root>/dist/ci/windows-wechat-db-sim-smoke.yml
+windows_runtime_evidence_dir=<release-root>/dist/evidence/windows-runtime-smoke
+windows_wechat_db_evidence_dir=<release-root>/dist/evidence/windows-wechat-db-smoke
+mobile_entry_evidence_dir=<release-root>/dist/evidence/mobile-entry-smoke
+built_at=2026-06-17T12:06:15+0800
+no_archive=true

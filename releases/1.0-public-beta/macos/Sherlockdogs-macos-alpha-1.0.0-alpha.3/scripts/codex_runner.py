@@ -27,7 +27,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from sdogs_paths import CLIPPING_DIR, PROJECT_DIR as DEFAULT_PROJECT_DIR  # noqa: E402
+from sdogs_paths import CLIPPING_DIR, PROJECT_DIR as DEFAULT_PROJECT_DIR, VAULT_DIR  # noqa: E402
 
 PROJECT_DIR = DEFAULT_PROJECT_DIR
 PENDING_DIR = PROJECT_DIR / "jobs" / "pending"
@@ -114,6 +114,10 @@ def render_prompt(job: dict[str, Any]) -> str:
         .replace("{{JOB_URL}}", shlex.quote(str(job.get("url", ""))))
         .replace("{{JOB_TASK}}", shlex.quote(str(job.get("task", ""))))
         .replace("{{JOB_ID}}", shlex.quote(str(job.get("job_id", ""))))
+        .replace("{{PROJECT_DIR}}", shlex.quote(str(PROJECT_DIR)))
+        .replace("{{VAULT_DIR}}", shlex.quote(str(VAULT_DIR)))
+        .replace("{{CLIPPING_DIR}}", shlex.quote(str(CLIPPING_DIR)))
+        .replace("{{CAPTURE_SCRIPT}}", shlex.quote(str(capture_script_for(job))))
     )
     return AUTOMATION_POLICY + rendered
 

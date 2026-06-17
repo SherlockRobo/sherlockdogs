@@ -1,6 +1,6 @@
 # Sherlockdogs Public Beta Decision
 
-Generated: 2026-06-17T10:58:29+0800
+Generated: 2026-06-17T12:06:15+0800
 
 ## Decision
 
@@ -20,11 +20,11 @@ decision_status=NEEDS_WINDOWS_WECHAT_DB_SMOKE
 mac_public_beta_ready=true
 windows_package_ready=true
 windows_runtime_verified=true
-windows_runtime_evidence=<local-sherlockdogs-workdir>/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt
+windows_runtime_evidence=<release-root>/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt
 windows_wechat_db_verified=false
 windows_wechat_db_evidence=missing
 mobile_entry_verified=true
-mobile_entry_evidence=<local-sherlockdogs-workdir>/dist/evidence/mobile-entry-smoke/20260604-105632-wechat-inbox-bc01a246c6.txt
+mobile_entry_evidence=<release-root>/dist/evidence/mobile-entry-smoke/20260604-105632-wechat-inbox-bc01a246c6.txt
 full_public_beta_ready=false
 ```
 

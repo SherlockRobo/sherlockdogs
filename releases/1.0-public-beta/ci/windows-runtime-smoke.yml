@@ -1,4 +1,4 @@
-name: Sherlockdogs Windows WeChat DB Sim Smoke
+name: Sherlockdogs Windows Runtime Smoke
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
       - "templates/**"
 
 jobs:
-  windows-wechat-db-sim-smoke:
+  windows-runtime-smoke:
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -24,16 +24,16 @@ jobs:
         shell: bash
         run: packaging/windows-beta/release_check.sh
 
-      - name: Run Windows WeChat DB simulated smoke
+      - name: Run Windows runtime smoke
         shell: pwsh
         run: |
-          packaging/windows-beta/windows_wechat_db_sim_smoke.ps1
+          packaging/windows-beta/runtime_smoke.ps1
 
-      - name: Upload Windows WeChat DB simulated evidence
+      - name: Upload Windows runtime evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sherlockdogs-windows-wechat-db-sim-smoke
+          name: sherlockdogs-windows-runtime-smoke
           path: |
-            evidence/windows-wechat-db-sim-smoke/**
+            evidence/windows-runtime-smoke/**
           if-no-files-found: warn
