@@ -8,6 +8,7 @@ $ProjectDir = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $ConfigFile = Join-Path $env:USERPROFILE ".sherlockdogs\config.ps1"
 $ConnectScript = Join-Path $PSScriptRoot "connect_wechat.ps1"
 $CollectScript = Join-Path $PSScriptRoot "collect_windows_wechat_evidence.ps1"
+$DoctorScript = Join-Path $PSScriptRoot "doctor.ps1"
 
 Write-Host "Sherlockdogs Windows WeChat smoke"
 Write-Host "1. Keep Windows WeChat logged in."
@@ -38,10 +39,17 @@ Read-Host "Press Enter after Windows WeChat receives token $SmokeToken"
 $Deadline = (Get-Date).AddMinutes($TimeoutMinutes)
 $LastOutput = ""
 while ((Get-Date) -lt $Deadline) {
-  $Output = & $CollectScript -RequireToken $SmokeToken 2>&1
+  $CollectExit = 1
+  try {
+    $Output = & $CollectScript -RequireToken $SmokeToken 2>&1
+    $CollectExit = $LASTEXITCODE
+  } catch {
+    $Output = @($_.Exception.Message)
+    $CollectExit = 1
+  }
   $LastOutput = ($Output | Out-String)
   Write-Host $LastOutput
-  if ($LASTEXITCODE -eq 0) {
+  if ($CollectExit -eq 0) {
     Write-Host "Windows WeChat DB smoke PASS."
     exit 0
   }
@@ -50,4 +58,12 @@ while ((Get-Date) -lt $Deadline) {
 }
 
 Write-Host $LastOutput
+if (Test-Path $DoctorScript) {
+  Write-Host "Collecting Doctor report after timeout..."
+  try {
+    & $DoctorScript -Report
+  } catch {
+    Write-Host "Doctor report failed: $($_.Exception.Message)"
+  }
+}
 throw "Windows WeChat DB smoke did not pass within $TimeoutMinutes minutes. Run Doctor Sherlockdogs.cmd and send the latest diagnostics."
