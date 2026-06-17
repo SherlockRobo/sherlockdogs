@@ -1,7 +1,9 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-powershell -NoProfile -ExecutionPolicy Bypass -File "packaging\windows-beta\collect_windows_wechat_evidence.ps1"
+set "SCRIPT=%~dp0packaging\windows-beta\collect_windows_wechat_evidence.ps1"
+if not exist "%SCRIPT%" set "SCRIPT=%~dp0collect_windows_wechat_evidence.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%SCRIPT%"
 if errorlevel 1 goto fail
 echo Windows WeChat DB smoke evidence generated.
 pause
