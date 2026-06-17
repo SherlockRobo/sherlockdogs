@@ -217,6 +217,19 @@ def message_id(db_path: Path, table: str, ts: int, local_type: int, raw: str) ->
     return hashlib.sha1(body.encode("utf-8", errors="replace")).hexdigest()
 
 
+def db_table_state_key(db_path: Path | str, table: str) -> str:
+    return f"{Path(db_path).name}::{table}"
+
+
+def message_state_keys(msg: dict[str, Any]) -> list[str]:
+    keys = [
+        str(msg.get("chat_id") or ""),
+        str(msg.get("table") or ""),
+        db_table_state_key(str(msg.get("db") or ""), str(msg.get("table") or "")),
+    ]
+    return [key for key in keys if key]
+
+
 def normalized_table_id(table: str) -> str:
     return re.sub(r"^msg[_-]?", "", table or "", flags=re.IGNORECASE)
 
@@ -325,7 +338,8 @@ def fetch_messages(root: Path, since_ts_by_chat: dict[str, int], limit: int, rec
                 add_db_error(errors, db_path, "tables", exc)
                 continue
             for table in tables:
-                since_ts = int(since_ts_by_chat.get(table) or (time.time() - POLL_LOOKBACK_SECONDS))
+                shard_key = db_table_state_key(db_path, table)
+                since_ts = int(since_ts_by_chat.get(shard_key) or since_ts_by_chat.get(table) or (time.time() - POLL_LOOKBACK_SECONDS))
                 messages.extend(read_messages_from_table(conn, db_path, table, since_ts, limit, receiver_set, errors))
         finally:
             conn.close()
@@ -583,8 +597,8 @@ def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receive
     results = []
     for group in groups:
         for msg in group:
-            last_ts_by_chat[msg["chat_id"]] = max(int(last_ts_by_chat.get(msg["chat_id"], 0)), int(msg["timestamp"]))
-            last_ts_by_chat[msg["table"]] = max(int(last_ts_by_chat.get(msg["table"], 0)), int(msg["timestamp"]))
+            for key in message_state_keys(msg):
+                last_ts_by_chat[key] = max(int(last_ts_by_chat.get(key, 0)), int(msg["timestamp"]))
             seen.add(msg["id"])
         task = best_task_for_group(group, tasks, state)
         if should_use_bundle(group):
@@ -616,8 +630,8 @@ def run_once(root: Path, limit: int, dry_run: bool, settle_seconds: int, receive
             append_event(event)
 
     for msg in messages:
-        last_ts_by_chat[msg["chat_id"]] = max(int(last_ts_by_chat.get(msg["chat_id"], 0)), int(msg["timestamp"]))
-        last_ts_by_chat[msg["table"]] = max(int(last_ts_by_chat.get(msg["table"], 0)), int(msg["timestamp"]))
+        for key in message_state_keys(msg):
+            last_ts_by_chat[key] = max(int(last_ts_by_chat.get(key, 0)), int(msg["timestamp"]))
         seen.add(msg["id"])
     state["seen_message_ids"] = sorted(seen)[-1000:]
     state["last_ts_by_chat"] = last_ts_by_chat

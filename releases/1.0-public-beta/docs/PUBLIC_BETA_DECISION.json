@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T17:54:20+0800",
+  "generated_at": "2026-06-17T18:01:56+0800",
   "decision_status": "NEEDS_WINDOWS_WECHAT_DB_SMOKE",
   "mac_public_beta_ready": true,
   "windows_package_ready": true,
