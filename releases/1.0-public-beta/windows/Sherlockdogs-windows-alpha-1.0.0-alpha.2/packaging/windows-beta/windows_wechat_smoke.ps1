@@ -6,14 +6,22 @@ $ErrorActionPreference = "Stop"
 
 $ProjectDir = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $ConfigFile = Join-Path $env:USERPROFILE ".sherlockdogs\config.ps1"
+$InstallScript = Join-Path $PSScriptRoot "install.ps1"
 $ConnectScript = Join-Path $PSScriptRoot "connect_wechat.ps1"
 $CollectScript = Join-Path $PSScriptRoot "collect_windows_wechat_evidence.ps1"
 $DoctorScript = Join-Path $PSScriptRoot "doctor.ps1"
 
 Write-Host "Sherlockdogs Windows WeChat smoke"
 Write-Host "1. Keep Windows WeChat logged in."
-Write-Host "2. This will connect the local WeChat DB watcher."
+Write-Host "2. This will make sure Sherlockdogs is installed, then connect the local WeChat DB watcher."
 Write-Host "3. Then send the generated '#2' smoke text from phone WeChat to yourself."
+
+if (-not (Test-Path $ConfigFile)) {
+  if (-not (Test-Path $InstallScript)) { throw "Install script missing: $InstallScript" }
+  Write-Host "Sherlockdogs config missing; running install first."
+  & $InstallScript
+  if ($LASTEXITCODE -ne 0) { throw "Install Sherlockdogs failed." }
+}
 
 & $ConnectScript -Receivers $Receivers
 if ($LASTEXITCODE -ne 0) { throw "Connect WeChat failed." }
