@@ -6,14 +6,14 @@ Sherlockdogs turns links, text, images, and local files from your phone or deskt
 
 ## Public Beta
 
-Status: `MAC_READY_WINDOWS_DB_NOT_READY`
+Status: `MAC_READY_WINDOWS_DB_ADAPTER_READY_NEEDS_SMOKE`
 
 | Platform | Start Here |
 |---|---|
 | macOS | [Download the macOS beta folder](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) |
-| Windows | Not ready for the same product promise; DB adapter is pending |
+| Windows | [Windows alpha folder](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) includes the WeChat DB adapter, but still needs real Windows decrypt/self-chat smoke |
 
-Open the whole macOS folder, then read `START_HERE.md`.
+Open the whole platform folder, then read `START_HERE.md`.
 
 ![Mac install guide](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/INSTALL_GUIDE_FOR_USERS.png)
 
@@ -22,18 +22,18 @@ Open the whole macOS folder, then read `START_HERE.md`.
 | Platform | Phone Entry | Desktop Adapter |
 |---|---|---|
 | macOS | Forward to yourself in WeChat, or use phone sharing | `Sherlockdogs Connect WeChat.app` reads local Mac WeChat DB after opt-in |
-| Windows | Pending | Windows WeChat DB adapter is not implemented yet |
+| Windows | Target is the same: forward to yourself in WeChat | `Sherlockdogs Connect WeChat.cmd` reads a decrypted local Windows WeChat DB directory; decrypt/key extraction still needs Windows-machine smoke |
 
 | Platform | Start | Open Output | Diagnose |
 |---|---|---|---|
 | macOS | `Sherlockdogs Start.app` | `Sherlockdogs Open Output.app` | `Sherlockdogs Doctor.app` |
-| Windows | Not public-beta ready | Not public-beta ready | Not public-beta ready |
+| Windows | `Sherlockdogs Start.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` |
 
 ## What It Does
 
 - Accepts links, text, images, and media references from phone sharing.
 - On macOS, optional WeChat Personal Mode can capture items forwarded to your own WeChat after explicit local setup.
-- Windows parity is not done: the current Windows folder does not capture WeChat self-chat and should not be marketed as the beta product.
+- On Windows, the alpha includes the Mac-like DB adapter path, but full parity is not done until a real Windows machine proves key/decrypt, self-chat receive, and Codex card creation.
 - Writes auditable Markdown artifacts into your chosen local vault.
 - Creates Codex cards for items marked with `#` or `#2`.
 - Keeps user content local by default.
@@ -56,7 +56,7 @@ Open the whole macOS folder, then read `START_HERE.md`.
 - macOS may require right-click -> Open on the first launch.
 - First launch may spend a few minutes installing Python dependencies.
 - macOS WeChat Personal Mode is opt-in and local-only.
-- Windows remains pending until it can match the Mac path: phone WeChat -> self-chat -> local desktop WeChat DB -> Markdown/Codex.
+- Windows should not be marketed as fully ready until it passes the same path: phone WeChat -> self-chat -> local desktop WeChat DB -> Markdown/Codex.
 
 ## Privacy
 

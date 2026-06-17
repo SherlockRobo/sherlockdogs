@@ -3,22 +3,20 @@
 ## 30-second path
 
 1. Open `INSTALL_GUIDE_FOR_USERS.png`.
-2. Install/sign in to a sync drive that both iPhone and Windows can see, such as OneDrive, iCloud Drive for Windows, Google Drive, Syncthing, NAS, or Nutstore.
+2. Prepare a decrypted local Windows WeChat DB folder that contains `message\message_*.db`.
 3. Double-click `Sherlockdogs Start.cmd`.
-4. Create the phone share action from `IOS_SHORTCUTS_GUIDE.md`.
-   Or import `shortcuts/Send-to-Sherlockdogs-Inbox.shortcut` as the beta shortcut seed.
-5. Nutstore users can double-click `Configure Nutstore Inbox.cmd`; other sync providers should point Sherlockdogs at their local synced Inbox.
-6. Send links/files from your phone through the iOS Shortcut to your selected Inbox.
-7. Open results with `Open Sherlockdogs Output.cmd`.
-8. If anything fails, run `Doctor Sherlockdogs.cmd`.
+4. Double-click `Sherlockdogs Connect WeChat.cmd`.
+5. Forward one test item to yourself in phone WeChat; Windows WeChat must receive it.
+6. Open results with `Open Sherlockdogs Output.cmd`.
+7. If anything fails, run `Doctor Sherlockdogs.cmd`.
 
 ## What this beta does
 
-- Uses iOS Shortcut/phone share plus your own local or synced Inbox.
-- Saves and processes clippings locally after Nutstore sync.
+- Uses Windows WeChat local DB adapter for the Mac-like self-chat path.
+- Saves and processes clippings locally after Windows WeChat receives the self-chat item and the local DB adapter reads it.
 - Recommends Obsidian as the local Markdown library reader, but does not require it.
 - Can trigger Codex tasks through `#1/#2/#3/#4/#5`.
-- Does not read your Windows personal WeChat database.
+- Reads decrypted local Windows WeChat DB files after explicit Connect.
 - Does not upload clipping content to a Sherlockdogs relay service by default.
 
 ## Command guide
@@ -26,14 +24,15 @@
 | Command | Use it when |
 |---|---|
 | `Sherlockdogs Start.cmd` | First install |
-| `Configure Nutstore Inbox.cmd` | Optional helper: switch Inbox to your own Nutstore synced folder |
+| `Sherlockdogs Connect WeChat.cmd` | Bind decrypted Windows WeChat DB folder and start self-chat watcher |
+| `Configure Nutstore Inbox.cmd` | Optional experimental fallback: switch Inbox to your own synced folder |
 | `Open Sherlockdogs Output.cmd` | View saved Markdown/results |
 | `Doctor Sherlockdogs.cmd` | Generate diagnostics |
 | `Uninstall Sherlockdogs.cmd` | Remove background tasks |
 | `INSTALL_GUIDE_FOR_USERS.png` | User-facing picture guide |
 | `INSTALL_GUIDE_FOR_USERS.svg` | Editable picture source |
-| `IOS_SHORTCUTS_GUIDE.md` | Phone share action guide |
-| `shortcuts/Send-to-Sherlockdogs-Inbox.shortcut` | Importable iOS Shortcut seed |
+| `IOS_SHORTCUTS_GUIDE.md` | Optional fallback guide, not the main Windows product path |
+| `shortcuts/Send-to-Sherlockdogs-Inbox.shortcut` | Optional iOS Shortcut seed |
 | `INSTALL_GUIDE_FOR_AI.md` | AI/support install guide |
 | `WINDOWS_PACKAGE_BRIEF.md` | Windows package size, entrypoints, and system changes |
 | `PRODUCT_INTRO_AND_RISK_DISCLOSURE.md` | Product intro, open-source components, and risk disclosure |

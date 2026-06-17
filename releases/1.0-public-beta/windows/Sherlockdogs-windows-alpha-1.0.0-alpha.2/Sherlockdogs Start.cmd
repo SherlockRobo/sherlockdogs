@@ -7,7 +7,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
 if errorlevel 1 goto fail
 powershell -NoProfile -ExecutionPolicy Bypass -File doctor.ps1 -Report
 if errorlevel 1 goto fail
-echo Sherlockdogs installed. Next: open IOS_SHORTCUTS_GUIDE.md and bind a phone share action to your synced Inbox.
+echo Sherlockdogs installed. Next: run "Sherlockdogs Connect WeChat.cmd" after preparing your decrypted Windows WeChat DB folder.
 pause
 exit /b 0
 :fail

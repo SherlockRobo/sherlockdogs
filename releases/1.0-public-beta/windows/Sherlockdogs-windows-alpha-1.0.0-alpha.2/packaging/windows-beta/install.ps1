@@ -48,6 +48,13 @@ if (-not $NoTasks) {
   $RunnerAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$PythonBin' '$ProjectDir\scripts\codex_runner.py' --limit 1 --codex-bin '$Codex' --cwd '$ClippingDir'"
   $RunnerTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 30) -RepetitionDuration (New-TimeSpan -Days 3650)
   Register-ScheduledTask -TaskName "SherlockdogsCodexRunner" -Action $RunnerAction -Trigger $RunnerTrigger -Description "Sherlockdogs Codex runner" -Force | Out-Null
+
+  $WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
+  if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) {
+    $WeChatAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `. '$ConfigFile'; `$env:PYTHONDONTWRITEBYTECODE='1'; & '$PythonBin' '$ProjectDir\scripts\windows_wechat_inbox.py' --db-root '$WindowsWeChatDir'"
+    $WeChatTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
+    Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $WeChatAction -Trigger $WeChatTrigger -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
+  }
 }
 
 Write-Host "Sherlockdogs Windows alpha installed."
@@ -55,5 +62,6 @@ Write-Host "Inbox: $InboxDir"
 Write-Host "Clipping: $ClippingDir"
 Write-Host "Python: $PythonBin"
 Write-Host "Config: $ConfigFile"
+if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { Write-Host "Windows WeChat DB: $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR" }
 if ($NoTasks) { Write-Host "Scheduled Tasks generated: skipped (--NoTasks)." }
 if ($SkipDeps) { Write-Host "Dependency install skipped (--SkipDeps)." }

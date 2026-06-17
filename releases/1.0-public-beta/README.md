@@ -1,17 +1,17 @@
 # Sherlockdogs 1.0 Public Beta
 
-Status: `MAC_READY_WINDOWS_DB_NOT_READY`
+Status: `MAC_READY_WINDOWS_DB_ADAPTER_READY_NEEDS_SMOKE`
 
-This is the small-scope macOS public beta package for Sherlockdogs 1.0. Windows is not ready for the same product promise yet.
+This is the small-scope Sherlockdogs 1.0 beta package. macOS is ready for public beta testing. Windows now includes the Mac-like WeChat DB adapter, but it still needs a real Windows decrypt/self-chat smoke before it can carry the same promise.
 
 ## Choose Your Platform
 
 | Platform | Folder | First Command |
 |---|---|---|
 | macOS | [`macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/`](macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) | `Sherlockdogs Start.app` |
-| Windows | Not ready | Windows WeChat DB adapter pending |
+| Windows | [`windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/`](windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) | `Sherlockdogs Start.cmd`, then `Sherlockdogs Connect WeChat.cmd` |
 
-Use the whole macOS folder. Open `START_HERE.md` first.
+Use the whole platform folder. Open `START_HERE.md` first.
 
 ## What You Are Testing
 
@@ -23,7 +23,8 @@ Windows target:
   Phone WeChat -> forward to yourself -> local Windows WeChat DB -> Markdown/Codex
 
 Windows current:
-  Not ready. The existing Windows folder is only an Inbox/Shortcut experiment.
+  DB adapter and Connect entry are packaged.
+  Full parity still needs real Windows key/decrypt + self-chat + Codex-card smoke evidence.
 ```
 
 ## Install Guides
@@ -35,7 +36,7 @@ Windows current:
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
 - Mac WeChat Personal Mode is opt-in and depends on local Mac WeChat state.
-- Windows is not public-beta ready because it does not read Windows WeChat DB or capture WeChat self-chat like macOS.
+- Windows is not full public-beta ready until the packaged DB adapter is proven on a real Windows WeChat profile with decrypted DBs.
 
 ## Evidence
 
@@ -43,7 +44,8 @@ Windows current:
 |---|---|
 | Public beta decision | [`docs/PUBLIC_BETA_DECISION.json`](docs/PUBLIC_BETA_DECISION.json) |
 | Share note | [`docs/SHARE_PUBLIC_BETA.md`](docs/SHARE_PUBLIC_BETA.md) |
-| Windows runtime smoke | [`evidence/windows-runtime-smoke/`](evidence/windows-runtime-smoke/) only proves the old Inbox runtime, not WeChat DB parity |
+| Windows runtime smoke | [`evidence/windows-runtime-smoke/`](evidence/windows-runtime-smoke/) proves Windows runtime packaging, not WeChat DB parity |
+| Windows WeChat DB smoke | Pending; required before Windows can be called Mac-parity ready |
 | Mobile entry smoke | [`evidence/mobile-entry-smoke/`](evidence/mobile-entry-smoke/) |
 
 ## No Archives

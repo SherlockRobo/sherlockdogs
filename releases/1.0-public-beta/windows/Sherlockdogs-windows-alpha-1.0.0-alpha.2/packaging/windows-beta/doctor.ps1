@@ -12,6 +12,7 @@ $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -E
 $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -ErrorAction SilentlyContinue).Source }
 $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else { Join-Path $env:USERPROFILE ".sherlockdogs\venv" }
 $Manifest = Join-Path $ProjectDir "packaging\windows-beta\manifest.json"
+$WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
 
 function Status-Path($p) { if ($p -and (Test-Path $p)) { "ok" } else { "missing" } }
 function Status-Module($m) { if (-not $Python) { "missing-python" } else { try { & $Python -c "import $m" *> $null; "ok" } catch { "missing" } } }
@@ -30,7 +31,9 @@ $YtdlpStatus = Bin-Status yt-dlp
 $FfprobeStatus = Bin-Status ffprobe
 $LocalTaskState = Task-State SherlockdogsLocalInbox
 $RunnerTaskState = Task-State SherlockdogsCodexRunner
+$WeChatTaskState = Task-State SherlockdogsWindowsWeChatInbox
 $FailedCount = Count-Json (Join-Path $ProjectDir 'jobs\failed')
+$WeChatDbCount = if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) { @(Get-ChildItem -Path $WindowsWeChatDir -Recurse -File -Include "message_*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue).Count } else { 0 }
 
 $lines = @(
   "Sherlockdogs doctor",
@@ -53,6 +56,9 @@ $lines = @(
   "binary.ffprobe=$FfprobeStatus",
   "task.local-inbox=$LocalTaskState",
   "task.codex-runner=$RunnerTaskState",
+  "task.windows-wechat=$WeChatTaskState",
+  "windows_wechat_decrypted_dir=$WindowsWeChatDir status=$(Status-Path $WindowsWeChatDir)",
+  "windows_wechat_message_dbs=$WeChatDbCount",
   "pending=$(Count-Json (Join-Path $ProjectDir 'jobs\pending'))",
   "running=$(Count-Json (Join-Path $ProjectDir 'jobs\running'))",
   "done=$(Count-Json (Join-Path $ProjectDir 'jobs\done'))",
@@ -67,6 +73,13 @@ if (($RequestsStatus -ne "ok") -or ($Bs4Status -ne "ok") -or ($MarkdownifyStatus
 if ($FfprobeStatus -eq "missing") { $Advice += "- Video metadata may be limited until ffprobe/ffmpeg is installed." }
 if (($LocalTaskState -eq "not registered") -or ($RunnerTaskState -eq "not registered")) {
   $Advice += "- Background tasks are not registered; run Install Sherlockdogs.cmd again."
+}
+if (-not $WindowsWeChatDir) {
+  $Advice += "- Windows WeChat self-chat is not connected; run Sherlockdogs Connect WeChat.cmd after preparing decrypted local WeChat DBs."
+} elseif ($WeChatDbCount -eq 0) {
+  $Advice += "- Windows WeChat directory has no decrypted message DBs; check the selected directory."
+} elseif ($WeChatTaskState -eq "not registered") {
+  $Advice += "- Windows WeChat DB directory is configured but watcher task is missing; run Sherlockdogs Connect WeChat.cmd again."
 }
 if ($FailedCount -ne 0) { $Advice += "- Failed jobs exist; open Diagnostics and send the latest doctor report." }
 $lines += "next_steps:"

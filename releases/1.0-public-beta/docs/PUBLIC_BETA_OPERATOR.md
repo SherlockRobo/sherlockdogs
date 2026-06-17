@@ -88,14 +88,14 @@ Hard gate for publish scripts:
 packaging/public_beta_require_ready.sh
 ```
 
-It exits non-zero unless `dist/PUBLIC_BETA_DECISION.json` says `READY_FOR_PUBLIC_BETA`. For the current public repository status, Windows parity is intentionally blocked until a Windows WeChat DB adapter exists.
+It exits non-zero unless `dist/PUBLIC_BETA_DECISION.json` says `READY_FOR_PUBLIC_BETA`.
 
 ## Decision States
 
 | Decision | Meaning |
 |---|---|
 | `READY_FOR_PUBLIC_BETA` | Mac, Windows WeChat DB parity, and phone entry are verified |
-| `MAC_READY_WINDOWS_DB_NOT_READY` | Mac is usable; Windows must not be promoted yet |
+| `NEEDS_WINDOWS_WECHAT_DB_SMOKE` | Mac and packaged Windows adapter exist, but Windows still needs real DB self-chat evidence |
 | `NEEDS_WINDOWS_RUNTIME_SMOKE` | Mac is ready and Windows package is assembled, but Windows runtime evidence is missing |
 | `NEEDS_MOBILE_ENTRY_SMOKE` | Desktop packages are ready, but phone-to-desktop entry evidence is missing |
 
