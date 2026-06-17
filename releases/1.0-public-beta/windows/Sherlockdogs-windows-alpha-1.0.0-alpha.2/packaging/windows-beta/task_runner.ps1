@@ -14,7 +14,7 @@ if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first." 
 
 if ($Kind -eq "local-inbox") {
   $InboxDir = if ($env:SHERLOCKDOGS_INBOX_DIR) { $env:SHERLOCKDOGS_INBOX_DIR } else { Join-Path $env:USERPROFILE "Sherlockdogs\Inbox" }
-  & $Python (Join-Path $ProjectDir "scripts\local_inbox.py") --inbox-dir $InboxDir
+  & $Python (Join-Path $ProjectDir "scripts\local_inbox.py") --once --inbox-dir $InboxDir
   exit $LASTEXITCODE
 }
 
@@ -28,7 +28,7 @@ if ($Kind -eq "codex-runner") {
 if ($Kind -eq "windows-wechat") {
   $DbRoot = $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR
   if (-not $DbRoot) { throw "SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR is not configured." }
-  & $Python (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --db-root $DbRoot
+  & $Python (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --db-root $DbRoot
   exit $LASTEXITCODE
 }
 

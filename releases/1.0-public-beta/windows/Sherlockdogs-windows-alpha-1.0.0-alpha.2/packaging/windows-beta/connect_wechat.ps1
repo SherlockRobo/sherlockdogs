@@ -280,9 +280,10 @@ if ($DryRunExit -ne 0) {
 
 if (-not $NoTask) {
   $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
+  $TaskSettings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
   $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind windows-wechat"
   $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)
-  Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $Action -Trigger $Trigger -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
+  Register-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -Action $Action -Trigger $Trigger -Settings $TaskSettings -Description "Sherlockdogs Windows WeChat self-chat DB watcher" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsWindowsWeChatInbox" -ErrorAction SilentlyContinue
   Add-ConnectReport "task=SherlockdogsWindowsWeChatInbox"
   Add-ConnectReport "task_registered=ok"
