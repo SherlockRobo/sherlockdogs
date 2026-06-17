@@ -4,7 +4,7 @@ Start here:
 
 1. Open `INSTALL_GUIDE_FOR_USERS.png` for the picture guide.
 2. Double-click `Sherlockdogs Start.cmd`.
-3. Double-click `Sherlockdogs Connect WeChat.cmd`. If no decrypted DB folder exists, it tries to install and run the local wechat-decrypt helper. First connection uses discovery receiver `*` so phone-to-self WeChat is not missed; the smoke flow saves the discovered `receiver_chat`.
+3. Double-click `Sherlockdogs Connect WeChat.cmd`. If no decrypted DB folder exists, it tries to install and run the local wechat-decrypt helper. Right-click and choose "Run as administrator" when key extraction is needed. First connection uses discovery receiver `*` so phone-to-self WeChat is not missed; the smoke flow saves the discovered `receiver_chat`.
 4. Confirm it found a local Windows WeChat DB folder containing `message\message_*.db` or equivalent message DB files.
 5. Forward a test item to yourself in phone WeChat and let Windows WeChat receive it.
 6. Open results with `Open Sherlockdogs Output.cmd`.

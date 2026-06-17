@@ -26,6 +26,16 @@ $DiagnosticsDir = Join-Path $ConfigDir "diagnostics"
 if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first, or install Python 3." }
 if (-not (Test-Path $Python)) { throw "Configured Python does not exist: $Python" }
 
+function Test-Admin {
+  try {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+  } catch {
+    return $false
+  }
+}
+
 function Get-MessageDbs([string]$Root) {
   if (-not $Root -or -not (Test-Path $Root)) { return @() }
   return @(Get-ChildItem -Path $Root -Recurse -File -Include "message_*.db","MSG*.db","Msg*.db" -ErrorAction SilentlyContinue)
@@ -140,6 +150,9 @@ if (-not $DecryptedDbDir) {
   if ($Existing) {
     $DecryptedDbDir = $Existing
   } elseif (-not $NoDecryptBootstrap) {
+    if (-not (Test-Admin)) {
+      throw "Windows WeChat decrypt bootstrap needs Administrator PowerShell to read the WeChat process key. Right-click Sherlockdogs Connect WeChat.cmd and choose Run as administrator, or pass -DecryptedDbDir to an existing decrypted DB folder."
+    }
     $DecryptedDbDir = Invoke-WeChatDecryptBootstrap
   } else {
     Write-Host "Choose the decrypted Windows WeChat DB directory containing message\message_*.db."
