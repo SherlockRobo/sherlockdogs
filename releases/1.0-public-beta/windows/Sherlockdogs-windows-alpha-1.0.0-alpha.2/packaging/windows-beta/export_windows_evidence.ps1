@@ -24,6 +24,18 @@ function Copy-IfExists($path, $targetDir) {
   return ""
 }
 
+function Copy-LatestFiles($path, $filter, $targetDir, $count) {
+  if (-not (Test-Path $path)) { return @() }
+  New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+  $copied = @()
+  $files = @(Get-ChildItem -Path $path -Filter $filter -File -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First $count)
+  foreach ($file in $files) {
+    Copy-Item -Force -Path $file.FullName -Destination $targetDir
+    $copied += (Join-Path $targetDir $file.Name)
+  }
+  return $copied
+}
+
 New-Item -ItemType Directory -Force -Path $ExportRoot | Out-Null
 
 if (-not $SkipDoctor -and (Test-Path $DoctorScript)) {
@@ -43,6 +55,7 @@ $CopiedEvidence = Copy-IfExists $LatestEvidence.FullName (Join-Path $ExportRoot 
 $CopiedDoctor = Copy-IfExists $LatestDoctor.FullName (Join-Path $ExportRoot "diagnostics")
 $CopiedConnectReport = Copy-IfExists $LatestConnectReport.FullName (Join-Path $ExportRoot "diagnostics")
 $CopiedDecryptLog = Copy-IfExists $LatestDecryptLog.FullName (Join-Path $ExportRoot "diagnostics")
+$CopiedTaskLogs = Copy-LatestFiles $DiagnosticsDir "task-*.log" (Join-Path $ExportRoot "diagnostics") 5
 
 $summary = @(
   "Sherlockdogs Windows evidence export",
@@ -57,6 +70,7 @@ $summary = @(
   "copied_connect_report=$CopiedConnectReport",
   "latest_decrypt_log=$($LatestDecryptLog.FullName)",
   "copied_decrypt_log=$CopiedDecryptLog",
+  "copied_task_logs=$($CopiedTaskLogs -join ';')",
   "",
   "Send this whole folder back to the operator. Do not zip it unless the operator explicitly asks for an archive.",
   "Passing Windows parity still requires token_match=ok, windows_wechat_db=ok, codex_job_created=ok, codex_card=ok, and thread_completed=True in the evidence report."

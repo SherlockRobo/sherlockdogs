@@ -13,5 +13,5 @@ public_windows_release_smoke_template=<release-root>/dist/ci/public-windows-rele
 windows_runtime_evidence_dir=<release-root>/dist/evidence/windows-runtime-smoke
 windows_wechat_db_evidence_dir=<release-root>/dist/evidence/windows-wechat-db-smoke
 mobile_entry_evidence_dir=<release-root>/dist/evidence/mobile-entry-smoke
-built_at=2026-06-17T18:12:56+0800
+built_at=2026-06-17T18:18:08+0800
 no_archive=true
