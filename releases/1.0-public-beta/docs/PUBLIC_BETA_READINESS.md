@@ -1,6 +1,6 @@
 # Sherlockdogs Public Beta Readiness
 
-Generated: 2026-06-17T17:07:30+0800
+Generated: 2026-06-17T17:26:49+0800
 
 ## Status
 
@@ -18,6 +18,7 @@ Generated: 2026-06-17T17:07:30+0800
 | Windows GitHub Actions workflow | PASS | `.github/workflows/windows-runtime-smoke.yml` included |
 | Windows WeChat DB simulated CI template | PASS | `dist/ci/windows-wechat-db-sim-smoke.yml` included |
 | Windows WeChat DB simulated workflow | PASS | `.github/workflows/windows-wechat-db-sim-smoke.yml` included |
+| Public repo Windows release smoke template | PASS | `dist/ci/public-windows-release-smoke.yml` included |
 | No archive output | PASS | Release policy and dist scan |
 | Primary phone WeChat entry | PASS | Mac uses Connect WeChat; Windows includes Connect WeChat DB adapter/bootstrap |
 | Optional Inbox fallback | PASS | Nutstore/local folder configuration entry included, but not the primary product path |

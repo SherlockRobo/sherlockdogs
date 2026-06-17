@@ -24,6 +24,14 @@ Return the latest report from:
 evidence\windows-wechat-db-smoke\
 ```
 
+Easiest return path:
+
+```text
+Export Windows Evidence.cmd
+```
+
+This creates a Desktop folder named `Sherlockdogs-Windows-Evidence-*`. Send that folder back as-is. Do not zip it unless the operator explicitly asks for an archive.
+
 The passing report must contain:
 
 ```text
@@ -45,6 +53,12 @@ Return both:
 ```text
 evidence\windows-wechat-db-smoke\
 %USERPROFILE%\.sherlockdogs\diagnostics\doctor-*.txt
+```
+
+Or just run:
+
+```text
+Export Windows Evidence.cmd
 ```
 
 The smoke command now keeps polling until timeout. If it still fails, it automatically runs Doctor and prints `diagnostic_report=...`.

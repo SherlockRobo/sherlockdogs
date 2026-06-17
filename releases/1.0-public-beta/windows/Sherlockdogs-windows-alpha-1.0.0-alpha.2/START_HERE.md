@@ -10,6 +10,7 @@
 6. Open results with `Open Sherlockdogs Output.cmd`.
 7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, and only passes evidence that contains the token.
 8. If anything fails, run `Doctor Sherlockdogs.cmd`.
+9. Double-click `Export Windows Evidence.cmd` to copy the latest evidence and Doctor report into a Desktop folder you can send back as-is. Do not zip it unless the operator explicitly asks for an archive.
 
 ## What this beta does
 
@@ -29,6 +30,7 @@
 | `Sherlockdogs Connect WeChat.cmd` | Bind or prepare Windows WeChat DB and start self-chat watcher |
 | `Run Windows WeChat Smoke.cmd` | Guided full path test: connect, ask for a tokenized real `#2` self-chat, then collect matching evidence |
 | `Collect Windows WeChat Evidence.cmd` | Generate the Windows DB smoke report after a real `#2` test |
+| `Export Windows Evidence.cmd` | Copy the latest smoke report and Doctor report into a Desktop folder for return |
 | `RETURN_WINDOWS_EVIDENCE.md` | What to send back after a pass or failure |
 | `Configure Nutstore Inbox.cmd` | Optional fallback: switch Inbox to your own synced folder |
 | `Open Sherlockdogs Output.cmd` | View saved Markdown/results |
@@ -44,4 +46,4 @@
 
 ## Report back
 
-If there is a failure, follow `RETURN_WINDOWS_EVIDENCE.md`: send the latest `evidence\windows-wechat-db-smoke\*.txt` and latest Doctor report.
+If there is a failure, run `Export Windows Evidence.cmd`, then follow `RETURN_WINDOWS_EVIDENCE.md`: send the Desktop evidence folder back as-is.

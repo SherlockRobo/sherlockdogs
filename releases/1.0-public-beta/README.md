@@ -1,6 +1,6 @@
 # Sherlockdogs 1.0 Small Beta Builds
 
-Generated: 2026-06-17T17:07:30+0800
+Generated: 2026-06-17T17:26:49+0800
 
 ## Builds
 
@@ -23,6 +23,7 @@ Generated: 2026-06-17T17:07:30+0800
 - Mac preferred launchers: `Sherlockdogs Start.app`, `Sherlockdogs Doctor.app`, `Sherlockdogs Open Output.app`
 - Windows CI smoke template: `dist/ci/windows-runtime-smoke.yml`
 - Windows WeChat DB simulated CI template: `dist/ci/windows-wechat-db-sim-smoke.yml`
+- Public repo Windows release smoke template: `dist/ci/public-windows-release-smoke.yml`
 - GitHub Actions workflow: `.github/workflows/windows-runtime-smoke.yml`
 - GitHub Actions WeChat DB simulated workflow: `.github/workflows/windows-wechat-db-sim-smoke.yml`
 - Open output folder: `Sherlockdogs Open Output.app` / `Open Sherlockdogs Output.cmd`
