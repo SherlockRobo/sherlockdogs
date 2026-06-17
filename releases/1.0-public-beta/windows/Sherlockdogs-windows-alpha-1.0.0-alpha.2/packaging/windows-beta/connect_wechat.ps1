@@ -1,6 +1,6 @@
 param(
   [string]$DecryptedDbDir = "",
-  [string]$Receivers = "filehelper",
+  [string]$Receivers = "*",
   [switch]$NoTask,
   [switch]$NoDecryptBootstrap,
   [string]$WeChatDecryptRepo = "https://github.com/ylytdeng/wechat-decrypt.git",

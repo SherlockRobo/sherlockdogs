@@ -5,7 +5,7 @@
 1. Open `INSTALL_GUIDE_FOR_USERS.png`.
 2. Keep Windows WeChat logged in.
 3. Double-click `Sherlockdogs Start.cmd`.
-4. Double-click `Sherlockdogs Connect WeChat.cmd`; it can bind an existing decrypted DB folder or try the local decrypt helper.
+4. Double-click `Sherlockdogs Connect WeChat.cmd`; it can bind an existing decrypted DB folder or try the local decrypt helper. First connection uses discovery receiver `*` so phone-to-self WeChat is not missed.
 5. Forward one test item to yourself in phone WeChat; Windows WeChat must receive it.
 6. Open results with `Open Sherlockdogs Output.cmd`.
 7. Run `Run Windows WeChat Smoke.cmd` for the guided real `#2` test. It generates a one-time smoke token, asks you to send that exact text to yourself, and only passes evidence that contains the token.
