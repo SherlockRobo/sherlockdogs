@@ -50,6 +50,34 @@ def recent(path: Path, since_epoch: float) -> bool:
         return False
 
 
+def event_epoch(event: dict[str, Any]) -> float:
+    for key in ("ts", "created_at", "updated_at"):
+        raw = str(event.get(key) or "").strip()
+        if not raw:
+            continue
+        try:
+            return datetime.fromisoformat(raw.replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            pass
+    for key in ("timestamp_end", "timestamp"):
+        raw = event.get(key)
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            continue
+        if value > 10_000_000_000:
+            value = value / 1000
+        return value
+    return 0.0
+
+
+def event_recent(event: dict[str, Any], since_epoch: float, fallback_path: Path) -> bool:
+    epoch = event_epoch(event)
+    if epoch:
+        return epoch >= since_epoch
+    return recent(fallback_path, since_epoch)
+
+
 def job_level(job: dict[str, Any]) -> int:
     try:
         return int(job.get("task_level") or 0)
@@ -156,10 +184,11 @@ def main() -> int:
 
     all_jobs = find_windows_jobs(project_dir, since_epoch)
     all_inbox_events = find_windows_inbox_events(project_dir, since_epoch)
+    run_event_path = project_dir / "runs" / "windows-wechat-inbox.events.jsonl"
     all_run_events = [
         event
-        for event in iter_event_lines(project_dir / "runs" / "windows-wechat-inbox.events.jsonl")
-        if event.get("jobs") or event.get("inbox_event")
+        for event in iter_event_lines(run_event_path)
+        if (event.get("jobs") or event.get("inbox_event")) and event_recent(event, since_epoch, run_event_path)
     ]
     token = args.require_token.strip()
     jobs = [job for job in all_jobs if has_token(job, token)]
