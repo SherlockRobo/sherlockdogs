@@ -7,10 +7,13 @@ $ErrorActionPreference = "Stop"
 $ProjectDir = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $ConfigDir = Join-Path $env:USERPROFILE ".sherlockdogs"
 $ConfigFile = Join-Path $ConfigDir "config.ps1"
+if (Test-Path $ConfigFile) { . $ConfigFile }
 $InboxDir = if ($env:SHERLOCKDOGS_INBOX_DIR) { $env:SHERLOCKDOGS_INBOX_DIR } else { Join-Path $env:USERPROFILE "Sherlockdogs\Inbox" }
+$NutstoreDir = if ($env:SHERLOCKDOGS_NUTSTORE_DIR) { $env:SHERLOCKDOGS_NUTSTORE_DIR } else { "" }
 $VaultDir = if ($env:SHERLOCKDOGS_VAULT_DIR) { $env:SHERLOCKDOGS_VAULT_DIR } elseif (Test-Path (Join-Path $env:USERPROFILE "ObsidianVault_LOCAL")) { Join-Path $env:USERPROFILE "ObsidianVault_LOCAL" } else { Join-Path $env:USERPROFILE "Sherlockdogs\Vault" }
 $ClippingDir = if ($env:SHERLOCKDOGS_CLIPPING_DIR) { $env:SHERLOCKDOGS_CLIPPING_DIR } else { Join-Path $VaultDir "clipping" }
 $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else { Join-Path $ConfigDir "venv" }
+$WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
 $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -ErrorAction SilentlyContinue).Source }
 $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -ErrorAction SilentlyContinue).Source }
 
@@ -32,7 +35,7 @@ if (-not $SkipDeps) {
   $PythonBin = $Python
 }
 
-@(
+$ConfigLines = @(
   "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
   "`$env:SHERLOCKDOGS_INBOX_DIR = $(Quote-PsString $InboxDir)",
   "`$env:SHERLOCKDOGS_VAULT_DIR = $(Quote-PsString $VaultDir)",
@@ -42,7 +45,10 @@ if (-not $SkipDeps) {
   "`$env:CODEX_BIN = $(Quote-PsString $Codex)",
   "`$env:PYTHONDONTWRITEBYTECODE = '1'",
   "`$env:PATH = (Join-Path $(Quote-PsString $VenvDir) 'Scripts') + ';' + `$env:PATH"
-) | Set-Content -Encoding UTF8 $ConfigFile
+)
+if ($NutstoreDir) { $ConfigLines += "`$env:SHERLOCKDOGS_NUTSTORE_DIR = $(Quote-PsString $NutstoreDir)" }
+if ($WindowsWeChatDir) { $ConfigLines += "`$env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR = $(Quote-PsString $WindowsWeChatDir)" }
+$ConfigLines | Set-Content -Encoding UTF8 $ConfigFile
 
 if (-not $NoTasks) {
   $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
@@ -56,7 +62,6 @@ if (-not $NoTasks) {
   Register-ScheduledTask -TaskName "SherlockdogsCodexRunner" -Action $RunnerAction -Trigger $RunnerTrigger -Description "Sherlockdogs Codex runner" -Force | Out-Null
   Start-ScheduledTask -TaskName "SherlockdogsCodexRunner" -ErrorAction SilentlyContinue
 
-  $WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
   if ($WindowsWeChatDir -and (Test-Path $WindowsWeChatDir)) {
     $WeChatAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$TaskRunner`" -Kind windows-wechat"
     $WeChatTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Seconds 20) -RepetitionDuration (New-TimeSpan -Days 3650)

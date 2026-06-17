@@ -16,6 +16,7 @@ if (Test-Path $ConfigFile) { . $ConfigFile }
 $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -ErrorAction SilentlyContinue).Source }
 $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -ErrorAction SilentlyContinue).Source }
 $InboxDir = if ($env:SHERLOCKDOGS_INBOX_DIR) { $env:SHERLOCKDOGS_INBOX_DIR } else { Join-Path $env:USERPROFILE "Sherlockdogs\Inbox" }
+$NutstoreDir = if ($env:SHERLOCKDOGS_NUTSTORE_DIR) { $env:SHERLOCKDOGS_NUTSTORE_DIR } else { "" }
 $VaultDir = if ($env:SHERLOCKDOGS_VAULT_DIR) { $env:SHERLOCKDOGS_VAULT_DIR } elseif (Test-Path (Join-Path $env:USERPROFILE "ObsidianVault_LOCAL")) { Join-Path $env:USERPROFILE "ObsidianVault_LOCAL" } else { Join-Path $env:USERPROFILE "Sherlockdogs\Vault" }
 $ClippingDir = if ($env:SHERLOCKDOGS_CLIPPING_DIR) { $env:SHERLOCKDOGS_CLIPPING_DIR } else { Join-Path $VaultDir "clipping" }
 $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else { Join-Path $ConfigDir "venv" }
@@ -180,7 +181,7 @@ $ReceiverLines = $Receivers.Split(",") | ForEach-Object { $_.Trim() } | Where-Ob
 if ($ReceiverLines.Count -eq 0) { $ReceiverLines = @("filehelper") }
 $ReceiverLines | Set-Content -Encoding UTF8 $ReceiverFile
 
-@(
+$ConfigLines = @(
   "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
   "`$env:SHERLOCKDOGS_INBOX_DIR = $(Quote-PsString $InboxDir)",
   "`$env:SHERLOCKDOGS_VAULT_DIR = $(Quote-PsString $VaultDir)",
@@ -191,7 +192,9 @@ $ReceiverLines | Set-Content -Encoding UTF8 $ReceiverFile
   "`$env:CODEX_BIN = $(Quote-PsString $Codex)",
   "`$env:PYTHONDONTWRITEBYTECODE = '1'",
   "`$env:PATH = (Join-Path $(Quote-PsString $VenvDir) 'Scripts') + ';' + `$env:PATH"
-) | Set-Content -Encoding UTF8 $ConfigFile
+)
+if ($NutstoreDir) { $ConfigLines += "`$env:SHERLOCKDOGS_NUTSTORE_DIR = $(Quote-PsString $NutstoreDir)" }
+$ConfigLines | Set-Content -Encoding UTF8 $ConfigFile
 
 & $Python (Join-Path $ProjectDir "scripts\windows_wechat_inbox.py") --once --dry-run --settle-seconds 0 --db-root $DecryptedDbDir
 if ($LASTEXITCODE -ne 0) { throw "Windows WeChat adapter dry-run failed." }

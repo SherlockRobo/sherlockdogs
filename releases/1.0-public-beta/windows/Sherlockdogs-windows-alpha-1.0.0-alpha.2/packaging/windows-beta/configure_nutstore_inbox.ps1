@@ -40,6 +40,7 @@ if (Test-Path $ConfigFile) { . $ConfigFile }
 $VaultDir = if ($env:SHERLOCKDOGS_VAULT_DIR) { $env:SHERLOCKDOGS_VAULT_DIR } elseif (Test-Path (Join-Path $env:USERPROFILE "ObsidianVault_LOCAL")) { Join-Path $env:USERPROFILE "ObsidianVault_LOCAL" } else { Join-Path $env:USERPROFILE "Sherlockdogs\Vault" }
 $ClippingDir = if ($env:SHERLOCKDOGS_CLIPPING_DIR) { $env:SHERLOCKDOGS_CLIPPING_DIR } else { Join-Path $VaultDir "clipping" }
 $VenvDir = if ($env:SHERLOCKDOGS_VENV_DIR) { $env:SHERLOCKDOGS_VENV_DIR } else { Join-Path $ConfigDir "venv" }
+$WindowsWeChatDir = if ($env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR) { $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR } else { "" }
 $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -ErrorAction SilentlyContinue).Source }
 $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -ErrorAction SilentlyContinue).Source }
 if (-not $Python) { throw "Python not found. Install Python 3 and retry." }
@@ -49,7 +50,7 @@ function Quote-PsString([string]$Value) {
   return "'" + (($Value -as [string]) -replace "'", "''") + "'"
 }
 
-@(
+$ConfigLines = @(
   "`$env:SHERLOCKDOGS_PROJECT_DIR = $(Quote-PsString $ProjectDir)",
   "`$env:SHERLOCKDOGS_INBOX_DIR = $(Quote-PsString $InboxDir)",
   "`$env:SHERLOCKDOGS_NUTSTORE_DIR = $(Quote-PsString $NutstoreRoot)",
@@ -60,7 +61,9 @@ function Quote-PsString([string]$Value) {
   "`$env:CODEX_BIN = $(Quote-PsString $Codex)",
   "`$env:PYTHONDONTWRITEBYTECODE = '1'",
   "`$env:PATH = (Join-Path $(Quote-PsString $VenvDir) 'Scripts') + ';' + `$env:PATH"
-) | Set-Content -Encoding UTF8 $ConfigFile
+)
+if ($WindowsWeChatDir) { $ConfigLines += "`$env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR = $(Quote-PsString $WindowsWeChatDir)" }
+$ConfigLines | Set-Content -Encoding UTF8 $ConfigFile
 
 $install = Join-Path $ProjectDir "packaging\windows-beta\install.ps1"
 if (Test-Path $install) {
