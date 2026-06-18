@@ -1,12 +1,21 @@
 # README Benchmark Notes
 
-Reference direction: Immich, Memos, Actual / Maybe-style open-source product READMEs.
+Reference direction: Immich, Memos, Actual, and Maybe-style open-source product READMEs.
+
+## References
+
+| Project | README pattern worth borrowing | Sherlockdogs decision |
+|---|---|---|
+| Immich | Product first, screenshot / visual early, clear docs links | Put the hero image and quick links before detailed beta notes |
+| Memos | Short product promise, self-hosted / local value, simple setup path | Keep the first line concrete and avoid internal QA language |
+| Actual | Trust-building local-first positioning and direct install docs | Put privacy and local-first boundaries near the bottom |
+| Maybe | Polished open-source product framing with status clarity | Split Feature / Status from Known limits |
 
 ## Pattern
 
 | Module | Purpose | Sherlockdogs |
 |---|---|---|
-| One-line pitch | Explain the product in 3 seconds | Forward to yourself. Turn WeChat finds into local Markdown and Codex tasks. |
+| One-line pitch | Explain the product in 3 seconds | Forward to yourself. Turn WeChat self-chats into local Markdown and Codex tasks. |
 | Hero / screenshot | Show visual proof early | Product path image |
 | Links / Docs / Demo | Reduce navigation cost | Release folder, START_HERE, Quickstart, Evidence |
 | Quick Start | Make trial easy | Download, read, start, self-chat, open output |
@@ -19,7 +28,7 @@ Reference direction: Immich, Memos, Actual / Maybe-style open-source product REA
 ```text
 Create a clean GitHub README hero image for an open-source local-first tool named Sherlockdogs.
 
-Canvas 1600x840, light warm white background, refined open-source product style, not a marketing landing page. Large title: Sherlockdogs. Subtitle: Forward to yourself. Turn WeChat finds into local Markdown and Codex tasks.
+Canvas 1600x840, light warm white background, refined open-source product style, not a marketing landing page. Large title: Sherlockdogs. Subtitle: Forward to yourself. Turn WeChat self-chats into local Markdown and Codex tasks.
 
 Show a simple horizontal product path with five labeled nodes:
 Phone WeChat -> Desktop WeChat -> Local DB -> Markdown -> Codex.

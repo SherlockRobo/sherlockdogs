@@ -1,58 +1,70 @@
 # Sherlockdogs
 
-Forward to yourself. Turn phone finds into local Markdown and Codex tasks.
+Forward to yourself. Turn WeChat self-chats into local Markdown and Codex tasks.
 
 ![Sherlockdogs hero](docs/assets/sherlockdogs-hero.png)
 
-Sherlockdogs is a local-first clipping pipeline for people who collect ideas on a phone but work in Markdown, Obsidian, and Codex on a desktop.
+Sherlockdogs is a local-first clipping pipeline for people who save ideas on a phone, but actually work in Markdown, Obsidian, and Codex on a desktop.
 
-The main beta path is intentionally simple:
+The public beta focuses on one practical path:
 
 ```text
-phone WeChat self-chat
--> desktop WeChat receives it
--> Sherlockdogs reads the local desktop WeChat DB after opt-in setup
--> local Markdown archive
--> optional Codex task
+Phone WeChat -> Desktop WeChat -> Local WeChat DB -> Markdown -> Codex
 ```
 
-Obsidian is a recommended reader for the Markdown library, but it is not required.
+Obsidian is a recommended reader for the Markdown library, but it is not required. Sherlockdogs works as a folder-first local archive.
 
-## Public Beta
+## Quick Links
 
-Status: `READY_FOR_PUBLIC_BETA`
-
-| Platform | Beta folder | Current status |
-|---|---|---|
-| macOS | [Sherlockdogs-macos-alpha-1.0.0-alpha.3](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) | Real self-chat -> local WeChat DB -> Markdown/Codex smoke passed |
-| Windows | [Sherlockdogs-windows-alpha-1.0.0-alpha.2](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) | Same product path is packaged; waiting for first real Windows self-chat smoke |
-| iOS Shortcut / Inbox | Included as fallback | Optional fallback when local DB path is not usable |
-
-No zip, dmg, tar, or installer archive is published for this beta. Use the whole platform folder as-is.
+| What | Link |
+|---|---|
+| Public beta package | [releases/1.0-public-beta](releases/1.0-public-beta/) |
+| macOS beta folder | [macOS alpha.3](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) |
+| Windows beta folder | [Windows alpha.2](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) |
+| CLI quickstart | [QUICKSTART.md](QUICKSTART.md) |
+| Architecture | [docs/architecture.md](docs/architecture.md) |
+| Evidence plan | [docs/evidence-plan.md](docs/evidence-plan.md) |
 
 ## Quick Start
 
 ![Quickstart flow](docs/assets/quickstart-flow.png)
 
-| Step | macOS | Windows |
-|---|---|---|
-| 1 | Open the macOS beta folder | Open the Windows beta folder |
-| 2 | Read `START_HERE.md` | Read `START_HERE.md` |
-| 3 | Open `Sherlockdogs Start.app` | Run `Sherlockdogs Start.cmd` |
-| 4 | Optional best path: `Sherlockdogs Connect WeChat.app` | Run `Sherlockdogs Connect WeChat.cmd` or `Run Windows WeChat Smoke.cmd` |
-| 5 | Forward an item to yourself in WeChat | Forward an item to yourself in WeChat |
-| 6 | Open output with `Sherlockdogs Open Output.app` | Open output with `Open Sherlockdogs Output.cmd` |
+1. Download the whole beta folder for your platform.
+2. Read `START_HERE.md` inside that folder.
+3. Start Sherlockdogs.
+4. Forward an item to yourself in WeChat.
+5. Open the generated Markdown output.
+
+| Platform | Start | Connect / test | Output | Diagnostics |
+|---|---|---|---|---|
+| macOS | `Sherlockdogs Start.app` | `Sherlockdogs Connect WeChat.app` | `Sherlockdogs Open Output.app` | `Sherlockdogs Doctor.app` |
+| Windows | `Sherlockdogs Start.cmd` | `Sherlockdogs Connect WeChat.cmd` or `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` |
 
 First launch may spend a few minutes installing Python dependencies. macOS may require right-click -> Open on the first launch.
 
-## What It Does
+## Features
 
-- Captures links, text, media references, and WeChat self-chat entries into a local archive.
-- Writes `raw.md`, `metadata.json`, README-style notes, and result folders.
-- Creates Codex-ready tasks when an item is marked with `#` or `#2`.
-- Keeps raw content in the user's local vault by default.
-- Supports Obsidian as a reader without making it a hard dependency.
-- Keeps iOS Shortcut / Inbox / sync-folder capture as a fallback, not the main public-beta path.
+Status: `READY_FOR_PUBLIC_BETA`
+
+| Feature | Status | Notes |
+|---|---|---|
+| WeChat self-chat capture | Beta | User forwards to self; desktop WeChat receives locally |
+| Local WeChat DB adapter | Beta | Opt-in local adapter; no hosted relay |
+| Markdown archive | Ready | Writes `raw.md`, metadata, and result folders |
+| Codex handoff | Ready | `#` / `#2` can create Codex-ready tasks |
+| Obsidian reading | Ready | Uses plain files; Obsidian is optional |
+| iOS Shortcut / Inbox fallback | Fallback | For machines where DB access is not usable |
+| Windows evidence export | Ready | Helps debug real Windows machine failures |
+
+## Platform Status
+
+| Platform | Beta folder | Current status |
+|---|---|---|
+| macOS | [Sherlockdogs-macos-alpha-1.0.0-alpha.3](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) | Real self-chat -> local WeChat DB -> Markdown/Codex smoke passed |
+| Windows | [Sherlockdogs-windows-alpha-1.0.0-alpha.2](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) | Same product path is packaged; first real Windows self-chat smoke still needed |
+| iOS Shortcut / Inbox | Included as fallback | Optional fallback when local DB path is not usable |
+
+No zip, dmg, tar, or installer archive is published for this beta. Use the whole platform folder as-is.
 
 ## Command Levels
 
@@ -60,25 +72,31 @@ First launch may spend a few minutes installing Python dependencies. macOS may r
 |---|---|
 | no tag or `#1` | Save locally only |
 | `#` or `#2` | Save locally and create a Codex card |
-| `#3` | Prepare lightweight metadata/transcript analysis |
-| `#4` or `#ob` | Prepare deep reading / distillation |
-| `#5` | Prepare heavier media breakdown tasks |
+| `#3` | Prepare lightweight metadata / transcript analysis |
+| `#4` or `#ob` | Prepare deep-reading / distillation |
+| `#5` | Prepare heavier media-breakdown tasks |
 
-## Windows Feedback Loop
+## Known Limits
 
-Windows is packaged for the same user path as macOS:
+- This is a public beta, not an app-store-style installer.
+- The main path depends on the desktop WeChat local DB being discoverable and readable after opt-in setup.
+- macOS has passed real self-chat DB smoke on the current test machine.
+- Windows is packaged for the same product path, but still needs first external real-machine self-chat smoke before being called Mac-equivalent.
+- Some WeChat versions, accounts, storage layouts, or security settings may block DB access.
+- iOS Shortcut / Inbox is a fallback, not the main public-beta story.
+- Sherlockdogs does not run a hosted cloud relay.
 
-```text
-phone WeChat -> self-chat -> desktop WeChat DB -> Markdown/Codex
-```
+## Feedback
 
-The beta still needs real Windows machine evidence before it should be described as fully equivalent to macOS. If Windows fails, run:
+If macOS fails, start with `Sherlockdogs Doctor.app`.
+
+If Windows fails, run:
 
 ```text
 Export Windows Evidence.cmd
 ```
 
-Then send back the generated `Sherlockdogs-Windows-Evidence-*` folder. It helps identify whether the problem is DB discovery, key/decrypt, self-chat receive, task creation, or Codex handoff.
+Then share the generated `Sherlockdogs-Windows-Evidence-*` folder in an issue or discussion. It helps separate DB discovery, key/decrypt, self-chat receive, task creation, and Codex handoff problems.
 
 ## Privacy Boundary
 
@@ -113,7 +131,7 @@ demo-vault/jobs/pending/<job-id>.json
 
 See [QUICKSTART.md](QUICKSTART.md) and [docs/architecture.md](docs/architecture.md) for the OSS adapter architecture.
 
-## Release
+## Release Notes
 
 - Public beta overview: [releases/1.0-public-beta/README.md](releases/1.0-public-beta/README.md)
 - Release notes: [releases/1.0-public-beta/RELEASE_NOTES.md](releases/1.0-public-beta/RELEASE_NOTES.md)
