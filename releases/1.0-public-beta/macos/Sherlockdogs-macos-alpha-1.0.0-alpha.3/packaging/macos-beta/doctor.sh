@@ -45,6 +45,18 @@ status_label() {
     echo "not loaded"
   fi
 }
+enabled_label() {
+  local label="$1"
+  local line
+  line="$(launchctl print-disabled "gui/$(id -u)" 2>/dev/null | rg "\"$label\"" || true)"
+  if [[ "$line" == *"=> disabled"* ]]; then
+    echo "disabled"
+  elif [[ "$line" == *"=> enabled"* ]]; then
+    echo "enabled"
+  else
+    echo "default"
+  fi
+}
 module_status() {
   local module="$1"
   if [[ -z "$PYTHON_BIN" || ! -x "$PYTHON_BIN" ]]; then
@@ -94,8 +106,11 @@ emit_report() {
   echo "binary.yt-dlp=$(bin_status yt-dlp)"
   echo "binary.ffprobe=$(bin_status ffprobe)"
   echo "local-inbox=$(status_label com.sherlockdogs.local-inbox)"
+  echo "local-inbox-enabled=$(enabled_label com.sherlockdogs.local-inbox)"
   echo "wechat-self=$(status_label com.sherlockdogs.wechat-self)"
+  echo "wechat-self-enabled=$(enabled_label com.sherlockdogs.wechat-self)"
   echo "codex-runner=$(status_label com.sherlockdogs.codex-runner)"
+  echo "codex-runner-enabled=$(enabled_label com.sherlockdogs.codex-runner)"
   echo "pending=$(count_dir "$SHERLOCKDOGS_PROJECT_DIR/jobs/pending")"
   echo "running=$(count_dir "$SHERLOCKDOGS_PROJECT_DIR/jobs/running")"
   echo "done=$(count_dir "$SHERLOCKDOGS_PROJECT_DIR/jobs/done")"
@@ -120,7 +135,11 @@ emit_report() {
     advice_count=$((advice_count + 1))
   fi
   if [[ "$(status_label com.sherlockdogs.local-inbox)" != "running" || "$(status_label com.sherlockdogs.codex-runner)" != "running" ]]; then
-    echo "- Background services are not both running; run Install Sherlockdogs.command again."
+    echo "- Background services are not both running; run Sherlockdogs Repair.app or Sherlockdogs Start.app again."
+    advice_count=$((advice_count + 1))
+  fi
+  if [[ "$(enabled_label com.sherlockdogs.local-inbox)" == "disabled" || "$(enabled_label com.sherlockdogs.codex-runner)" == "disabled" || "$(enabled_label com.sherlockdogs.wechat-self)" == "disabled" ]]; then
+    echo "- Some background services are disabled; run Sherlockdogs Repair.app."
     advice_count=$((advice_count + 1))
   fi
   if [[ -f "$SHERLOCKDOGS_PROJECT_DIR/scripts/wechat_doctor.py" ]]; then

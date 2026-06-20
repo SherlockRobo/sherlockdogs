@@ -12,15 +12,7 @@ Job JSON:
 
 必须执行：
 
-0. 写入 vault 前先读取并遵守：
-
-Vault root: `{{VAULT_DIR}}`
-
-```text
-{{VAULT_DIR}}/00-dashboard/principles/vault-migration-2026-06-01-read-first.md
-{{VAULT_DIR}}/schema/vault-principles-2026-05-30.md
-{{VAULT_DIR}}/schema/path-routing.md
-```
+0. 本任务的输出目录已经由 Sherlockdogs 脚本限定在本机 clipping 目录。不要读取 Vault 路由/迁移长文，不要自行改写落位规则。
 
 1. 使用本地脚本抓取文章：
 

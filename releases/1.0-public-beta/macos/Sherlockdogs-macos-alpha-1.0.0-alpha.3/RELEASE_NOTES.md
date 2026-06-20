@@ -13,6 +13,7 @@ Start here:
 6. Open results with `Sherlockdogs Open Output.app`.
 7. Optional Personal Mode: double-click `Sherlockdogs Connect WeChat.app`, then forward a test item to yourself in WeChat.
 8. Run `Sherlockdogs Doctor.app` if anything looks wrong.
-9. Read `MAC_PACKAGE_BRIEF.md` and `PRODUCT_INTRO_AND_RISK_DISCLOSURE.md` before sharing with another tester.
+9. Run `Sherlockdogs OneTouchRepair.app` if background services are not running or WeChat items do not arrive.
+10. Read `MAC_PACKAGE_BRIEF.md` and `PRODUCT_INTRO_AND_RISK_DISCLOSURE.md` before sharing with another tester.
 
 Boundary: this alpha uses a user-owned local or synced Inbox by default. Mac Personal Mode can optionally read the user's local Mac WeChat database after the user runs Connect WeChat. It does not use a Sherlockdogs relay. Obsidian is recommended as the Markdown library reader, but is not required for Codex cards.

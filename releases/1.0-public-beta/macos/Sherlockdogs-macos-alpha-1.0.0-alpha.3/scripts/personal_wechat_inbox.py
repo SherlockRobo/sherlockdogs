@@ -32,6 +32,7 @@ from sdogs_paths import JOBS_DIR, PROJECT_DIR, RUNS_DIR  # noqa: E402
 
 STATE_FILE = JOBS_DIR / "personal_wechat_inbox_state.json"
 RECEIVER_FILE = JOBS_DIR / "personal_receiver_chats.txt"
+BINDINGS_FILE = JOBS_DIR / "personal_wechat_bindings.json"
 EVENT_LOG = RUNS_DIR / "personal-wechat-inbox.events.jsonl"
 INBOX_EVENTS_DIR = JOBS_DIR / "inbox-events"
 
@@ -78,6 +79,34 @@ def read_json(path: Path, default: Any) -> Any:
 def write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def message_table_name(chat_id: str) -> str:
+    return f"Msg_{hashlib.md5(chat_id.encode()).hexdigest()}"
+
+
+def load_bindings() -> dict[str, Any]:
+    data = read_json(BINDINGS_FILE, {})
+    return data if isinstance(data, dict) else {}
+
+
+def write_binding(chat_id: str, rel_path: str, table_name: str, account_dir: Path | None = None) -> None:
+    bindings = load_bindings()
+    entry: dict[str, Any] = {
+        "rel_path": rel_path,
+        "table_name": table_name,
+        "updated_at": now_iso(),
+    }
+    if account_dir:
+        entry["account_dir"] = str(account_dir)
+    bindings[chat_id] = entry
+    write_json(BINDINGS_FILE, bindings)
+
+
+def binding_for(chat_id: str) -> dict[str, Any] | None:
+    bindings = load_bindings()
+    entry = bindings.get(chat_id)
+    return entry if isinstance(entry, dict) else None
 
 
 def append_event(event: dict[str, Any]) -> None:
@@ -277,7 +306,79 @@ def default_account_dir() -> Path | None:
 
 
 def account_dir_for(receiver: str, chat_id: str) -> Path | None:
+    binding = binding_for(chat_id)
+    if binding and binding.get("account_dir"):
+        path = Path(str(binding["account_dir"]))
+        if path.exists():
+            return path
     return KNOWN_ACCOUNT_DIRS.get(receiver) or KNOWN_ACCOUNT_DIRS.get(chat_id) or default_account_dir()
+
+
+def message_db_keys(db: WeChatDB) -> list[str]:
+    return sorted(
+        k
+        for k in db.keys
+        if re.search(
+            r"message[/\\](?:biz_)?message_\d+\.db$", k.replace("\\", "/")
+        )
+    )
+
+
+def table_exists(path: str, table_name: str) -> bool:
+    conn = sqlite3.connect(path)
+    try:
+        return bool(
+            conn.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+                (table_name,),
+            ).fetchone()
+        )
+    finally:
+        conn.close()
+
+
+def resolve_message_table(db: WeChatDB, chat_id: str) -> tuple[str | None, str | None, str | None]:
+    table_name = message_table_name(chat_id)
+    binding = binding_for(chat_id)
+    if binding:
+        rel_path = str(binding.get("rel_path") or "")
+        bound_table = str(binding.get("table_name") or table_name)
+        if rel_path:
+            db_path = db._get_decrypted_db(rel_path)
+            if db_path and table_exists(db_path, bound_table):
+                return db_path, bound_table, rel_path
+
+    if chat_id in KNOWN_MESSAGE_DBS:
+        rel_path, known_table = KNOWN_MESSAGE_DBS[chat_id]
+        db_path = db._get_decrypted_db(rel_path)
+        if db_path and table_exists(db_path, known_table):
+            return db_path, known_table, rel_path
+
+    best: tuple[str | None, str | None, str | None, int] = (None, None, None, -1)
+    for rel_path in message_db_keys(db):
+        db_path = db._get_decrypted_db(rel_path)
+        if not db_path:
+            continue
+        conn = sqlite3.connect(db_path)
+        try:
+            exists = conn.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+                (table_name,),
+            ).fetchone()
+            if not exists:
+                continue
+            count = int(conn.execute(f"SELECT COUNT(*) FROM [{table_name}]").fetchone()[0])
+            if count > best[3]:
+                best = (db_path, table_name, rel_path, count)
+        except Exception:
+            continue
+        finally:
+            conn.close()
+
+    if best[0] and best[1] and best[2]:
+        write_binding(chat_id, best[2], best[1], default_account_dir())
+        return best[0], best[1], best[2]
+    return None, None, None
 
 
 def fetch_messages(
@@ -288,13 +389,8 @@ def fetch_messages(
     account_dir: Path | None = None,
 ) -> list[dict[str, Any]]:
     now_ceiling = int(time.time()) + 300
-    if chat_id in KNOWN_MESSAGE_DBS:
-        rel_path, table_name = KNOWN_MESSAGE_DBS[chat_id]
-        db_path = db._get_decrypted_db(rel_path)
-        db_targets = [(db_path, table_name)]
-    else:
-        db_path, table_name = db._find_msg_table(chat_id)
-        db_targets = [(db_path, table_name)] if db_path and table_name else []
+    db_path, table_name, rel_path = resolve_message_table(db, chat_id)
+    db_targets = [(db_path, table_name)] if db_path and table_name else []
     if not db_path or not table_name:
         return []
 
@@ -314,9 +410,9 @@ def fetch_messages(
                 break
             except sqlite3.DatabaseError as exc:
                 conn.close()
-                if attempt == 0 and "malformed" in str(exc).lower() and chat_id in KNOWN_MESSAGE_DBS:
+                if attempt == 0 and "malformed" in str(exc).lower() and rel_path:
                     Path(target_path).unlink(missing_ok=True)
-                    target_path = db._get_decrypted_db(KNOWN_MESSAGE_DBS[chat_id][0])
+                    target_path = db._get_decrypted_db(rel_path)
                     continue
                 raise
             finally:

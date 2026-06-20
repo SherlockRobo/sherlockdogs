@@ -8,6 +8,7 @@
 4. Double-click `Sherlockdogs Connect WeChat.app`, then forward one test article/link/image to yourself in WeChat.
 5. Open results with `Sherlockdogs Open Output.app`.
 6. If anything fails, run `Sherlockdogs Doctor.app`.
+7. If a sent item does not arrive, run `Sherlockdogs OneTouchRepair.app`.
 
 ## What this beta does
 
@@ -25,6 +26,10 @@
 | `Sherlockdogs Start.app` | First install, preferred on Mac |
 | `Configure Nutstore Inbox.command` | Optional fallback: switch Inbox to your own synced folder |
 | `Sherlockdogs Doctor.app` | Generate diagnostics, preferred on Mac |
+| `Sherlockdogs OneTouchRepair.app` | One-click fix: enable/restart services, repair WeChat binding, and run one catch-up scan |
+| `Sherlockdogs Repair.app` | Restart services, repair WeChat binding, and run one catch-up scan |
+| `OneTouchRepair.command` | Terminal fallback for the same one-click repair action |
+| `Repair Sherlockdogs.command` | Terminal fallback for the same repair action |
 | `Sherlockdogs Connect WeChat.app` | Optional Mac Personal Mode: bind your own WeChat self-chat |
 | `Sherlockdogs Open Output.app` | View saved Markdown/results, preferred on Mac |
 | `Uninstall Sherlockdogs.command` | Remove background services |
@@ -43,4 +48,4 @@ If there is a failure, include the latest Doctor output.
 ## If macOS blocks the app
 
 This alpha uses local ad-hoc signing, not App Store notarization. If macOS blocks the first open, right-click `Sherlockdogs Start.app`, choose Open, then confirm Open.
-If that still fails, run this in Terminal from the package folder: `xattr -dr com.apple.quarantine . && chmod +x "Configure Nutstore Inbox.command" "Uninstall Sherlockdogs.command"`.
+If that still fails, run this in Terminal from the package folder: `xattr -dr com.apple.quarantine . && chmod +x "Configure Nutstore Inbox.command" "OneTouchRepair.command" "Repair Sherlockdogs.command" "Uninstall Sherlockdogs.command"`.

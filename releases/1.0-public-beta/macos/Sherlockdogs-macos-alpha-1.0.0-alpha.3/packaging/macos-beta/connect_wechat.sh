@@ -35,7 +35,7 @@ cat > "$WECHAT_PLIST" <<EOF
   <key>Label</key><string>com.sherlockdogs.wechat-self</string>
   <key>ProgramArguments</key><array>
     <string>/bin/bash</string><string>-lc</string>
-    <string>set -a; source "$CONFIG_FILE"; set +a; export PYTHONDONTWRITEBYTECODE; export PATH="\${SHERLOCKDOGS_VENV_DIR:-$HOME/.sherlockdogs/venv}/bin:/Applications/Codex.app/Contents/Resources:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"; exec "$PYTHON_BIN" "$PROJECT_DIR/scripts/personal_wechat_inbox.py"</string>
+    <string>set -a; source "$CONFIG_FILE"; set +a; export PYTHONDONTWRITEBYTECODE; export PATH="\${SHERLOCKDOGS_VENV_DIR:-$HOME/.sherlockdogs/venv}/bin:/Applications/Codex.app/Contents/Resources:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"; exec "$PYTHON_BIN" "$PROJECT_DIR/scripts/personal_wechat_inbox.py" --poll-timeout 300</string>
   </array>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>
@@ -46,6 +46,7 @@ EOF
 
 launchctl bootout "gui/$(id -u)" "$WECHAT_PLIST" >/dev/null 2>&1 || true
 launchctl bootstrap "gui/$(id -u)" "$WECHAT_PLIST"
+launchctl enable "gui/$(id -u)/com.sherlockdogs.wechat-self" >/dev/null 2>&1 || true
 launchctl kickstart -k "gui/$(id -u)/com.sherlockdogs.wechat-self" >/dev/null 2>&1 || true
 
 echo

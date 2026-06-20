@@ -86,6 +86,19 @@ def write_receiver(chat_id: str) -> None:
     inbox.RECEIVER_FILE.write_text("\n".join(values) + "\n", encoding="utf-8")
 
 
+def binding_summary(chat_id: str) -> dict[str, Any]:
+    binding = inbox.binding_for(chat_id)
+    if not binding:
+        return {}
+    return {
+        "chat_id": chat_id,
+        "rel_path": binding.get("rel_path", ""),
+        "table_name": binding.get("table_name", ""),
+        "account_dir": binding.get("account_dir", ""),
+        "updated_at": binding.get("updated_at", ""),
+    }
+
+
 def diagnose(args: argparse.Namespace) -> dict[str, Any]:
     configured_receivers = inbox.load_receivers()
     receivers = args.receiver or configured_receivers
@@ -129,6 +142,7 @@ def diagnose(args: argparse.Namespace) -> dict[str, Any]:
             chat_id = str(candidate["chat_id"])
             write_receiver(chat_id)
             result["bound_receiver"] = chat_id
+            result["bound_message_db"] = binding_summary(chat_id)
             result["actions"].append(f"已绑定微信接收会话：{chat_id}")
 
     if not messages:

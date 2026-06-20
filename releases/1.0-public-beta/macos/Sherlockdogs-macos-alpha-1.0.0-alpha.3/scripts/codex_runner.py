@@ -35,6 +35,7 @@ RUNNING_DIR = PROJECT_DIR / "jobs" / "running"
 DONE_DIR = PROJECT_DIR / "jobs" / "done"
 FAILED_DIR = PROJECT_DIR / "jobs" / "failed"
 RUNS_DIR = PROJECT_DIR / "runs"
+LOCK_FILE = RUNS_DIR / "codex-runner.lock"
 TEMPLATE_PATH = PROJECT_DIR / "templates" / "codex_wechat_distill_prompt.md"
 THREAD_TEMPLATE_PATH = PROJECT_DIR / "templates" / "codex_wechat_thread_prompt.md"
 CAPTURE_SCRIPT = PROJECT_DIR / "scripts" / "wechat_capture.py"
@@ -97,6 +98,13 @@ def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def read_json(path: Path, default: Any) -> Any:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return default
+
+
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -104,6 +112,87 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 def ensure_dirs() -> None:
     for path in (PENDING_DIR, RUNNING_DIR, DONE_DIR, FAILED_DIR, RUNS_DIR):
         path.mkdir(parents=True, exist_ok=True)
+
+
+def parse_iso_ts(value: Any) -> float:
+    if not value:
+        return 0.0
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00")).timestamp()
+    except Exception:
+        return 0.0
+
+
+def is_process_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except Exception:
+        return False
+
+
+def acquire_runner_lock(stale_seconds: int) -> int | None:
+    RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    while True:
+        try:
+            fd = os.open(str(LOCK_FILE), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            lock = read_json(LOCK_FILE, {})
+            pid = int(lock.get("pid") or 0) if isinstance(lock, dict) else 0
+            started_at = parse_iso_ts(lock.get("started_at") if isinstance(lock, dict) else "")
+            age = time.time() - started_at if started_at else stale_seconds + 1
+            if is_process_alive(pid) and age < stale_seconds:
+                return None
+            try:
+                LOCK_FILE.unlink()
+            except FileNotFoundError:
+                pass
+            continue
+        payload = {"pid": os.getpid(), "started_at": now_iso()}
+        os.write(fd, json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+        os.write(fd, b"\n")
+        return fd
+
+
+def release_runner_lock(fd: int | None) -> None:
+    if fd is None:
+        return
+    try:
+        os.close(fd)
+    finally:
+        try:
+            LOCK_FILE.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def recover_stale_running_jobs(stale_seconds: int) -> list[str]:
+    if stale_seconds < 0:
+        return []
+    recovered: list[str] = []
+    now = time.time()
+    for path in sorted(RUNNING_DIR.glob("*.json")):
+        try:
+            job = load_json(path)
+        except Exception:
+            continue
+        updated_at = parse_iso_ts(job.get("updated_at") or job.get("created_at"))
+        if updated_at and now - updated_at < stale_seconds:
+            continue
+        job["status"] = "pending"
+        job["recovered_from_running_at"] = now_iso()
+        job["recovery_count"] = int(job.get("recovery_count") or 0) + 1
+        target = PENDING_DIR / path.name
+        write_json(path, job)
+        path.replace(target)
+        recovered.append(str(target))
+    return recovered
 
 
 def render_prompt(job: dict[str, Any]) -> str:
@@ -166,6 +255,11 @@ def job_level(job: dict[str, Any]) -> int:
 
 def is_deferred_media_source(source: str) -> bool:
     return source in DEFERRED_MEDIA_SOURCES
+
+
+def capture_script_for(job: dict[str, Any]) -> Path:
+    source = str(job.get("source") or "wechat")
+    return CAPTURE_SCRIPTS.get(source, CAPTURE_SCRIPT)
 
 
 def clip_title(job: dict[str, Any], capture_result: dict[str, Any] | None = None) -> str:
@@ -382,7 +476,7 @@ def render_deep_capture_prompt(job: dict[str, Any], capture_result: dict[str, An
             level_requirements = "执行重任务：在不自动下载整视频的前提下，尽量抽取关键帧/截图/章节/长视频拆段建议；需要大文件下载时先说明限制。"
         else:
             level_requirements = "深处理视频/图文结构：字幕或简介、核心观点、结构拆解、可复用选题、行动建议；不默认下载整视频。"
-        return f"""{AUTOMATION_POLICY}Sherlockdogs media 解析任务。
+        return f"""Sherlockdogs media 解析任务。
 
 【核心要求】
 
@@ -413,7 +507,7 @@ clipping 阶段只保存了链接。现在才在 Codex 对话里按等级解析�
 4. 最终回复用 `【核心结论】` 和 `【关键支撑】`，附上 `distilled.md`、`raw.md`、`README.md` 和目录链接。
 """
 
-    return f"""{AUTOMATION_POLICY}Sherlockdogs 自动深处理任务。
+    return f"""Sherlockdogs 自动深处理任务。
 
 【核心要求】
 
@@ -433,11 +527,20 @@ clipping 阶段只保存了链接。现在才在 Codex 对话里按等级解析�
 
 【写入要求】
 
-1. 使用 `obsidian-markdown` 风格。
-2. `distilled.md` 必须包含 frontmatter、核心结论、关键支撑、可复用观点、后续行动。
-3. 图片继续引用本地 `assets/`，不要复制外链图片。
-4. 最终回复用 `【核心结论】` 和 `【关键支撑】`，附上 `distilled.md`、`raw.md`、`README.md` 和目录链接。
+1. 不要读取 Vault 路由/迁移长文；本次输出目录已经由抓取脚本确定。
+2. 使用 `obsidian-markdown` 风格。
+3. `distilled.md` 必须包含 frontmatter、核心结论、关键支撑、可复用观点、后续行动。
+4. 图片继续引用本地 `assets/`，不要复制外链图片。
+5. 最终回复用 `【核心结论】` 和 `【关键支撑】`，附上 `distilled.md`、`raw.md`、`README.md` 和目录链接。
 """
+
+
+def deep_artifacts_complete(capture_result: dict[str, Any]) -> bool:
+    article_dir = Path(str(capture_result.get("article_dir") or ""))
+    raw_path = Path(str(capture_result.get("raw_path") or ""))
+    readme_path = Path(str(capture_result.get("readme_path") or article_dir / "README.md"))
+    distilled_path = article_dir / "distilled.md"
+    return raw_path.exists() and distilled_path.exists() and readme_path.exists()
 
 
 def render_card_prompt(job: dict[str, Any], capture_result: dict[str, Any]) -> str:
@@ -533,6 +636,21 @@ def run_clip_job(job: dict[str, Any], args: argparse.Namespace) -> dict[str, Any
 
 def run_deep_clip_job(job: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
     capture_result = capture_article(job, dry_run=args.dry_run)
+    if args.dry_run:
+        return {
+            "ok": True,
+            "dry_run": True,
+            "mode": "deep_clip",
+            "task_level": job_level(job),
+            "capture": capture_result,
+            "thread": {
+                "ok": True,
+                "dry_run": True,
+                "mode": "thread",
+                "thread_name": f"精读｜{clip_title(job, capture_result)[:40]}",
+            },
+            "artifact_completion": False,
+        }
     thread_result = run_codex_thread(
         job,
         args.codex_bin,
@@ -542,12 +660,18 @@ def run_deep_clip_job(job: dict[str, Any], args: argparse.Namespace) -> dict[str
         prompt_override=render_deep_capture_prompt(job, capture_result) if not args.dry_run else None,
         title_override=f"精读｜{clip_title(job, capture_result)[:40]}",
     )
+    if not args.dry_run:
+        readme_path = write_delivery_readme(capture_result)
+        capture_result["readme_path"] = str(readme_path)
+    artifact_ok = deep_artifacts_complete(capture_result) if not args.dry_run else bool(thread_result.get("ok"))
     return {
-        "ok": bool(thread_result.get("ok")),
+        "ok": bool(thread_result.get("ok")) or artifact_ok,
         "mode": "deep_clip",
         "task_level": job_level(job),
         "capture": capture_result,
         "thread": thread_result,
+        "artifact_completion": artifact_ok,
+        "warning": "" if thread_result.get("ok") else "thread did not emit final card; artifacts completed on disk" if artifact_ok else "",
     }
 
 
@@ -828,12 +952,10 @@ def process_one(path: Path, args: argparse.Namespace) -> dict[str, Any]:
     try:
         if job_level(job) <= 2:
             result = run_clip_job(job, args)
-        elif str(job.get("source") or "") != "wechat":
-            result = run_deep_clip_job(job, args)
-        elif args.mode == "exec":
+        elif args.mode == "exec" and str(job.get("source") or "") == "wechat":
             result = run_codex(job, args.codex_bin, args.cwd, args.timeout, args.dry_run)
         else:
-            result = run_codex_thread(job, args.codex_bin, args.cwd, args.timeout, args.dry_run)
+            result = run_deep_clip_job(job, args)
     except Exception as exc:
         result = {"ok": False, "error": str(exc)}
 
@@ -853,33 +975,42 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=1)
     parser.add_argument("--mode", choices=["thread", "exec"], default="thread")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--recover-running-after", type=int, default=600)
+    parser.add_argument("--runner-lock-stale", type=int, default=7200)
     args = parser.parse_args()
 
     ensure_dirs()
-    pending = sorted(PENDING_DIR.glob("*.json"))[: args.limit]
-    if not pending:
-        print(json.dumps({"ok": True, "processed": 0}, ensure_ascii=False))
+    lock_fd = None if args.dry_run else acquire_runner_lock(args.runner_lock_stale)
+    if lock_fd is None and not args.dry_run:
+        print(json.dumps({"ok": True, "processed": 0, "skipped": "runner_lock_active"}, ensure_ascii=False))
         return 0
+    try:
+        recovered = [] if args.dry_run else recover_stale_running_jobs(args.recover_running_after)
+        pending = sorted(PENDING_DIR.glob("*.json"))[: args.limit]
+        if not pending:
+            print(json.dumps({"ok": True, "processed": 0, "recovered": recovered}, ensure_ascii=False))
+            return 0
 
-    if args.dry_run:
-        results = []
-        for path in pending:
-            job = load_json(path)
-            if job_level(job) <= 2:
-                results.append(run_clip_job(job, args))
-            elif str(job.get("source") or "") != "wechat":
-                results.append(run_deep_clip_job(job, args))
-            elif args.mode == "thread":
-                results.append(run_codex_thread(job, args.codex_bin, args.cwd, args.timeout, dry_run=True))
-            else:
-                results.append(run_codex(job, args.codex_bin, args.cwd, args.timeout, dry_run=True))
-        print(json.dumps({"ok": True, "processed": len(results), "dry_run": True, "results": results}, ensure_ascii=False, indent=2))
-        return 0
+        if args.dry_run:
+            results = []
+            for path in pending:
+                job = load_json(path)
+                if job_level(job) <= 2:
+                    results.append(run_clip_job(job, args))
+                elif args.mode == "exec" and str(job.get("source") or "") == "wechat":
+                    results.append(run_codex(job, args.codex_bin, args.cwd, args.timeout, dry_run=True))
+                else:
+                    results.append(run_deep_clip_job(job, args))
+            print(json.dumps({"ok": True, "processed": len(results), "dry_run": True, "results": results}, ensure_ascii=False, indent=2))
+            return 0
 
-    results = [process_one(path, args) for path in pending]
-    ok = all(result.get("ok") for result in results)
-    print(json.dumps({"ok": ok, "processed": len(results), "results": results}, ensure_ascii=False, indent=2))
-    return 0 if ok else 1
+        results = [process_one(path, args) for path in pending]
+        ok = all(result.get("ok") for result in results)
+        print(json.dumps({"ok": ok, "processed": len(results), "recovered": recovered, "results": results}, ensure_ascii=False, indent=2))
+        return 0 if ok else 1
+    finally:
+        if not args.dry_run:
+            release_runner_lock(lock_fd)
 
 
 if __name__ == "__main__":

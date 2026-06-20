@@ -98,6 +98,8 @@ if [[ "$NO_LOAD" == "0" ]]; then
   launchctl bootout "gui/$(id -u)" "$RUNNER_PLIST" >/dev/null 2>&1 || true
   launchctl bootstrap "gui/$(id -u)" "$LOCAL_PLIST"
   launchctl bootstrap "gui/$(id -u)" "$RUNNER_PLIST"
+  launchctl enable "gui/$(id -u)/com.sherlockdogs.local-inbox" >/dev/null 2>&1 || true
+  launchctl enable "gui/$(id -u)/com.sherlockdogs.codex-runner" >/dev/null 2>&1 || true
   launchctl kickstart -k "gui/$(id -u)/com.sherlockdogs.local-inbox" >/dev/null 2>&1 || true
   launchctl kickstart -k "gui/$(id -u)/com.sherlockdogs.codex-runner" >/dev/null 2>&1 || true
 fi
