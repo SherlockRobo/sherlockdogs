@@ -1,29 +1,48 @@
-# Sherlockdogs
+<p align="center">
+  <img src="docs/assets/sherlockdogs-hero.png" alt="Sherlockdogs: send WeChat saves into local Markdown and Codex tasks" width="100%">
+</p>
 
-Forward to yourself. Turn WeChat self-chats into local Markdown and Codex tasks.
+<h1 align="center">Sherlockdogs</h1>
 
-![Sherlockdogs hero](docs/assets/sherlockdogs-hero.png)
+<p align="center">
+  Send anything to yourself in WeChat. Sherlockdogs turns it into local Markdown and Codex-ready tasks.
+</p>
+
+<p align="center">
+  <a href="releases/1.0-public-beta/">Download public beta</a>
+  ·
+  <a href="releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/START_HERE.md">macOS quick start</a>
+  ·
+  <a href="releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/START_HERE.md">Windows quick start</a>
+  ·
+  <a href="docs/architecture.md">Architecture</a>
+</p>
+
+## What It Does
 
 Sherlockdogs is a local-first clipping pipeline for people who save ideas on a phone, but actually work in Markdown, Obsidian, and Codex on a desktop.
 
-The public beta focuses on one practical path:
-
 ```text
-Phone WeChat -> Desktop WeChat -> Local WeChat DB -> Markdown -> Codex
+Phone WeChat -> Desktop WeChat -> Local WeChat DB -> Markdown library -> Codex task
 ```
 
-Obsidian is a recommended reader for the Markdown library, but it is not required. Sherlockdogs works as a folder-first local archive.
+No relay server. No bot account. No hosted inbox. The beta is built around your own desktop WeChat receiving messages you forwarded to yourself.
 
-## Quick Links
+## Public Beta
 
-| What | Link |
+| Platform | Best for | Current status |
+|---|---|---|
+| macOS | First beta users | Real self-chat -> local WeChat DB -> Markdown/Codex smoke passed |
+| Windows | Windows beta testers | Same product path is packaged; diagnostics export included |
+| iOS Shortcut / Inbox | Fallback only | Use when local WeChat DB access is not usable |
+
+| Download | Link |
 |---|---|
-| Public beta package | [releases/1.0-public-beta](releases/1.0-public-beta/) |
-| macOS beta folder | [macOS alpha.3](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) |
-| Windows beta folder | [Windows alpha.2](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) |
-| CLI quickstart | [QUICKSTART.md](QUICKSTART.md) |
-| Architecture | [docs/architecture.md](docs/architecture.md) |
-| Evidence plan | [docs/evidence-plan.md](docs/evidence-plan.md) |
+| Public beta folder | [releases/1.0-public-beta](releases/1.0-public-beta/) |
+| macOS alpha.3 | [Sherlockdogs-macos-alpha-1.0.0-alpha.3](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) |
+| Windows alpha.2 | [Sherlockdogs-windows-alpha-1.0.0-alpha.2](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) |
+
+No zip, dmg, tar, or installer archive is published for this beta. Download the platform folder as-is.
 
 ## Quick Start
 
@@ -42,6 +61,8 @@ Obsidian is a recommended reader for the Markdown library, but it is not require
 
 First launch may spend a few minutes installing Python dependencies. macOS may require right-click -> Open on the first launch.
 
+If a new WeChat item does not arrive on macOS, click `Sherlockdogs OneTouchRepair.app`. It restarts the local services, re-enables the background job, and catches up missed self-chat items.
+
 ## Features
 
 Status: `READY_FOR_PUBLIC_BETA`
@@ -55,16 +76,6 @@ Status: `READY_FOR_PUBLIC_BETA`
 | Obsidian reading | Ready | Uses plain files; Obsidian is optional |
 | iOS Shortcut / Inbox fallback | Fallback | For machines where DB access is not usable |
 | Windows evidence export | Ready | Helps debug real Windows machine failures |
-
-## Platform Status
-
-| Platform | Beta folder | Current status |
-|---|---|---|
-| macOS | [Sherlockdogs-macos-alpha-1.0.0-alpha.3](releases/1.0-public-beta/macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) | Real self-chat -> local WeChat DB -> Markdown/Codex smoke passed |
-| Windows | [Sherlockdogs-windows-alpha-1.0.0-alpha.2](releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) | Same product path is packaged; first real Windows self-chat smoke still needed |
-| iOS Shortcut / Inbox | Included as fallback | Optional fallback when local DB path is not usable |
-
-No zip, dmg, tar, or installer archive is published for this beta. Use the whole platform folder as-is.
 
 ## Command Levels
 
