@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/sherlockdogs-hero.png" alt="Sherlockdogs: send WeChat saves into local Markdown and Codex tasks" width="100%">
+  <img src="docs/assets/sherlockdogs-github-hero.png" alt="Sherlockdogs turns WeChat saves and mobile shares into local Markdown and Codex-ready tasks" width="100%">
 </p>
 
 <h1 align="center">Sherlockdogs</h1>
