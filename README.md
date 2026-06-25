@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="docs/assets/sherlockdogs-github-hero.png" alt="Sherlockdogs turns WeChat saves and mobile shares into local Markdown and Codex-ready tasks" width="100%">
+  <img src="docs/assets/sherlockdogs-github-hero.png" alt="Sherlockdogs connects multi-platform information to local Markdown and Codex-ready tasks" width="100%">
 </p>
 
 <h1 align="center">Sherlockdogs</h1>
 
 <p align="center">
-  Send anything to yourself in WeChat. Sherlockdogs turns it into local Markdown and Codex-ready tasks.
+  Connect your multi-platform information stream to Codex-ready local tasks.
 </p>
 
 <p align="center">
@@ -20,13 +20,13 @@
 
 ## What It Does
 
-Sherlockdogs is a local-first clipping pipeline for people who save ideas on a phone, but actually work in Markdown, Obsidian, and Codex on a desktop.
+Sherlockdogs is a local-first bridge from multi-platform information to Codex. It captures the places where you already save ideas, then turns them into traceable Markdown and Codex-ready tasks on your desktop.
 
 ```text
-Phone WeChat -> Desktop WeChat -> Local WeChat DB -> Markdown library -> Codex task
+WeChat / mobile share / web links / X-XHS-video -> Sherlockdogs -> Markdown library -> Codex task
 ```
 
-No relay server. No bot account. No hosted inbox. The beta is built around your own desktop WeChat receiving messages you forwarded to yourself.
+The current beta has two practical intake paths: WeChat self-chat for the main desktop flow, and iOS Shortcut / Inbox as a fallback or direct mobile-share path. No relay server. No bot account. No hosted inbox.
 
 ## Public Beta
 
@@ -69,10 +69,11 @@ Status: `READY_FOR_PUBLIC_BETA`
 
 | Feature | Status | Notes |
 |---|---|---|
+| Multi-platform intake | Beta | WeChat articles, web links, X/XHS/video links, text, images, PDFs, and files can become local tasks |
 | WeChat self-chat capture | Beta | User forwards to self; desktop WeChat receives locally |
 | Local WeChat DB adapter | Beta | Opt-in local adapter; no hosted relay |
 | Markdown archive | Ready | Writes `raw.md`, metadata, and result folders |
-| Codex handoff | Ready | `#` / `#2` can create Codex-ready tasks |
+| Codex handoff | Ready | `#` / `#2` can route captured material into Codex-ready tasks |
 | Obsidian reading | Ready | Uses plain files; Obsidian is optional |
 | iOS Shortcut / Inbox fallback | Fallback | For machines where DB access is not usable |
 | Windows evidence export | Ready | Helps debug real Windows machine failures |
