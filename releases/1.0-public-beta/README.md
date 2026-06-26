@@ -46,13 +46,15 @@ Download the whole platform folder. Do not copy only the top-level launcher.
 
 This beta intentionally ships as folders, not as `.zip`, `.dmg`, `.tar`, or installer archives.
 
-## Three-Step Start
+## Mac Install
 
-![Sherlockdogs quickstart](../../docs/assets/quickstart-flow.png)
+![Sherlockdogs macOS install path](../../docs/assets/release-mac-install.svg)
 
-1. Open your platform folder and read `START_HERE.md`.
-2. Start Sherlockdogs, then connect or test the intake path.
-3. Send one simple item to yourself and open the generated Markdown output.
+1. Open the macOS beta folder and read `START_HERE.md`.
+2. Right-click `Sherlockdogs Start.app` and choose Open if macOS blocks first launch.
+3. Open `Sherlockdogs Connect WeChat.app` to connect your local desktop WeChat path.
+4. Forward one simple item to yourself from mobile WeChat, ideally with `#2`.
+5. Open `Sherlockdogs Open Output.app` and check the generated Markdown / Codex task.
 
 | Platform | Start | Connect / Test | Output | Repair / Diagnose |
 |---|---|---|---|---|
@@ -60,6 +62,21 @@ This beta intentionally ships as folders, not as `.zip`, `.dmg`, `.tar`, or inst
 | Windows | `Sherlockdogs Start.cmd` | `Sherlockdogs Connect WeChat.cmd` / `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` / `Export Windows Evidence.cmd` |
 
 First launch may spend a few minutes installing Python dependencies. On macOS, right-click -> Open may be required the first time.
+
+## Supported Sources
+
+![Sherlockdogs supported sources](../../docs/assets/release-supported-sources.svg)
+
+Sherlockdogs is built around one idea: different platforms should land in the same local workflow instead of becoming scattered bookmarks.
+
+| Source | What To Send | Current Output |
+|---|---|---|
+| WeChat | articles, self-chat text, links, images | Markdown + metadata + optional Codex task |
+| Web | article links, reference pages | `raw.md`, source URL, metadata |
+| X / Twitter | posts, threads, links | local task package for later processing |
+| 小红书 | notes, links, images | local task package for later processing |
+| B站 / YouTube / 抖音 | video links | link-first task package, ready for transcript/media follow-up |
+| iPhone share sheet | text, URLs, images, PDF, files | iOS Shortcut / Inbox -> local task package |
 
 ## Why It Feels Different
 
@@ -69,15 +86,6 @@ First launch may spend a few minutes installing Python dependencies. On macOS, r
 | Copy title, URL, screenshots, and context by hand | Keep source, metadata, attachments, and raw content together |
 | Paste scattered snippets into Codex | Hand Codex a traceable context bundle |
 | Debug failures by guessing | Run Doctor / Evidence and see where the path broke |
-
-## What It Can Handle
-
-| Input | Current Route | Output |
-|---|---|---|
-| WeChat articles and self-chat items | Desktop WeChat local DB after opt-in setup | Markdown + metadata + optional Codex task |
-| Web links | Local ingest path | `raw.md`, source URL, metadata |
-| X / 小红书 / video links | Link-first capture | Local task package for later processing |
-| iPhone shares, files, PDFs, images | iOS Shortcut / Inbox fallback | Local Inbox -> Markdown/task package |
 
 Command tags can control processing depth:
 

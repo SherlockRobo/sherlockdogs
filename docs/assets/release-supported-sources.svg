@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Sherlockdogs supported sources</title>
+  <desc id="desc">Supported sources include WeChat articles, web links, X, Xiaohongshu, videos, iPhone shares, files, PDFs, and images.</desc>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif; fill: #151515; }
+    .title { font-size: 72px; font-weight: 760; letter-spacing: 0; }
+    .sub { font-size: 32px; fill: #5d636c; }
+    .h { font-size: 34px; font-weight: 720; }
+    .b { font-size: 26px; fill: #60656e; }
+    .small { font-size: 24px; fill: #5d636c; }
+    .card { fill: #fffdf7; stroke: #dedbd2; stroke-width: 3; }
+    .out { fill: #f6fbff; stroke: #b9d8ff; stroke-width: 3; }
+    .orange { fill: #f2b400; }
+    .red { fill: #ef4444; }
+    .blue { fill: #2474e8; }
+    .green { fill: #25b86a; }
+    .line { stroke: #efab00; stroke-width: 7; stroke-linecap: round; fill: none; }
+    .dash { stroke: #efab00; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 14 18; fill: none; }
+  </style>
+
+  <text x="95" y="116" class="title">Supported sources</text>
+  <text x="98" y="168" class="sub">Everything first becomes a local task package, then Codex can summarize, split, rewrite, or continue.</text>
+
+  <g transform="translate(88,230)">
+    <g transform="translate(0,0)">
+      <rect width="270" height="120" rx="28" class="card"/>
+      <circle cx="54" cy="60" r="28" class="green"/>
+      <text x="54" y="70" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">WX</text>
+      <text x="98" y="52" class="h">WeChat</text>
+      <text x="98" y="88" class="b">articles / self-chat</text>
+    </g>
+    <g transform="translate(0,150)">
+      <rect width="270" height="120" rx="28" class="card"/>
+      <circle cx="54" cy="60" r="28" class="blue"/>
+      <text x="54" y="70" text-anchor="middle" font-size="28" font-weight="800" fill="#fff">WEB</text>
+      <text x="98" y="52" class="h">Web links</text>
+      <text x="98" y="88" class="b">pages / articles</text>
+    </g>
+    <g transform="translate(0,300)">
+      <rect width="270" height="120" rx="28" class="card"/>
+      <circle cx="54" cy="60" r="28" fill="#111"/>
+      <text x="54" y="70" text-anchor="middle" font-size="32" font-weight="800" fill="#fff">X</text>
+      <text x="98" y="52" class="h">X / Twitter</text>
+      <text x="98" y="88" class="b">posts / threads</text>
+    </g>
+  </g>
+
+  <g transform="translate(408,230)">
+    <g transform="translate(0,0)">
+      <rect width="270" height="120" rx="28" class="card"/>
+      <circle cx="54" cy="60" r="28" class="red"/>
+      <text x="54" y="70" text-anchor="middle" font-size="24" font-weight="800" fill="#fff">XHS</text>
+      <text x="98" y="52" class="h">小红书</text>
+      <text x="98" y="88" class="b">notes / links</text>
+    </g>
+    <g transform="translate(0,150)">
+      <rect width="270" height="120" rx="28" class="card"/>
+      <circle cx="54" cy="60" r="28" class="red"/>
+      <text x="54" y="70" text-anchor="middle" font-size="24" font-weight="800" fill="#fff">VID</text>
+      <text x="98" y="52" class="h">Video</text>
+      <text x="98" y="88" class="b">B站 / YouTube / 抖音</text>
+    </g>
+    <g transform="translate(0,300)">
+      <rect width="270" height="120" rx="28" class="card"/>
+      <circle cx="54" cy="60" r="28" class="blue"/>
+      <text x="54" y="70" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">iOS</text>
+      <text x="98" y="52" class="h">iPhone share</text>
+      <text x="98" y="88" class="b">text / image / PDF</text>
+    </g>
+  </g>
+
+  <path d="M700 440 C820 440, 820 440, 925 440" class="line"/>
+  <path d="M925 440 l-24 -18 M925 440 l-24 18" class="line"/>
+
+  <g transform="translate(760,286)">
+    <rect width="290" height="310" rx="38" fill="#fff8e3" stroke="#efb800" stroke-width="5"/>
+    <text x="145" y="80" text-anchor="middle" class="h">Sherlockdogs</text>
+    <text x="145" y="126" text-anchor="middle" class="b">local intake</text>
+    <path d="M80 165 H210" class="dash"/>
+    <text x="145" y="220" text-anchor="middle" class="small">normalize</text>
+    <text x="145" y="258" text-anchor="middle" class="small">keep source</text>
+  </g>
+
+  <path d="M1054 440 C1138 440, 1138 440, 1210 440" class="line"/>
+  <path d="M1210 440 l-24 -18 M1210 440 l-24 18" class="line"/>
+
+  <g transform="translate(1230,230)">
+    <rect width="280" height="120" rx="28" class="out"/>
+    <text x="38" y="54" class="h">Markdown</text>
+    <text x="38" y="90" class="b">raw.md / README</text>
+    <rect y="150" width="280" height="120" rx="28" class="out"/>
+    <text x="38" y="204" class="h">Source evidence</text>
+    <text x="38" y="240" class="b">URL / metadata / assets</text>
+    <rect y="300" width="280" height="120" rx="28" class="out"/>
+    <text x="38" y="354" class="h">Codex task</text>
+    <text x="38" y="390" class="b">#2 / #4 / #ob</text>
+  </g>
+
+  <g transform="translate(98,780)">
+    <rect width="1410" height="72" rx="20" fill="#f7f7f4" stroke="#dedbd2" stroke-width="3"/>
+    <text x="30" y="47" class="small">Beta note: WeChat self-chat is the main Mac path. iOS Shortcut / Inbox is the fallback and direct mobile-share path.</text>
+  </g>
+</svg>
