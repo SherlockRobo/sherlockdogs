@@ -5,7 +5,8 @@
 <h1 align="center">Sherlockdogs 1.0 Public Beta</h1>
 
 <p align="center">
-  <strong>把微信、网页、X / 小红书、视频链接和手机分享，打通到 Codex 可直接处理的本地任务。</strong>
+  <strong>把微信、网页、X / 小红书、视频链接和手机分享，打通到 Codex 可直接处理的本地任务。</strong><br>
+  <strong>Everything to your Codex Inbox.</strong>
 </p>
 
 <p align="center">
@@ -22,7 +23,7 @@
 
 ## What This Beta Is
 
-Sherlockdogs is a local-first bridge from your daily information stream to Codex.
+Sherlockdogs is a local-first bridge from your daily information stream to your Codex Inbox.
 
 You keep the same habit: forward useful things to yourself, or share from your phone. Sherlockdogs turns those scattered inputs into local Markdown, source evidence, attachments, and optional Codex-ready tasks.
 
