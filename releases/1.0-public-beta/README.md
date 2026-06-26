@@ -65,7 +65,7 @@ First launch may spend a few minutes installing Python dependencies. On macOS, r
 
 ## Supported Sources
 
-![Sherlockdogs supported sources](../../docs/assets/release-supported-sources.svg)
+![Sherlockdogs supported sources](../../docs/assets/release-supported-sources.png)
 
 Sherlockdogs is built around one idea: different platforms should land in the same local workflow instead of becoming scattered bookmarks.
 
