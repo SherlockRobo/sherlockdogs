@@ -18,6 +18,6 @@ echo Windows WeChat DB smoke passed.
 pause
 exit /b 0
 :fail
-echo Windows WeChat DB smoke failed. Run "OneClick Codex Help.cmd" first, or "Doctor Sherlockdogs.cmd" for diagnostics.
+echo Windows WeChat DB smoke failed. Run "3 OneClick Repair.cmd" first, or "4 OneClick Report.cmd" to send evidence.
 pause
 exit /b 1

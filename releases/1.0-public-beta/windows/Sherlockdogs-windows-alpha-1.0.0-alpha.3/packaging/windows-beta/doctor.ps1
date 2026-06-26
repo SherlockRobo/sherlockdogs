@@ -177,25 +177,25 @@ $lines = @(
   "failed=$FailedCount"
 )
 $Advice = @()
-if ($PythonStatus -ne "ok") { $Advice += "- Install Python 3, then run Install Sherlockdogs.cmd again." }
+if ($PythonStatus -ne "ok") { $Advice += "- Install Python 3, then run 1 OneClick Install.cmd again." }
 if ($CodexStatus -ne "ok") { $Advice += "- Install/open Codex, or set CODEX_BIN in $ConfigFile." }
 if (($RequestsStatus -ne "ok") -or ($Bs4Status -ne "ok") -or ($MarkdownifyStatus -ne "ok") -or ($PilStatus -ne "ok")) {
-  $Advice += "- Run Install Sherlockdogs.cmd again to rebuild Python dependencies."
+  $Advice += "- Run 1 OneClick Install.cmd again to rebuild Python dependencies."
 }
 if ($FfprobeStatus -eq "missing") { $Advice += "- Video metadata may be limited until ffprobe/ffmpeg is installed." }
 if (($LocalTaskState -eq "not registered") -or ($RunnerTaskState -eq "not registered")) {
-  $Advice += "- Background tasks are not registered; run Install Sherlockdogs.cmd again."
+  $Advice += "- Background tasks are not registered; run 3 OneClick Repair.cmd."
 }
 if (-not $WindowsWeChatDir) {
-  $Advice += "- Windows WeChat self-chat is not connected; run Sherlockdogs Connect WeChat.cmd with Windows WeChat logged in."
+  $Advice += "- Windows WeChat self-chat is not connected; run 2 OneClick Configure.cmd with Windows WeChat logged in."
 } elseif ($WeChatDbCount -eq 0) {
   $Advice += "- Windows WeChat directory has no decrypted message DBs; check the selected directory."
 } elseif ($AdapterDryRunStatus -like "warn:*") {
   $Advice += "- Windows WeChat DB is readable but has adapter warnings; run Windows WeChat Smoke and send this Doctor report if no item arrives."
 } elseif ($AdapterDryRunStatus -ne "ok") {
-  $Advice += "- Windows WeChat DB exists but adapter dry-run failed; run Sherlockdogs Connect WeChat.cmd again and send this Doctor report."
+  $Advice += "- Windows WeChat DB exists but adapter dry-run failed; run 3 OneClick Repair.cmd, then 4 OneClick Report.cmd if it still fails."
 } elseif ($WeChatTaskState -eq "not registered") {
-  $Advice += "- Windows WeChat DB directory is configured but watcher task is missing; run Sherlockdogs Connect WeChat.cmd again."
+  $Advice += "- Windows WeChat DB directory is configured but watcher task is missing; run 3 OneClick Repair.cmd."
 }
 if ($ReceiverChats -eq "missing" -or $ReceiverChats -eq "empty") {
   $Advice += "- No Windows receiver chat is saved yet; run Run Windows WeChat Smoke.cmd after forwarding a #2 item to yourself."

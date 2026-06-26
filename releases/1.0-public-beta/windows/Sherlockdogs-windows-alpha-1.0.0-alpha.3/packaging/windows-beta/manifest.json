@@ -41,6 +41,14 @@
   "privacy_model": "local Windows WeChat self-chat DB path after explicit Connect; no Sherlockdogs relay by default",
   "beta_boundary": "Windows WeChat DB adapter ships as the main path but requires real Windows self-chat smoke evidence before Mac-parity completion",
   "cloud_boundary": "sync Inbox is optional fallback; if used, Sherlockdogs only watches the user's local synced folder",
-  "first_run_entry": "Sherlockdogs Start.cmd",
-  "repair_entry": "OneClick Codex Help.cmd"
+  "first_run_entry": "1 OneClick Install.cmd",
+  "configure_entry": "2 OneClick Configure.cmd",
+  "repair_entry": "3 OneClick Repair.cmd",
+  "report_entry": "4 OneClick Report.cmd",
+  "legacy_entries": [
+    "Sherlockdogs Start.cmd",
+    "Sherlockdogs Connect WeChat.cmd",
+    "OneClick Codex Help.cmd",
+    "Export Windows Evidence.cmd"
+  ]
 }

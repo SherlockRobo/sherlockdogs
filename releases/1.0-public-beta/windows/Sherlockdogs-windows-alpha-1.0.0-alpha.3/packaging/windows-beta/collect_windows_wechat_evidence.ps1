@@ -11,7 +11,7 @@ $InboxScript = Join-Path $ProjectDir "scripts\windows_wechat_inbox.py"
 $EvidenceScript = Join-Path $ProjectDir "scripts\collect_windows_wechat_db_evidence.py"
 $CodexRunnerScript = Join-Path $ProjectDir "scripts\codex_runner.py"
 
-if (-not (Test-Path $ConfigFile)) { throw "Sherlockdogs config missing. Run Sherlockdogs Start.cmd, then Sherlockdogs Connect WeChat.cmd." }
+if (-not (Test-Path $ConfigFile)) { throw "Sherlockdogs config missing. Run 1 OneClick Install.cmd, then 2 OneClick Configure.cmd." }
 . $ConfigFile
 
 $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -ErrorAction SilentlyContinue).Source }
@@ -19,7 +19,7 @@ $Codex = if ($env:CODEX_BIN) { $env:CODEX_BIN } else { (Get-Command codex -Error
 $ClippingDir = if ($env:SHERLOCKDOGS_CLIPPING_DIR) { $env:SHERLOCKDOGS_CLIPPING_DIR } else { Join-Path $env:USERPROFILE "Sherlockdogs\Vault\clipping" }
 $WorkDir = if ($env:SHERLOCKDOGS_WORK_DIR) { $env:SHERLOCKDOGS_WORK_DIR } else { Join-Path $ClippingDir "_sherlockdogs" }
 $TaskRunner = Join-Path $ProjectDir "packaging\windows-beta\task_runner.ps1"
-if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first." }
+if (-not $Python) { throw "Python not found. Run 1 OneClick Install.cmd first." }
 if (-not $Codex) { throw "Codex not found. Install/open Codex, or set CODEX_BIN in $ConfigFile." }
 if (-not (Test-Path $InboxScript)) { throw "Windows WeChat inbox script missing: $InboxScript" }
 if (-not (Test-Path $EvidenceScript)) { throw "Evidence script missing: $EvidenceScript" }
@@ -27,7 +27,7 @@ if (-not (Test-Path $CodexRunnerScript)) { throw "Codex runner script missing: $
 
 $DbRoot = $env:SHERLOCKDOGS_WINDOWS_WECHAT_DECRYPTED_DIR
 if (-not $DbRoot -or -not (Test-Path $DbRoot)) {
-  throw "Windows WeChat DB root missing. Run Sherlockdogs Connect WeChat.cmd with Windows WeChat logged in."
+  throw "Windows WeChat DB root missing. Run 2 OneClick Configure.cmd with Windows WeChat logged in."
 }
 
 $AdapterOutput = if (Test-Path $TaskRunner) {

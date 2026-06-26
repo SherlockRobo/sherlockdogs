@@ -86,4 +86,4 @@ if (Test-Path $DoctorScript) {
   }
 }
 Export-Evidence
-throw "Windows WeChat DB smoke did not pass within $TimeoutMinutes minutes. Run OneClick Codex Help.cmd first, or Doctor Sherlockdogs.cmd for diagnostics."
+throw "Windows WeChat DB smoke did not pass within $TimeoutMinutes minutes. Run 3 OneClick Repair.cmd first, or 4 OneClick Report.cmd to send evidence."

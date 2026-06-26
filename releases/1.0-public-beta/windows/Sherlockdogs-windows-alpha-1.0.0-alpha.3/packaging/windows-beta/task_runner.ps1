@@ -62,11 +62,11 @@ function Invoke-WeChatIncrementalDecrypt {
     Add-TaskLog "incremental_decrypt=skipped reason=no_wechat_decrypt_helper"
     return
   }
-  throw "Windows WeChat incremental decrypt failed. Run 'OneClick Codex Help.cmd' or 'Export Windows Evidence.cmd'."
+  throw "Windows WeChat incremental decrypt failed. Run '3 OneClick Repair.cmd' or '4 OneClick Report.cmd'."
 }
 
 $Python = if ($env:PYTHON_BIN) { $env:PYTHON_BIN } else { (Get-Command python -ErrorAction SilentlyContinue).Source }
-if (-not $Python) { throw "Python not found. Run Sherlockdogs Start.cmd first." }
+if (-not $Python) { throw "Python not found. Run 1 OneClick Install.cmd first." }
 Add-TaskLog "Sherlockdogs task runner"
 Add-TaskLog "started_at=$(Get-Date -Format o)"
 Add-TaskLog "kind=$Kind"

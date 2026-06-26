@@ -27,11 +27,11 @@ evidence\windows-wechat-db-smoke\
 Easiest return path:
 
 ```text
-OneClick Codex Help.cmd
-Export Windows Evidence.cmd
+3 OneClick Repair.cmd
+4 OneClick Report.cmd
 ```
 
-`OneClick Codex Help.cmd` first creates a Desktop folder named `Sherlockdogs-Windows-Evidence-*`, then writes a Codex repair prompt and starts Codex when available. If Codex is not available, send that folder back as-is. Do not zip it unless the operator explicitly asks for an archive.
+`3 OneClick Repair.cmd` first creates a Desktop folder named `Sherlockdogs-Windows-Evidence-*`, then writes a Codex repair prompt and starts Codex when available. If Codex is not available, run `4 OneClick Report.cmd` and send that folder back as-is. Do not zip it unless the operator explicitly asks for an archive.
 
 The passing report must contain:
 
@@ -59,8 +59,8 @@ evidence\windows-wechat-db-smoke\
 Or just run:
 
 ```text
-OneClick Codex Help.cmd
-Export Windows Evidence.cmd
+3 OneClick Repair.cmd
+4 OneClick Report.cmd
 ```
 
 The smoke command now keeps polling until timeout. If it still fails, it automatically runs Doctor and prints `diagnostic_report=...`.

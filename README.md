@@ -33,7 +33,7 @@ The current beta has two practical intake paths: WeChat self-chat for the main d
 | Platform | Best for | Current status |
 |---|---|---|
 | macOS | First beta users | Real self-chat -> local WeChat DB -> Markdown/Codex smoke passed |
-| Windows | Windows beta testers | Alpha.3 hotfix includes incremental decrypt, hidden tasks, and OneClick Codex Help |
+| Windows | Windows beta testers | Alpha.3 hotfix includes incremental decrypt, hidden tasks, and four one-click entries |
 | iOS Shortcut / Inbox | Fallback only | Use when local WeChat DB access is not usable |
 
 | Download | Link |
@@ -57,7 +57,7 @@ No zip, dmg, tar, or installer archive is published for this beta. Download the 
 | Platform | Start | Connect / test | Output | Diagnostics |
 |---|---|---|---|---|
 | macOS | `Sherlockdogs Start.app` | `Sherlockdogs Connect WeChat.app` | `Sherlockdogs Open Output.app` | `Sherlockdogs Doctor.app` |
-| Windows | `Sherlockdogs Start.cmd` | `Sherlockdogs Connect WeChat.cmd` or `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `OneClick Codex Help.cmd` |
+| Windows | `1 OneClick Install.cmd` | `2 OneClick Configure.cmd` or `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `3 OneClick Repair.cmd` / `4 OneClick Report.cmd` |
 
 First launch may spend a few minutes installing Python dependencies. macOS may require right-click -> Open on the first launch.
 
@@ -105,11 +105,11 @@ If macOS fails, start with `Sherlockdogs Doctor.app`.
 If Windows fails, run:
 
 ```text
-OneClick Codex Help.cmd
-Export Windows Evidence.cmd
+3 OneClick Repair.cmd
+4 OneClick Report.cmd
 ```
 
-`OneClick Codex Help.cmd` exports evidence, writes a Codex repair prompt, and starts a local Codex repair task when the CLI is available. If Codex is unavailable, share the generated `Sherlockdogs-Windows-Evidence-*` folder in an issue or discussion.
+`3 OneClick Repair.cmd` exports evidence, writes a Codex repair prompt, and starts a local Codex repair task when the CLI is available. If Codex is unavailable, use `4 OneClick Report.cmd` and share the generated `Sherlockdogs-Windows-Evidence-*` folder in an issue or discussion.
 
 ## Privacy Boundary
 

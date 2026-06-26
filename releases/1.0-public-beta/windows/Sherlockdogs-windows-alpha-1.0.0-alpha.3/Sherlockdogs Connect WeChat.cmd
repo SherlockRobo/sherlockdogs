@@ -8,6 +8,6 @@ if errorlevel 1 goto fail
 pause
 exit /b 0
 :fail
-echo Sherlockdogs Connect WeChat failed. Run "OneClick Codex Help.cmd" first, or "Doctor Sherlockdogs.cmd" for diagnostics.
+echo Sherlockdogs Connect WeChat failed. Run "3 OneClick Repair.cmd" first, or "4 OneClick Report.cmd" to send evidence.
 pause
 exit /b 1

@@ -18,13 +18,14 @@ Create or use this folder in your chosen sync drive:
 Sherlockdogs/Inbox
 ```
 
-Desktop Sherlockdogs watches the synced local copy after running Start. If you
-use Nutstore, run the helper below. If you use iCloud/Google Drive/OneDrive,
-select or pass that folder path as the Sherlockdogs Inbox.
+Desktop Sherlockdogs watches the synced local copy after the one-click install
+and configure steps. If you use Nutstore, run the helper below. If you use
+iCloud/Google Drive/OneDrive, select or pass that folder path as the
+Sherlockdogs Inbox.
 
 - macOS local-only: `Sherlockdogs Start.app` is enough.
 - macOS Nutstore: `Configure Nutstore Inbox.command`
-- Windows local-only: `Sherlockdogs Start.cmd` is enough.
+- Windows local-only: run `1 OneClick Install.cmd`, then `2 OneClick Configure.cmd`.
 - Windows Nutstore: `Configure Nutstore Inbox.cmd`
 
 ## Fallback Phone Path
@@ -98,5 +99,5 @@ Save File -> OneDrive/Sherlockdogs/Inbox/sdogs-{date}.txt
 - The sync provider is the user's own account.
 - Sherlockdogs only watches the local synced folder on the desktop when the optional fallback Inbox path is used.
 - Obsidian is recommended, not required; the durable output is local Markdown.
-- Main beta path is WeChat self-chat: Mac reads the local Mac WeChat database only after the user runs `Sherlockdogs Connect WeChat.app`; Windows prepares or binds a local Windows WeChat DB path only after the user runs `Sherlockdogs Connect WeChat.cmd`.
+- Main beta path is WeChat self-chat: Mac reads the local Mac WeChat database only after the user runs `Sherlockdogs Connect WeChat.app`; Windows prepares or binds a local Windows WeChat DB path only after the user runs `2 OneClick Configure.cmd`.
 - The public beta does not upload clipping content to a Sherlockdogs relay service by default.

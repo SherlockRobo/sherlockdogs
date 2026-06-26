@@ -60,7 +60,7 @@ This beta intentionally ships as folders, not as `.zip`, `.dmg`, `.tar`, or inst
 | Platform | Start | Connect / Test | Output | Repair / Diagnose |
 |---|---|---|---|---|
 | macOS | `Sherlockdogs Start.app` | `Sherlockdogs Connect WeChat.app` | `Sherlockdogs Open Output.app` | `Sherlockdogs OneTouchRepair.app` / `Sherlockdogs Doctor.app` |
-| Windows | `Sherlockdogs Start.cmd` | `Sherlockdogs Connect WeChat.cmd` / `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` / `OneClick Codex Help.cmd` |
+| Windows | `1 OneClick Install.cmd` | `2 OneClick Configure.cmd` / `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `3 OneClick Repair.cmd` / `4 OneClick Report.cmd` |
 
 First launch may spend a few minutes installing Python dependencies. On macOS, right-click -> Open may be required the first time.
 
@@ -133,11 +133,11 @@ Sherlockdogs OneTouchRepair.app
 If Windows fails, run:
 
 ```text
-OneClick Codex Help.cmd
-Export Windows Evidence.cmd
+3 OneClick Repair.cmd
+4 OneClick Report.cmd
 ```
 
-`OneClick Codex Help.cmd` exports evidence, writes a Codex repair prompt, and starts a local Codex repair task when the CLI is available. If Codex is unavailable, send back the generated `Sherlockdogs-Windows-Evidence-*` folder. It helps separate DB discovery, decrypt/key setup, self-chat receive, task creation, and Codex handoff issues.
+`3 OneClick Repair.cmd` exports evidence, writes a Codex repair prompt, and starts a local Codex repair task when the CLI is available. If Codex is unavailable, use `4 OneClick Report.cmd` and send back the generated `Sherlockdogs-Windows-Evidence-*` folder. It helps separate DB discovery, decrypt/key setup, self-chat receive, task creation, and Codex handoff issues.
 
 ## More
 

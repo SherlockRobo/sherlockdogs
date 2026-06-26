@@ -43,7 +43,7 @@ function Add-ConnectReport([string]$Line) {
 if (-not $Python) {
   Add-ConnectReport "status=failed"
   Add-ConnectReport "error=python_not_found"
-  throw "Python not found. Run Sherlockdogs Start.cmd first, or install Python 3."
+  throw "Python not found. Run 1 OneClick Install.cmd first, or install Python 3."
 }
 if (-not (Test-Path $Python)) {
   Add-ConnectReport "status=failed"
