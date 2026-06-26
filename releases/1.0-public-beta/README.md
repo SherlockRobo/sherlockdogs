@@ -67,16 +67,18 @@ First launch may spend a few minutes installing Python dependencies. On macOS, r
 
 ![Sherlockdogs supported sources](../../docs/assets/release-supported-sources.png)
 
-Sherlockdogs is built around one idea: different platforms should land in the same local workflow instead of becoming scattered bookmarks.
+Sherlockdogs 的核心思路很简单：不同平台的收藏和转发，最后都落到同一个本地工作流里，而不是散在一堆 App 和浏览器书签里。
 
-| Source | What To Send | Current Output |
+Sherlockdogs has one job: turn scattered saves from different platforms into one local workflow, instead of leaving them buried across apps and bookmarks.
+
+| 来源 / Source | 发送内容 / What To Send | 当前输出 / Current Output |
 |---|---|---|
-| WeChat | articles, self-chat text, links, images | Markdown + metadata + optional Codex task |
-| Web | article links, reference pages | `raw.md`, source URL, metadata |
-| X / Twitter | posts, threads, links | local task package for later processing |
-| 小红书 | notes, links, images | local task package for later processing |
-| B站 / YouTube / 抖音 | video links | link-first task package, ready for transcript/media follow-up |
-| iPhone share sheet | text, URLs, images, PDF, files | iOS Shortcut / Inbox -> local task package |
+| 微信 / WeChat | 文章、自聊文本、链接、图片 / articles, self-chat text, links, images | Markdown + metadata + optional Codex task |
+| 网页 / Web | 文章链接、参考页面 / article links, reference pages | `raw.md` + source URL + metadata |
+| X / Twitter | 帖子、线程、链接 / posts, threads, links | local task package for later processing |
+| 小红书 / Xiaohongshu | 笔记、链接、图片 / notes, links, images | local task package for later processing |
+| B站 / YouTube / 抖音 | 视频链接 / video links | link-first task package, ready for transcript/media follow-up |
+| iPhone 分享 / iPhone share sheet | 文本、URL、图片、PDF、文件 / text, URLs, images, PDF, files | iOS Shortcut / Inbox -> local task package |
 
 ## Why It Feels Different
 
