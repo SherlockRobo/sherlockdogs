@@ -8,7 +8,7 @@ Generated: 2026-06-17T19:30:36+0800
 |---|---|---|
 | macOS release folder | PASS | `<release-root>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
 | macOS runtime smoke | PASS | `packaging/macos-beta/release_check.sh` |
-| Windows release folder | PASS | `<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
+| Windows release folder | PASS | `<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.3` |
 | Windows static gate | PASS | `packaging/windows-beta/release_check.sh` |
 | Windows runtime smoke | PASS | <release-root>/dist/evidence/windows-runtime-smoke/runtime-smoke-b885c8355f71.txt |
 | Windows WeChat DB smoke | PENDING | Needs real Windows WeChat DB parity smoke |

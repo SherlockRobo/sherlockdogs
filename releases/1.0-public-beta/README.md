@@ -12,7 +12,7 @@
 <p align="center">
   <a href="macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/">Download for macOS</a>
   ·
-  <a href="windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/">Download for Windows</a>
+  <a href="windows/Sherlockdogs-windows-alpha-1.0.0-alpha.3/">Download for Windows</a>
   ·
   <a href="../../README.md">Project Home</a>
   ·
@@ -41,7 +41,7 @@ No relay server. No bot account. No hosted inbox. The main beta path is local an
 | Platform | Best For | Download | Start Here |
 |---|---|---|---|
 | macOS | First beta users | [`Sherlockdogs-macos-alpha-1.0.0-alpha.3`](macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/) | [`START_HERE.md`](macos/Sherlockdogs-macos-alpha-1.0.0-alpha.3/START_HERE.md) |
-| Windows | Windows beta testers | [`Sherlockdogs-windows-alpha-1.0.0-alpha.2`](windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/) | [`START_HERE.md`](windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/START_HERE.md) |
+| Windows | Windows beta testers | [`Sherlockdogs-windows-alpha-1.0.0-alpha.3`](windows/Sherlockdogs-windows-alpha-1.0.0-alpha.3/) | [`START_HERE.md`](windows/Sherlockdogs-windows-alpha-1.0.0-alpha.3/START_HERE.md) |
 
 Download the whole platform folder. Do not copy only the top-level launcher.
 
@@ -60,7 +60,7 @@ This beta intentionally ships as folders, not as `.zip`, `.dmg`, `.tar`, or inst
 | Platform | Start | Connect / Test | Output | Repair / Diagnose |
 |---|---|---|---|---|
 | macOS | `Sherlockdogs Start.app` | `Sherlockdogs Connect WeChat.app` | `Sherlockdogs Open Output.app` | `Sherlockdogs OneTouchRepair.app` / `Sherlockdogs Doctor.app` |
-| Windows | `Sherlockdogs Start.cmd` | `Sherlockdogs Connect WeChat.cmd` / `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` / `Export Windows Evidence.cmd` |
+| Windows | `Sherlockdogs Start.cmd` | `Sherlockdogs Connect WeChat.cmd` / `Run Windows WeChat Smoke.cmd` | `Open Sherlockdogs Output.cmd` | `Doctor Sherlockdogs.cmd` / `OneClick Codex Help.cmd` |
 
 First launch may spend a few minutes installing Python dependencies. On macOS, right-click -> Open may be required the first time.
 
@@ -108,10 +108,10 @@ Command tags can control processing depth:
 | macOS WeChat self-chat -> local DB -> Markdown/Codex | Passed |
 | Mobile entry smoke | Passed |
 | Windows package/runtime gate | Passed |
-| Windows real-machine WeChat DB smoke | Pending external beta evidence |
+| Windows real-machine WeChat DB smoke | First beta machine passed after onboarding fixes; alpha.3 still needs fresh tester confirmation |
 | Final release check | Passed |
 
-Windows is packaged for the same product path, but should still be treated as beta until real Windows self-chat evidence comes back.
+Windows is packaged for the same product path, but should still be treated as beta because WeChat DB decrypt/key behavior can change by machine and WeChat version.
 
 ## Known Limits
 
@@ -133,10 +133,11 @@ Sherlockdogs OneTouchRepair.app
 If Windows fails, run:
 
 ```text
+OneClick Codex Help.cmd
 Export Windows Evidence.cmd
 ```
 
-Send back the generated `Sherlockdogs-Windows-Evidence-*` folder. It helps separate DB discovery, decrypt/key setup, self-chat receive, task creation, and Codex handoff issues.
+`OneClick Codex Help.cmd` exports evidence, writes a Codex repair prompt, and starts a local Codex repair task when the CLI is available. If Codex is unavailable, send back the generated `Sherlockdogs-Windows-Evidence-*` folder. It helps separate DB discovery, decrypt/key setup, self-chat receive, task creation, and Codex handoff issues.
 
 ## More
 

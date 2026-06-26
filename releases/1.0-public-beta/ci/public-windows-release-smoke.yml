@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        working-directory: releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2
+        working-directory: releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,5 +41,5 @@ jobs:
         with:
           name: sherlockdogs-public-windows-release-smoke
           path: |
-            releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.2/evidence/windows-wechat-db-sim-smoke/**
+            releases/1.0-public-beta/windows/Sherlockdogs-windows-alpha-1.0.0-alpha.3/evidence/windows-wechat-db-sim-smoke/**
           if-no-files-found: warn

@@ -1,0 +1,46 @@
+{
+  "name": "Sherlockdogs Windows Alpha",
+  "version": "1.0.0-alpha.3",
+  "channel": "windows-beta",
+  "entry": "windows-wechat-self-chat",
+  "default_inbox": "%USERPROFILE%\\Sherlockdogs\\Inbox",
+  "fallback_inbox": "%USERPROFILE%\\Sherlockdogs\\Inbox",
+  "default_work_dir": "<clipping>\\_sherlockdogs",
+  "optional_cloud_inbox": "Nutstore WebDAV / synced folder",
+  "optional_cloud_inbox_path": "<Nutstore>\\Sherlockdogs\\Inbox",
+  "default_vault_candidates": [
+    "%USERPROFILE%\\ObsidianVault_LOCAL",
+    "%USERPROFILE%\\Sherlockdogs\\Vault"
+  ],
+  "services": [
+    "SherlockdogsLocalInbox",
+    "SherlockdogsCodexRunner",
+    "SherlockdogsWindowsWeChatInbox"
+  ],
+  "scheduler": "Windows Scheduled Tasks, current user",
+  "supported_inputs": [
+    "wechat article url",
+    "x url",
+    "xhs url",
+    "bilibili url",
+    "youtube url",
+    "douyin url",
+    "tiktok url",
+    "image file",
+    "video file",
+    "pdf file",
+    "plain text"
+  ],
+  "task_levels": {
+    "#1": "archive only",
+    "#2": "archive plus Codex card",
+    "#3": "metadata/light parse in Codex",
+    "#4": "deep read in Codex",
+    "#5": "frames/screenshots/segments in Codex"
+  },
+  "privacy_model": "local Windows WeChat self-chat DB path after explicit Connect; no Sherlockdogs relay by default",
+  "beta_boundary": "Windows WeChat DB adapter ships as the main path but requires real Windows self-chat smoke evidence before Mac-parity completion",
+  "cloud_boundary": "sync Inbox is optional fallback; if used, Sherlockdogs only watches the user's local synced folder",
+  "first_run_entry": "Sherlockdogs Start.cmd",
+  "repair_entry": "OneClick Codex Help.cmd"
+}

@@ -7,7 +7,7 @@ Generated: 2026-06-17T19:30:36+0800
 | Tester platform | Folder |
 |---|---|
 | Mac | `<release-root>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
-| Windows | `<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
+| Windows | `<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.3` |
 
 Send the whole folder as-is. Do not send only the top-level command files.
 

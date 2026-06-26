@@ -1,5 +1,5 @@
 mac_dir=<release-root>/dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3
-windows_dir=<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2
+windows_dir=<release-root>/dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.3
 readiness=<release-root>/dist/PUBLIC_BETA_READINESS.md
 share=<release-root>/dist/SHARE_PUBLIC_BETA.md
 operator_guide=<release-root>/dist/PUBLIC_BETA_OPERATOR.md

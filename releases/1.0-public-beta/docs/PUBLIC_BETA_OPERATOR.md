@@ -113,7 +113,7 @@ Evidence can come from any of these places:
 
 | Source | Path |
 |---|---|
-| Windows release folder | `dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2/evidence/windows-runtime-smoke/` |
+| Windows release folder | `dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.3/evidence/windows-runtime-smoke/` |
 | Central evidence folder | `dist/evidence/windows-runtime-smoke/` |
 | GitHub Actions artifact | `sherlockdogs-windows-runtime-smoke` |
 | External returned folder | pass it to `packaging/public_beta_go.sh <path>` |
@@ -166,7 +166,7 @@ sherlockdogs-windows-runtime-smoke
 | Platform | Folder |
 |---|---|
 | macOS | `dist/macos-beta/Sherlockdogs-macos-alpha-1.0.0-alpha.3` |
-| Windows | `dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.2` |
+| Windows | `dist/windows-beta/Sherlockdogs-windows-alpha-1.0.0-alpha.3` |
 
 Share the whole folder as-is. Do not create zip, dmg, tar, or other archive files.
 
