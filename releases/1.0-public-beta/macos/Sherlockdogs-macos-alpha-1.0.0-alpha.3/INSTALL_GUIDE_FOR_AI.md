@@ -16,8 +16,8 @@ audience: ai-support
 | 步骤 | Mac | Windows |
 |---|---|---|
 | 1 | 确认 Mac 微信已登录 | 确认 Windows 微信已登录 |
-| 2 | 双击 `Sherlockdogs Start.app` | 双击 `Sherlockdogs Start.cmd` |
-| 3 | 双击 `Sherlockdogs Connect WeChat.app`，按提示发测试消息给自己 | 双击 `Sherlockdogs Connect WeChat.cmd`，准备/绑定 Windows 微信 DB |
+| 2 | 双击 `Sherlockdogs Start.app` | 双击 `1 OneClick Install.cmd` |
+| 3 | 双击 `Sherlockdogs Connect WeChat.app`，按提示发测试消息给自己 | 双击 `2 OneClick Configure.cmd`，选择 Obsidian 输出路径并准备/绑定 Windows 微信 DB |
 | 4 | 以后手机转发任意内容给自己的微信 | 以后手机转发任意内容给自己的微信，Windows 微信必须收到 |
 | 5 | 双击 `Sherlockdogs Open Output.app` 查看结果 | 双击 `Open Sherlockdogs Output.cmd` 查看结果 |
 
@@ -47,7 +47,7 @@ Codex 是任务处理入口。只有 `#2/#3/#4/#5` 这类指令需要进入 Code
 | 内容会不会上传到 Sherlockdogs | 默认不会；主路径读取用户本机微信数据并写入本地 Markdown |
 | 电脑关了会不会处理 | 不会，电脑端 Sherlockdogs 和 Mac 微信需要运行 |
 | 手机怎么投递 | 推荐转发给自己微信；Windows 需要 Windows 微信也收到这条自聊消息 |
-| 找不到结果 | 运行 Doctor，再打开 Output 或 Diagnostics |
+| 找不到结果 | Mac 先运行 OneTouchRepair；Windows 先运行一键修复；需要反馈时运行诊断/一键上报 |
 
 ## 支持口径
 
@@ -55,6 +55,6 @@ Codex 是任务处理入口。只有 `#2/#3/#4/#5` 这类指令需要进入 Code
 
 1. Mac 微信是否登录，聊天列表里是否能看到刚转发给自己的内容。
 2. 是否运行过 `Sherlockdogs Connect WeChat.app`。
-3. Windows 是否运行过 `Sherlockdogs Connect WeChat.cmd`，并成功准备/绑定 Windows 微信 DB。
+3. Windows 是否运行过 `1 OneClick Install.cmd` 和 `2 OneClick Configure.cmd`，并成功准备/绑定 Windows 微信 DB。
 4. Mac 可运行 `scripts/wechat_doctor.py --lookback-seconds 3600 --show 10` 看是否能读到最近消息。
-5. 运行 `Doctor Sherlockdogs` 并查看诊断报告。
+5. Mac 用户优先运行 `Sherlockdogs OneTouchRepair.app`；Windows 用户优先运行 `3 OneClick Repair.cmd`，需要反馈时运行 `4 OneClick Report.cmd`。

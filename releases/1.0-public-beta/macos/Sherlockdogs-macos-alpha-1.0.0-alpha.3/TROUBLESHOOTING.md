@@ -18,7 +18,7 @@ If the first run fails, open:
 |---|---|---|
 | Python missing | Sherlockdogs cannot run scripts | Install Python 3, then run First Run again |
 | Sync folder not found | Sherlockdogs cannot auto-detect the optional synced Inbox fallback | Use WeChat Connect as the main path, or configure your own fallback folder |
-| Windows WeChat DB not connected | Windows self-chat watcher has no local DB path | Run `Sherlockdogs Connect WeChat.cmd` with Windows WeChat logged in |
+| Windows WeChat DB not connected | Windows self-chat watcher has no local DB path | Run `2 OneClick Configure.cmd` with Windows WeChat logged in |
 | pypi.org unreachable | Dependencies cannot be installed | Change network/VPN/proxy, then run Install again |
 | Codex missing | Clippings can save, but AI chatbox tasks will not start | Install/open Codex, or set `CODEX_BIN` |
 | ffprobe missing | Video duration/metadata may be incomplete | Install ffmpeg/ffprobe |
@@ -28,6 +28,6 @@ If the first run fails, open:
 
 ## Public beta boundary
 
-The recommended public beta path is WeChat self-chat: phone WeChat -> desktop WeChat -> local Sherlockdogs adapter -> Markdown/Codex. Mac reads local Mac WeChat data only after `Sherlockdogs Connect WeChat.app`. Windows prepares or binds a local Windows WeChat DB path only after `Sherlockdogs Connect WeChat.cmd`. Inbox/Shortcut/sync folders are fallback paths. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
+The recommended public beta path is WeChat self-chat: phone WeChat -> desktop WeChat -> local Sherlockdogs adapter -> Markdown/Codex. Mac reads local Mac WeChat data only after `Sherlockdogs Connect WeChat.app`. Windows prepares or binds a local Windows WeChat DB path only after `2 OneClick Configure.cmd`. Inbox/Shortcut/sync folders are fallback paths. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
 
 Obsidian is recommended for browsing the local Markdown library, but it is not required for saving files or creating Codex cards.

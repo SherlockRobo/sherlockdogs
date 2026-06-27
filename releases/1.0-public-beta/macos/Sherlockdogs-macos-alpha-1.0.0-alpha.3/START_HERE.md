@@ -7,8 +7,8 @@
 3. Double-click `Sherlockdogs Start.app`.
 4. Double-click `Sherlockdogs Connect WeChat.app`, then forward one test article/link/image to yourself in WeChat.
 5. Open results with `Sherlockdogs Open Output.app`.
-6. If anything fails, run `Sherlockdogs Doctor.app`.
-7. If a sent item does not arrive, run `Sherlockdogs OneTouchRepair.app`.
+6. If a sent item does not arrive, run `Sherlockdogs OneTouchRepair.app`.
+7. If you need diagnostics, run `Sherlockdogs Doctor.app`.
 
 ## What this beta does
 
@@ -23,14 +23,14 @@
 
 | Command | Use it when |
 |---|---|
-| `Sherlockdogs Start.app` | First install, preferred on Mac |
+| `Sherlockdogs Start.app` | One-click start/install, preferred on Mac |
 | `Configure Nutstore Inbox.command` | Optional fallback: switch Inbox to your own synced folder |
-| `Sherlockdogs Doctor.app` | Generate diagnostics, preferred on Mac |
 | `Sherlockdogs OneTouchRepair.app` | One-click fix: enable/restart services, repair WeChat binding, and run one catch-up scan |
+| `Sherlockdogs Doctor.app` | Generate diagnostics, preferred on Mac |
 | `Sherlockdogs Repair.app` | Restart services, repair WeChat binding, and run one catch-up scan |
 | `OneTouchRepair.command` | Terminal fallback for the same one-click repair action |
 | `Repair Sherlockdogs.command` | Terminal fallback for the same repair action |
-| `Sherlockdogs Connect WeChat.app` | Optional Mac Personal Mode: bind your own WeChat self-chat |
+| `Sherlockdogs Connect WeChat.app` | Main Mac path: bind your own WeChat self-chat after opt-in |
 | `Sherlockdogs Open Output.app` | View saved Markdown/results, preferred on Mac |
 | `Uninstall Sherlockdogs.command` | Remove background services |
 | `INSTALL_GUIDE_FOR_USERS.png` | User-facing picture guide |
@@ -43,7 +43,7 @@
 
 ## Report back
 
-If there is a failure, include the latest Doctor output.
+If there is a failure, run `Sherlockdogs OneTouchRepair.app` first. If it still fails, include the latest Doctor output.
 
 ## If macOS blocks the app
 

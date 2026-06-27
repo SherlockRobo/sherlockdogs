@@ -8,7 +8,7 @@ Sherlockdogs turns phone WeChat self-chat items into local Markdown files and op
 
 - macOS beta folder is ready for public beta testing.
 - macOS self-chat -> local WeChat DB -> Markdown/Codex path has passed real smoke.
-- Windows alpha.3 folder now includes the Mac-like WeChat DB adapter path, local decrypt bootstrap, incremental decrypt in the watcher, hidden scheduled tasks, and `OneClick Codex Help.cmd`.
+- Windows alpha.3 folder now includes the Mac-like WeChat DB adapter path, local decrypt bootstrap, incremental decrypt in the watcher, hidden scheduled tasks, and four top-level one-click entries: install, configure, repair, and report.
 - iOS Shortcut / Inbox capture remains available as a fallback path.
 - User-facing docs now include `START_HERE.md`, install guide images, troubleshooting notes, and evidence return instructions.
 
@@ -48,5 +48,5 @@ Codex -> optional task when # or #2 is present
 - First launch may spend a few minutes installing Python dependencies.
 - macOS may require right-click -> Open.
 - Mac WeChat Personal Mode is opt-in and local-only.
-- If Windows fails, run `OneClick Codex Help.cmd`; if Codex is unavailable, run `Export Windows Evidence.cmd` and send back the generated evidence folder.
+- If Windows fails, run `3 OneClick Repair.cmd`; if Codex is unavailable, run `4 OneClick Report.cmd` and send back the generated evidence folder.
 - iOS Shortcut / Inbox is fallback, not the default public-beta path.

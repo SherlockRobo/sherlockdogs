@@ -40,9 +40,9 @@ If the project is pushed to GitHub, run `.github/workflows/windows-runtime-smoke
 
 On a clean Windows user account:
 
-1. Double-click `Sherlockdogs Start.cmd`.
+1. Double-click `1 OneClick Install.cmd`.
 2. Keep Windows WeChat logged in.
-3. Run `Sherlockdogs Connect WeChat.cmd`; it should prepare or bind local Windows WeChat DBs containing `message\message_*.db`.
+3. Run `2 OneClick Configure.cmd`; it should prepare or bind local Windows WeChat DBs containing `message\message_*.db`.
 4. Forward one real `#2` phone WeChat item to yourself and confirm Windows WeChat receives it.
 5. Confirm Sherlockdogs creates local Markdown and a Codex card.
 6. Run `Run Windows WeChat Smoke.cmd` for the guided flow, or `Collect Windows WeChat Evidence.cmd` if the test item was already sent. Copy the generated PASS report into `dist/evidence/windows-wechat-db-smoke/`.

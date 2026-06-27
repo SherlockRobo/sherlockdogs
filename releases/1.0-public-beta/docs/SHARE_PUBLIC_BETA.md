@@ -20,13 +20,13 @@ This is a small-scope test build. The product promise is: send anything to your 
 For the shortest test:
 
 - Mac: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.app`, then double-click `Sherlockdogs Connect WeChat.app` and forward one test item to yourself in WeChat.
-- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `Sherlockdogs Start.cmd`, then `Run Windows WeChat Smoke.cmd` for the guided real `#2` test.
+- Windows: open `INSTALL_GUIDE_FOR_USERS.png`, double-click `1 OneClick Install.cmd`, then `2 OneClick Configure.cmd`; use `Run Windows WeChat Smoke.cmd` for the guided real `#2` test.
 - If macOS blocks the app after copying/downloading, right-click `Sherlockdogs Start.app`, choose Open, then confirm Open.
 
-If anything fails, run `Doctor Sherlockdogs`, open `Open Sherlockdogs Diagnostics`, and send the newest doctor report.
+If anything fails on Mac, run `Sherlockdogs OneTouchRepair.app`, then `Sherlockdogs Doctor.app` if needed. If anything fails on Windows, run `3 OneClick Repair.cmd`, then `4 OneClick Report.cmd` if Codex is unavailable.
 
 ## Privacy
 
-This beta uses your own local storage by default. On Mac, WeChat Personal Mode is opt-in and reads the local Mac WeChat database only after you run `Sherlockdogs Connect WeChat.app`. On Windows, `Sherlockdogs Connect WeChat.cmd` prepares or binds a local Windows WeChat DB path after explicit setup. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
+This beta uses your own local storage by default. On Mac, WeChat Personal Mode is opt-in and reads the local Mac WeChat database only after you run `Sherlockdogs Connect WeChat.app`. On Windows, `2 OneClick Configure.cmd` prepares or binds a local Windows WeChat DB path after explicit setup. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
 
 Obsidian is recommended for browsing the Markdown library, but is not required for Codex cards.

@@ -1,6 +1,6 @@
 name=Sherlockdogs-windows-alpha-1.0.0-alpha.3
 version=1.0.0-alpha.3
-built_at=2026-06-26T22:38:15+0800
+built_at=2026-06-27T10:22:58+0800
 entry=windows-wechat-db
 no_archive=true
 windows_runtime_verified=true
@@ -14,4 +14,5 @@ oneclick_configure=true
 oneclick_repair=true
 oneclick_report=true
 obsidian_setup_guide=true
+install_guide_updated=true
 files=64

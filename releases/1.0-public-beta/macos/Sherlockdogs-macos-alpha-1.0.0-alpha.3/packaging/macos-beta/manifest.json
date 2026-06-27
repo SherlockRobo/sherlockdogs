@@ -34,9 +34,12 @@
     "#4": "deep read in Codex",
     "#5": "frames/screenshots/segments in Codex"
   },
-  "privacy_model": "user-owned local Inbox by default; optional Mac WeChat Personal Mode reads local Mac WeChat data only after user enables it; no Sherlockdogs relay by default",
+  "privacy_model": "Mac WeChat self-chat is the recommended path after explicit opt-in; optional Inbox/Shortcut/synced folder is fallback; no Sherlockdogs relay by default",
   "beta_boundary": "Mac Personal Mode is opt-in via Sherlockdogs Connect WeChat.app",
   "cloud_boundary": "Nutstore is the user's own account; Sherlockdogs only watches the synced local folder",
   "first_run_entry": "Sherlockdogs Start.app",
-  "optional_wechat_entry": "Sherlockdogs Connect WeChat.app"
+  "wechat_entry": "Sherlockdogs Connect WeChat.app",
+  "repair_entry": "Sherlockdogs OneTouchRepair.app",
+  "doctor_entry": "Sherlockdogs Doctor.app",
+  "output_entry": "Sherlockdogs Open Output.app"
 }

@@ -185,7 +185,7 @@ Share the whole folder as-is. Do not create zip, dmg, tar, or other archive file
 
 ## Current Boundary
 
-The recommended public beta path is WeChat self-chat: phone WeChat -> desktop WeChat -> local Sherlockdogs adapter -> Markdown/Codex. Mac reads local Mac WeChat data only after `Sherlockdogs Connect WeChat.app`. Windows prepares or binds a local Windows WeChat DB path only after `Sherlockdogs Connect WeChat.cmd`. Inbox/Shortcut/sync folders are fallback paths. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
+The recommended public beta path is WeChat self-chat: phone WeChat -> desktop WeChat -> local Sherlockdogs adapter -> Markdown/Codex. Mac reads local Mac WeChat data only after `Sherlockdogs Connect WeChat.app`. Windows prepares or binds a local Windows WeChat DB path only after `2 OneClick Configure.cmd`. Inbox/Shortcut/sync folders are fallback paths. Sherlockdogs does not upload clipping content to a Sherlockdogs relay service by default.
 
 Sherlockdogs 1.0 is not public-beta ready unless the Windows WeChat DB path and a real phone entry are verified. Desktop drag/drop and local sample files are useful smoke tests, but they do not satisfy the 1.0 product promise. After sending one real `#2` item from phone WeChat to the user's own WeChat on Mac, generate evidence with:
 

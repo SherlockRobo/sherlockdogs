@@ -1,6 +1,9 @@
 name=Sherlockdogs-macos-alpha-1.0.0-alpha.3
 version=1.0.0-alpha.3
-built_at=2026-06-18T15:43:39+0800
-entry=local-inbox
+built_at=2026-06-27T10:22:58+0800
+entry=wechat-self-plus-local-inbox
 no_archive=true
-files=77
+install_guide_updated=true
+wechat_self_entry=true
+onetouch_repair=true
+files=86
