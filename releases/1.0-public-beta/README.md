@@ -36,6 +36,17 @@ WeChat / mobile share / web links / X-XHS-video
 
 No relay server. No bot account. No hosted inbox. The main beta path is local and opt-in.
 
+## Product Promise
+
+![Sherlockdogs product functions](../../docs/assets/release-product-functions.png)
+
+Sherlockdogs is not another bookmark folder. It is a local capture lane into Codex:
+
+- **One touch to Codex**: `#2` creates a Codex-ready task instead of another forgotten save.
+- **All channels to one workflow**: WeChat, web pages, X, Xiaohongshu, images, PDFs, and files can land in the same local pipeline.
+- **Video links are first-class inputs**: Douyin, Bilibili, YouTube, and X video links can be saved with source metadata first, then handed to Codex for deeper transcript or media follow-up.
+- **Free public beta**: the beta is free to try, local-first, and does not rely on a Sherlockdogs relay server.
+
 ## Download
 
 | Platform | Best For | Download | Start Here |
