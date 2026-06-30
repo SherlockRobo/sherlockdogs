@@ -5,7 +5,7 @@
 <h1 align="center">Sherlockdogs</h1>
 
 <p align="center">
-  Connect your multi-platform information stream to Codex-ready local tasks.
+  Turn Obsidian into a local knowledge entry that Codex can actually use.
 </p>
 
 <p align="center">
@@ -20,11 +20,16 @@
 
 ## What It Does
 
-Sherlockdogs is a local-first bridge from multi-platform information to Codex. It captures the places where you already save ideas, then turns them into traceable Markdown and Codex-ready tasks on your desktop.
+Sherlockdogs is a local-first bridge from multi-platform information to Obsidian-readable Markdown and Codex-ready tasks. It captures the places where you already save ideas, then turns them into traceable local context bundles on your desktop.
 
 ```text
-WeChat / mobile share / web links / X-XHS-video -> Sherlockdogs -> Markdown library -> Codex task
+WeChat / mobile share / web links / X-XHS-video
+-> Sherlockdogs
+-> Obsidian-readable local Markdown
+-> Codex-ready task
 ```
+
+It does not expose your whole Obsidian vault to AI. It packages the items you intentionally forward or share into local Markdown with source evidence, attachments, and task context.
 
 The current beta has two practical intake paths: WeChat self-chat for the main desktop flow, and iOS Shortcut / Inbox as a fallback or direct mobile-share path. No relay server. No bot account. No hosted inbox.
 
@@ -72,9 +77,9 @@ Status: `READY_FOR_PUBLIC_BETA`
 | Multi-platform intake | Beta | WeChat articles, web links, X/XHS/video links, text, images, PDFs, and files can become local tasks |
 | WeChat self-chat capture | Beta | User forwards to self; desktop WeChat receives locally |
 | Local WeChat DB adapter | Beta | Opt-in local adapter; no hosted relay |
-| Markdown archive | Ready | Writes `raw.md`, metadata, and result folders |
+| Markdown archive | Ready | Writes Obsidian-readable `raw.md`, metadata, and result folders |
 | Codex handoff | Ready | `#` / `#2` can route captured material into Codex-ready tasks |
-| Obsidian reading | Ready | Uses plain files; Obsidian is optional |
+| Obsidian reading | Ready | Uses plain local files; Obsidian is recommended but optional |
 | iOS Shortcut / Inbox fallback | Fallback | For machines where DB access is not usable |
 | Windows evidence export | Ready | Helps debug real Windows machine failures |
 
