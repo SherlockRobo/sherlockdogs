@@ -14,6 +14,7 @@
 
 - Uses Mac WeChat self-chat as the recommended path, with Inbox/Shortcut as optional fallback.
 - Saves and processes clippings locally after Mac WeChat receives the self-chat item and the local adapter reads it.
+- Turns intentional captures into Obsidian-readable local Markdown and Codex-usable context; it does not expose your whole Obsidian vault to AI.
 - Recommends Obsidian as the local Markdown library reader, but does not require it.
 - Can trigger Codex tasks through `#1/#2/#3/#4/#5`.
 - Does not read your personal WeChat database by default; Mac Personal Mode reads it only after you run `Sherlockdogs Connect WeChat.app`.

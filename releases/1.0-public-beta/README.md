@@ -5,7 +5,8 @@
 <h1 align="center">Sherlockdogs 1.0 Public Beta</h1>
 
 <p align="center">
-  <strong>把微信、网页、X / 小红书、视频链接和手机分享，打通到 Codex 可直接处理的本地任务。</strong><br>
+  <strong>让 Obsidian 变成 Codex 可直接处理的本地知识入口。</strong><br>
+  <strong>微信、网页、X / 小红书、视频链接和手机分享，都会落成可追溯的本地任务。</strong><br>
   <strong>Everything to your Codex Inbox.</strong>
 </p>
 
@@ -23,16 +24,18 @@
 
 ## What This Beta Is
 
-Sherlockdogs is a local-first bridge from your daily information stream to your Codex Inbox.
+Sherlockdogs is a local-first bridge from your daily information stream to Obsidian-readable Markdown and your Codex Inbox.
 
 You keep the same habit: forward useful things to yourself, or share from your phone. Sherlockdogs turns those scattered inputs into local Markdown, source evidence, attachments, and optional Codex-ready tasks.
 
 ```text
 WeChat / mobile share / web links / X-XHS-video
 -> Sherlockdogs
--> local Markdown + source evidence
+-> Obsidian-readable local Markdown + source evidence
 -> Codex-ready task
 ```
+
+It does not hand your whole Obsidian vault to AI. It only packages the items you intentionally send into traceable local context bundles that Obsidian can read and Codex can process.
 
 No relay server. No bot account. No hosted inbox. The main beta path is local and opt-in.
 
@@ -40,9 +43,10 @@ No relay server. No bot account. No hosted inbox. The main beta path is local an
 
 ![Sherlockdogs product functions](../../docs/assets/release-product-functions.png)
 
-Sherlockdogs is not another bookmark folder. It is a local capture lane into Codex:
+Sherlockdogs is not another bookmark folder. It is a local knowledge entry into Obsidian and Codex:
 
 - **One touch to Codex**: `#2` creates a Codex-ready task instead of another forgotten save.
+- **Obsidian becomes useful to AI**: new captures land as plain Markdown with source evidence, so Obsidian can store them and Codex can work on them.
 - **All channels to one workflow**: WeChat, web pages, X, Xiaohongshu, images, PDFs, and files can land in the same local pipeline.
 - **Video links are first-class inputs**: Douyin, Bilibili, YouTube, and X video links can be saved with source metadata first, then handed to Codex for deeper transcript or media follow-up.
 - **Free public beta**: the beta is free to try, local-first, and does not rely on a Sherlockdogs relay server.

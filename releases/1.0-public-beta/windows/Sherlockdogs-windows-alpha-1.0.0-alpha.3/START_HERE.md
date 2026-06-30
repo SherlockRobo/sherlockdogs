@@ -19,6 +19,7 @@
 - Runs incremental decrypt before each Windows WeChat poll so newly received messages are not missed.
 - Keeps Sherlockdogs queue/runs under the clipping `_sherlockdogs` work folder instead of inside the downloaded package.
 - Saves and processes clippings locally after Windows WeChat receives the self-chat item and the local adapter reads it.
+- Turns intentional captures into Obsidian-readable local Markdown and Codex-usable context; it does not expose your whole Obsidian vault to AI.
 - Recommends Obsidian as the local Markdown library reader, but does not require it.
 - Can trigger Codex tasks through `#1/#2/#3/#4/#5`.
 - Reads decrypted local Windows WeChat DB files after explicit Connect.

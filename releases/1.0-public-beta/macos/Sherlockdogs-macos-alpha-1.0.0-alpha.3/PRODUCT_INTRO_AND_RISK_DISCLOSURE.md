@@ -2,7 +2,7 @@
 
 ## 一句话
 
-Sherlockdogs 是一个本地安全的 AI 剪藏管道：把微信文章、X 帖、小红书笔记、网页链接、图片、PDF、视频等线索，送进用户自己的本地资料库，并按需直接触发 Codex 对话。
+Sherlockdogs 是一个本地安全的 AI 剪藏管道：让 Obsidian 变成 Codex 可直接处理的本地知识入口，把微信文章、X 帖、小红书笔记、网页链接、图片、PDF、视频等线索，整理成 Obsidian 可读的本地资料包，并按需直接触发 Codex 对话。
 
 ```text
 Sherlockdogs: everything to your Codex.
@@ -13,7 +13,7 @@ Sherlockdogs: everything to your Codex.
 | 痛点 | Sherlockdogs 做法 |
 |---|---|
 | 收藏分散在多个 App | 用统一 Inbox 接收链接和文件 |
-| Obsidian 手动整理麻烦 | 后台自动生成 Markdown、metadata、assets |
+| Obsidian 手动整理麻烦 | 后台自动生成 Obsidian 可读的 Markdown、metadata、assets |
 | 想让 AI 继续处理 | `#2/#3/#4/#5` 直接创建 Codex 可见任务 |
 | 不想把资料交给陌生服务 | 默认走用户自己的电脑和本地微信；同步盘只是可选备用入口 |
 | 视频解析太重 | clipping 阶段只保存链接、封面、时长线索，深解析留给 Codex |
