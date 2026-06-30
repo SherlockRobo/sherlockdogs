@@ -126,6 +126,17 @@ Sherlockdogs is designed for local-first workflows:
 - Private app databases, credentials, and cookies are excluded from this public repository.
 - WeChat DB access is opt-in and local. If it does not work on a machine, use the iOS Shortcut / Inbox fallback.
 
+## Acknowledgements
+
+Sherlockdogs builds on open-source tools maintained by others. Thank you to the authors and maintainers of:
+
+- [wechat-decrypt](https://github.com/ylytdeng/wechat-decrypt): local WeChat data reading helper for Windows.
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp): video link metadata, thumbnail, and duration probes.
+- [requests](https://github.com/psf/requests): HTTP requests and public metadata fetches.
+- [markdownify](https://github.com/matthewwithanm/python-markdownify): HTML to Markdown conversion.
+- [Pillow](https://github.com/python-pillow/Pillow): image processing and preview generation.
+- [python-zstandard](https://github.com/indygreg/python-zstandard): zstd support for local content handling.
+
 ## Developer Quickstart
 
 The open-source CLI can be tested without WeChat, Obsidian, or Codex:
